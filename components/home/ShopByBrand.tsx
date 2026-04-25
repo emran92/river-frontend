@@ -13,10 +13,10 @@ export default function ShopByBrand() {
     fetchBrands
   );
 
-  const activebrands = (brands ?? []).filter((b) => b.is_active).slice(0, 10);
+  const activebrands = (brands ?? []).filter((b) => b.is_active).slice(0, 12);
 
   return (
-    <section className="max-w-[1280px] mx-auto px-4 py-6">
+    <section className="max-w-[1280px] mx-auto px-4 py-10">
       <SectionHeader
         title="Shop By Brand"
         seeAllHref="/brands"
@@ -24,13 +24,13 @@ export default function ShopByBrand() {
       />
 
       {isLoading ? (
-        <div className="grid grid-cols-3 sm:grid-cols-5 gap-3">
-          {Array.from({ length: 10 }).map((_, i) => (
-            <div key={i} className="h-16 bg-gray-200 animate-pulse rounded-lg" />
+        <div className="grid grid-cols-3 sm:grid-cols-6 gap-4">
+          {Array.from({ length: 12 }).map((_, i) => (
+            <div key={i} className="aspect-square bg-gray-200 animate-pulse rounded-2xl" />
           ))}
         </div>
       ) : (
-        <div className="grid grid-cols-3 sm:grid-cols-5 gap-3">
+        <div className="grid grid-cols-3 sm:grid-cols-6 gap-4">
           {activebrands.map((brand) => (
             <BrandCard key={brand.id} brand={brand} />
           ))}

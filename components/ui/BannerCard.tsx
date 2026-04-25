@@ -26,7 +26,7 @@ export default function BannerCard({
         src={banner.image}
         alt={banner.title}
         fill
-        className="object-fill object-center"
+        className="object-cover"
         priority={priority}
         sizes="(max-width: 768px) 100vw, 50vw"
       />

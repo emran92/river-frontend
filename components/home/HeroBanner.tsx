@@ -30,7 +30,7 @@ export default function HeroBanner() {
   }, [slides.length, nextSlide]);
 
   return (
-    <section className="max-w-[1280px] mx-auto px-4 py-5">
+    <section className="max-w-[1280px] mx-auto px-4 py-10">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 h-auto lg:h-[340px]">
         {/* Left: Main carousel */}
         <div className="lg:col-span-2 relative overflow-hidden rounded-xl bg-gray-100">

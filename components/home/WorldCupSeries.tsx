@@ -19,7 +19,7 @@ export default function WorldCupSeries() {
   const products = data?.data ?? [];
 
   return (
-    <section className="max-w-[1280px] mx-auto px-4 py-6">
+    <section className="max-w-[1280px] mx-auto px-4 py-10">
       <SectionHeader
         title="World Cup Series"
         seeAllHref="/products"

@@ -27,10 +27,9 @@ export default function NewArrival({
   const products = data?.data ?? [];
 
   return (
-    <section className="max-w-[1280px] mx-auto px-4 py-6">
+    <section className="max-w-[1280px] mx-auto px-4 py-10">
       <SectionHeader
         title={title}
-        seeAllHref={seeAllHref}
         tabs={PRODUCT_SORT_TABS}
         activeTab={activeTab}
         onTabChange={setActiveTab}

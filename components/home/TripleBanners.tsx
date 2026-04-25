@@ -13,7 +13,7 @@ export default function TripleBanners() {
 
   if (isLoading) {
     return (
-      <section className="max-w-[1280px] mx-auto px-4 py-4">
+      <section className="max-w-[1280px] mx-auto px-4 py-10">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {Array.from({ length: 3 }).map((_, i) => (
             <div key={i} className="aspect-[4/3] bg-gray-200 animate-pulse rounded-xl" />

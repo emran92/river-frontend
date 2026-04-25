@@ -19,9 +19,10 @@ export default function PopularCategory() {
     .slice(0, 8);
 
   return (
-    <section className="max-w-[1280px] mx-auto px-4 py-6">
+    <section className="max-w-[1280px] mx-auto px-4 py-10">
       <SectionHeader
         title="Popular Category"
+        subtitle="BROWSE BY"
         seeAllHref="/categories"
         seeAllLabel="All Categories"
       />
@@ -29,8 +30,8 @@ export default function PopularCategory() {
       {isLoading ? (
         <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-4">
           {Array.from({ length: 8 }).map((_, i) => (
-            <div key={i} className="flex flex-col items-center gap-2">
-              <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-gray-200 animate-pulse" />
+            <div key={i} className="flex flex-col items-center gap-4 rounded-2xl border border-gray-100 p-5 animate-pulse">
+              <div className="w-16 h-16 md:w-20 md:h-20 rounded-xl bg-gray-200 animate-pulse" />
               <div className="w-14 h-3 bg-gray-200 rounded animate-pulse" />
             </div>
           ))}

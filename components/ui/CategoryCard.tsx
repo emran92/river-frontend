@@ -11,24 +11,27 @@ export default function CategoryCard({ category }: CategoryCardProps) {
   return (
     <Link
       href={`/categories/${category.slug}`}
-      className="flex flex-col items-center gap-2 group cursor-pointer"
+      className="group block bg-white rounded-2xl border border-gray-100 hover:shadow-md transition-shadow duration-200 overflow-hidden p-5 flex flex-col items-center gap-2"
     >
-      <div className="relative w-16 h-16 md:w-20 md:h-20 bg-gray-100 rounded-full overflow-hidden flex items-center justify-center border border-gray-200 group-hover:border-blue-400 transition-colors">
+      {/* Image area */}
+      <div className="relative w-full aspect-square bg-white flex items-center justify-center p-4">
         {category.image_url ? (
           <Image
             src={mediaUrl(category.image_url)}
             alt={category.name}
             fill
-            className="object-contain p-2"
-            sizes="80px"
+            className="object-contain group-hover:scale-105 transition-transform duration-200 bg-[#F7F7F7] rounded-lg"
+            sizes="(max-width: 640px) 25vw, 12vw"
           />
         ) : (
-          <span className="text-2xl text-gray-400">📦</span>
+          <span className="text-4xl text-gray-300">📦</span>
         )}
       </div>
-      <span className="text-xs text-center text-gray-700 font-medium group-hover:text-blue-700 transition-colors leading-tight max-w-[80px]">
-        {category.name}
-      </span>
+      {/* Label */}
+      <div className="px-3 pb-3 text-center">
+        <p className="text-sm font-medium leading-tight">{category.name}</p>
+        <p className="text-xs text-gray-500 mt-1">100 products</p>
+      </div>
     </Link>
   );
 }

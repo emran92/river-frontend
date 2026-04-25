@@ -27,7 +27,7 @@ export default function TopSaleProducts() {
   const products = (featuredData?.data ?? []).slice(0, 8);
 
   return (
-    <section className="max-w-[1280px] mx-auto px-4 py-6">
+    <section className="max-w-[1280px] mx-auto px-4 py-10">
       <SectionHeader
         title="Top Sale Product"
         seeAllHref="/products/on-sale"
