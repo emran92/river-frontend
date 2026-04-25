@@ -28,7 +28,7 @@ export default function SectionHeader<T extends string = string>({
         {subtitle && (
           <p className="text-xs font-semibold text-blue-600 uppercase tracking-widest mb-1">{subtitle}</p>
         )}
-        <h2 className="text-2xl font-semibold text-gray-900">{title}</h2>
+        <h2 className="text-lg md:text-2xl font-semibold text-gray-900">{title}</h2>
       </div>
 
       <div className="flex items-center gap-3 flex-wrap">

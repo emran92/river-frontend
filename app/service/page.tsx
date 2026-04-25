@@ -281,7 +281,7 @@ export default function ServiceRequestPage() {
                           value={form.productName}
                           onChange={handleChange}
                           className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-                          placeholder="e.g. Samsung 55\" Smart TV, Model: UA55AU7700"
+                          placeholder="e.g. Samsung 55 Smart TV, Model: UA55AU7700"
                         />
                       </div>
                     </div>

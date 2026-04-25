@@ -37,7 +37,7 @@ export default function PopularCategory() {
           ))}
         </div>
       ) : (
-        <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-6 md:grid-cols-8 gap-4">
           {activeCategories.map((category) => (
             <CategoryCard key={category.id} category={category} />
           ))}

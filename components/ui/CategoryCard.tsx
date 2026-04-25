@@ -29,8 +29,8 @@ export default function CategoryCard({ category }: CategoryCardProps) {
       </div>
       {/* Label */}
       <div className="px-3 pb-3 text-center">
-        <p className="text-sm font-medium leading-tight">{category.name}</p>
-        <p className="text-xs text-gray-500 mt-1">{category.products_count} products</p>
+        <p className="text-xs md:text-sm font-medium leading-tight">{category.name}</p>
+        <p className="text-[10px] md:text-xs text-gray-500 mt-1">{category.products_count} products</p>
       </div>
     </Link>
   );
