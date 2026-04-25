@@ -27,13 +27,13 @@ export default function Navigation() {
   const activeCategories = (categories ?? []).filter((c) => c.is_active);
 
   return (
-    <nav className="bg-white sticky top-0 z-50 py-4 border-b border-gray-200">
+    <nav className="bg-white sticky top-0 z-1 py-4 border-b border-gray-200">
       <div className="max-w-[1280px] mx-auto px-4">
         <div className="flex items-center h-11">
           {/* All Category dropdown */}
           <div className="relative">
             <button
-              className="flex items-center gap-2 h-11 px-4 bg-[#F4F4F4] rounded-lg text-black text-sm font-medium hover:bg-blue-700 hover:text-white transition-colors"
+              className="flex items-center gap-2 h-11 px-4 bg-[#F4F4F4] rounded-lg text-black text-sm font-medium hover:bg-river-blue hover:text-white transition-colors"
               onClick={() => setCategoryOpen(!categoryOpen)}
               aria-expanded={categoryOpen}
             >
@@ -60,7 +60,7 @@ export default function Navigation() {
                       <Link
                         key={cat.id}
                         href={`/categories/${cat.slug}`}
-                        className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors"
+                        className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-river-blue/10 hover:text-blue-700 transition-colors"
                         onClick={() => setCategoryOpen(false)}
                       >
                         {cat.name}
@@ -70,7 +70,7 @@ export default function Navigation() {
                   <hr className="my-1" />
                   <Link
                     href="/categories"
-                    className="block px-4 py-2.5 text-sm text-blue-600 font-medium hover:bg-blue-50"
+                    className="block px-4 py-2.5 text-sm text-blue-600 font-medium hover:bg-river-blue/10"
                     onClick={() => setCategoryOpen(false)}
                   >
                     View All Categories →
@@ -121,7 +121,7 @@ export default function Navigation() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600"
+                className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-river-blue/10 hover:text-blue-600"
                 onClick={() => setMobileOpen(false)}
               >
                 {link.label}

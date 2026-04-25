@@ -42,6 +42,7 @@ export interface Category {
   sort_order: number;
   created_at: string | null;
   updated_at: string | null;
+  products_count: number;
   children?: Category[];
   media?: unknown[];
 }

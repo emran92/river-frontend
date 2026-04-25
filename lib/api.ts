@@ -54,15 +54,22 @@ export async function fetchBrands(): Promise<Brand[]> {
   return apiFetch<Brand[]>("/v1/brands");
 }
 
+export async function fetchBrand(slug: string): Promise<Brand> {
+  return apiFetch<Brand>(`/v1/brands/${slug}`);
+}
+
 // ─── Products ─────────────────────────────────────────────────────────────────
 
 export async function fetchProducts(
   params: {
     page?: number;
     per_page?: number;
-    sort?: ProductSortTab;
+    sort?: ProductSortTab | string;
     category?: string;
     brand?: string;
+    min_price?: number;
+    max_price?: number;
+    search?: string;
   } = {},
 ): Promise<PaginatedResponse<Product>> {
   const qs = new URLSearchParams();
@@ -71,6 +78,9 @@ export async function fetchProducts(
   if (params.sort) qs.set("sort", params.sort);
   if (params.category) qs.set("category", params.category);
   if (params.brand) qs.set("brand", params.brand);
+  if (params.min_price) qs.set("min_price", String(params.min_price));
+  if (params.max_price) qs.set("max_price", String(params.max_price));
+  if (params.search) qs.set("search", params.search);
   const query = qs.toString() ? `?${qs.toString()}` : "";
   return apiFetch<PaginatedResponse<Product>>(`/v1/products${query}`);
 }

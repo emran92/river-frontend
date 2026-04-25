@@ -119,7 +119,7 @@ export default function Header() {
               {catDropOpen && (
                 <div className="absolute top-full right-0 mt-1 w-52 bg-white border border-gray-200 rounded-xl shadow-xl z-50 max-h-72 overflow-y-auto py-1">
                   <button
-                    className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700"
+                    className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-river-blue/10 hover:text-blue-700"
                     onClick={() => { setSelectedCategory(null); setCatDropOpen(false); }}
                   >
                     All Categories
@@ -127,7 +127,7 @@ export default function Header() {
                   {activeCategories.map((cat) => (
                     <button
                       key={cat.id}
-                      className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700"
+                      className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-river-blue/10 hover:text-blue-700"
                       onClick={() => { setSelectedCategory(cat); setCatDropOpen(false); }}
                     >
                       {cat.name}
@@ -141,7 +141,7 @@ export default function Header() {
           {/* Standalone blue search button */}
           <button
             aria-label="Search"
-            className="flex-shrink-0 bg-blue-600 hover:bg-blue-700 text-white w-11 h-11 rounded-xl flex items-center justify-center transition-colors shadow-sm"
+            className="flex-shrink-0 bg-river-blue hover:bg-river-blue text-white w-11 h-11 rounded-xl flex items-center justify-center transition-colors shadow-sm"
             onClick={() => {
               if (query.trim()) {
                 const params = new URLSearchParams({ q: query.trim() });
@@ -194,7 +194,7 @@ export default function Header() {
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
             </svg>
-            <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] bg-blue-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center px-0.5">
+            <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] bg-river-blue text-white text-[10px] font-bold rounded-full flex items-center justify-center px-0.5">
               0
             </span>
           </Link>

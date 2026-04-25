@@ -2,12 +2,11 @@ import Image from "next/image";
 import Link from "next/link";
 
 const USEFUL_LINKS = [
-  { label: "Coordinator", href: "/coordinator" },
-  { label: "Architect", href: "/architect" },
-  { label: "Recent News", href: "/news" },
-  { label: "Manager", href: "/manager" },
-  { label: "Producer", href: "/producer" },
-  { label: "Designer", href: "/designer" },
+  { label: "FAQ", href: "/faq" },
+  { label: "About Us", href: "/about" },
+  { label: "Shipping", href: "/shipping" },
+  { label: "Returns", href: "/returns" },
+  { label: "Support", href: "/support" },
 ];
 
 const CATEGORIES = [
@@ -84,7 +83,7 @@ export default function Footer() {
                   key={s.label}
                   href={s.href}
                   aria-label={s.label}
-                  className="w-8 h-8 rounded-full bg-gray-700 hover:bg-blue-600 flex items-center justify-center text-gray-300 hover:text-white transition-colors"
+                  className="w-8 h-8 rounded-full bg-gray-700 hover:bg-river-blue flex items-center justify-center text-gray-300 hover:text-white transition-colors"
                 >
                   {s.icon}
                 </a>
@@ -147,7 +146,7 @@ export default function Footer() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
                 <a href="mailto:shaphal.surovi@river.com" className="hover:text-white transition-colors break-all">
-                  Shajjad.konok@river.com
+                  shajjad.konok@river.com
                 </a>
               </li>
               <li className="flex items-start gap-2 text-sm text-gray-400">
@@ -165,7 +164,7 @@ export default function Footer() {
       {/* Bottom bar */}
       <div className="border-t border-gray-800">
         <div className="max-w-[1280px] mx-auto px-4 py-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-gray-500">
-          <span>© River Electronics {new Date().getFullYear()} | All Rights Reserved</span>
+          <span>© River Electronics {new Date().getFullYear()} | By Septolab</span>
           <div className="flex items-center gap-4">
             <Link href="/terms" className="hover:text-gray-300 transition-colors">Terms & Conditions</Link>
             <Link href="/privacy" className="hover:text-gray-300 transition-colors">Privacy Policy</Link>

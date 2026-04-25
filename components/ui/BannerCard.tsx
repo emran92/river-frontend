@@ -34,7 +34,7 @@ export default function BannerCard({
       {/* Overlay + content */}
       {/* <div className="relative z-10 h-full flex flex-col justify-center p-6 md:p-8">
         {banner.badge && (
-          <span className="inline-block bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded mb-3 w-fit">
+          <span className="inline-block bg-river-blue text-white text-xs font-bold px-2 py-1 rounded mb-3 w-fit">
             {banner.badge}
           </span>
         )}
@@ -47,7 +47,7 @@ export default function BannerCard({
           </p>
         )}
         {banner.cta_label && (
-          <button className="mt-4 inline-flex items-center gap-1 bg-white text-blue-700 text-sm font-semibold px-4 py-2 rounded-md hover:bg-blue-50 transition-colors w-fit">
+          <button className="mt-4 inline-flex items-center gap-1 bg-white text-blue-700 text-sm font-semibold px-4 py-2 rounded-md hover:bg-river-blue/10 transition-colors w-fit">
             {banner.cta_label}
             <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />

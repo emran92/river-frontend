@@ -38,7 +38,7 @@ export default function SectionHeader<T extends string = string>({
         {seeAllHref && (
           <Link
             href={seeAllHref}
-            className="bg-[#F4F4F4] rounded-lg text-black text-sm font-medium hover:bg-blue-700 hover:text-white transition-colors px-4 py-2 border border-gray-200"
+            className="bg-[#F4F4F4] rounded-lg text-black text-sm font-medium hover:bg-river-blue hover:text-white transition-colors px-4 py-2 border border-gray-200"
           >
             {seeAllLabel} →
           </Link>

@@ -38,7 +38,7 @@ export default function TopSaleProducts() {
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
         {/* Left: Featured discount card */}
-        <div className="bg-blue-700 rounded-xl p-6 flex flex-col justify-between min-h-[280px]">
+        <div className="bg-river-blue rounded-xl p-6 flex flex-col justify-between min-h-[280px]">
           <div>
             <p className="text-blue-200 text-xs font-semibold mb-1 uppercase tracking-wide">
               Customer Favorites
@@ -61,7 +61,7 @@ export default function TopSaleProducts() {
 
           <Link
             href="/products/on-sale"
-            className="mt-4 inline-flex items-center gap-1 bg-white text-blue-700 text-sm font-semibold px-4 py-2 rounded-md hover:bg-blue-50 transition-colors w-fit"
+            className="mt-4 inline-flex items-center gap-1 bg-white text-blue-700 text-sm font-semibold px-4 py-2 rounded-md hover:bg-river-blue/10 transition-colors w-fit"
           >
             Shop Now
             <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">

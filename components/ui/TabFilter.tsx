@@ -29,7 +29,7 @@ export default function TabFilter<T extends string = string>({
           className={`text-sm px-4 py-2 rounded-lg font-medium transition-colors ${
             active === tab.key
               ? "bg-[#F4F4F4] text-black border border-gray-200"
-              : "text-black hover:bg-blue-700 hover:text-white hover:border-blue-700"
+              : "text-black hover:bg-river-blue hover:text-white hover:border-blue-700"
           }`}
         >
           {tab.label}
