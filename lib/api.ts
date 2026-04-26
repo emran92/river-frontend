@@ -126,7 +126,7 @@ const MOCK_BANNERS: Banner[] = [
   },
   {
     id: 2,
-    type: "hero_side",
+    type: "hero_secondary",
     title: "EID SALES — Hitachi Refrigerator",
     badge: "15% OFF",
     cta_label: "Shop Now",
@@ -137,7 +137,7 @@ const MOCK_BANNERS: Banner[] = [
   },
   {
     id: 3,
-    type: "hero_side",
+    type: "hero_secondary",
     title: "Samsung New Refrigerators",
     subtitle: "10,000 Tk CASHBACK",
     cta_label: "Shop Now",
@@ -209,6 +209,16 @@ const MOCK_BANNERS: Banner[] = [
     cta_href: "/products",
     image: "/placeholder/9.png",
     sort_order: 3,
+  },
+  {
+    id: 10,
+    type: "long",
+    title: "Smart Appliances Smarter Choice",
+    subtitle: "Energy saving technology that keeps your home running smoothly.",
+    cta_label: "Shop Now",
+    cta_href: "/products",
+    image: "/placeholder/10.png",
+    sort_order: 1,
   },
 ];
 

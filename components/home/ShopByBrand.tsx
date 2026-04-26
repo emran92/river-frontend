@@ -16,7 +16,7 @@ export default function ShopByBrand() {
   const activebrands = (brands ?? []).filter((b) => b.is_active).slice(0, 12);
 
   return (
-    <section className="max-w-[1280px] mx-auto px-4 py-10">
+    <section className="max-w-[1280px] mx-auto px-4 py-8">
       <SectionHeader
         title="Shop By Brand"
         seeAllHref="/brands"

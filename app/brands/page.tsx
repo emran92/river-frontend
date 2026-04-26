@@ -14,9 +14,9 @@ function BrandGridCard({ brand }: { brand: Brand }) {
   return (
     <Link
       href={`/brands/${brand.slug}`}
-      className="group flex flex-col items-center bg-white rounded-2xl border border-gray-100 p-5 hover:shadow-md hover:border-blue-100 transition-all duration-200"
+      className="group flex flex-col items-center bg-white rounded-2xl border border-gray-100 p-5"
     >
-      <div className="relative w-full aspect-square rounded-xl overflow-hidden bg-[#F7F7F7] flex items-center justify-center mb-3">
+      <div className="relative w-full aspect-square rounded-xl overflow-hidden flex items-center justify-center mb-3">
         {brand.logo_url ? (
           <Image
             src={mediaUrl(brand.logo_url)}
@@ -26,7 +26,7 @@ function BrandGridCard({ brand }: { brand: Brand }) {
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 16vw"
           />
         ) : (
-          <span className="text-base font-bold text-[#00A89B] group-hover:text-[#007a72] transition-colors text-center leading-tight px-4">
+          <span className="text-xl font-bold text-[#00A89B] group-hover:text-[#007a72] transition-colors text-center leading-tight px-4">
             {brand.name}
           </span>
         )}
@@ -34,9 +34,9 @@ function BrandGridCard({ brand }: { brand: Brand }) {
       <p className="text-sm font-semibold text-gray-900 text-center leading-tight mb-1">
         {brand.name}
       </p>
-      {brand.country_of_origin && (
+      {/* {brand.country_of_origin && (
         <p className="text-xs text-gray-400">{brand.country_of_origin}</p>
-      )}
+      )} */}
       {brand.products_count !== undefined && (
         <p className="text-xs text-blue-500 font-medium mt-0.5">
           {brand.products_count} products

@@ -12,8 +12,8 @@ export default function HeroBanner() {
     () => fetchBanners("hero")
   );
   const { data: sideBanners } = useFetch<Banner[]>(
-    "/banners/hero_side",
-    () => fetchBanners("hero_side")
+    "/banners/hero_secondary",
+    () => fetchBanners("hero_secondary")
   );
 
   const [activeSlide, setActiveSlide] = useState(0);
@@ -30,8 +30,8 @@ export default function HeroBanner() {
   }, [slides.length, nextSlide]);
 
   return (
-    <section className="max-w-[1280px] mx-auto px-4 py-10">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 h-auto lg:h-[340px]">
+    <section className="max-w-[1280px] mx-auto px-4 py-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 h-auto">
         {/* Left: Main carousel */}
         <div className="lg:col-span-2 relative overflow-hidden rounded-xl bg-gray-100">
           {slides.length === 0 ? (
@@ -46,7 +46,7 @@ export default function HeroBanner() {
                   <div key={banner.id} className="flex-shrink-0 w-full h-full">
                     <BannerCard
                       banner={banner}
-                      aspect="h-full"
+                      aspect="aspect-[16/9]"
                       priority={i === 0}
                       className="h-full"
                     />
@@ -101,14 +101,14 @@ export default function HeroBanner() {
 
         {/* Right: 2 stacked side banners */}
         <div className="hidden lg:flex flex-col gap-4">
-          {(sideBanners ?? [{ id: 0, type: "hero_side" as const, title: "", image: "", sort_order: 0 }, { id: 1, type: "hero_side" as const, title: "", image: "", sort_order: 1 }])
+          {(sideBanners ?? [{ id: 0, type: "hero_secondary" as const, title: "", image: "", sort_order: 0 }, { id: 1, type: "hero_secondary" as const, title: "", image: "", sort_order: 1 }])
             .slice(0, 2)
             .map((banner, i) =>
               banner.image ? (
                 <BannerCard
                   key={banner.id}
                   banner={banner}
-                  aspect="aspect-[16/7]"
+                  aspect="aspect-[16/9]"
                   priority={i === 0}
                   className="flex-1"
                 />

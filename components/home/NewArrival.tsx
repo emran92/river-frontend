@@ -27,7 +27,7 @@ export default function NewArrival({
   const products = data?.data ?? [];
 
   return (
-    <section className="max-w-[1280px] mx-auto px-4 py-10">
+    <section className="max-w-[1280px] mx-auto px-4 py-8">
       <SectionHeader
         title={title}
         tabs={PRODUCT_SORT_TABS}

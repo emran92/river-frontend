@@ -8,6 +8,7 @@ interface BannerCardProps {
   /** Aspect ratio class, e.g. "aspect-[16/7]" */
   aspect?: string;
   priority?: boolean;
+  fit?: string;
 }
 
 export default function BannerCard({
@@ -15,6 +16,7 @@ export default function BannerCard({
   className = "",
   aspect = "aspect-[16/7]",
   priority = false,
+  fit = 'object-cover',
 }: BannerCardProps) {
   const content = (
     <div
@@ -26,7 +28,7 @@ export default function BannerCard({
         src={banner.image}
         alt={banner.title}
         fill
-        className="object-cover"
+        className={`${fit} transition-transform duration-300 group-hover:scale-105`}
         priority={priority}
         sizes="(max-width: 768px) 100vw, 50vw"
       />
@@ -59,7 +61,7 @@ export default function BannerCard({
   );
 
   if (banner.cta_href) {
-    return <Link href={banner.cta_href}>{content}</Link>;
+    return <Link href={banner.cta_href} className="block h-full">{content}</Link>;
   }
 
   return content;

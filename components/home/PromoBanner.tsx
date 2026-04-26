@@ -15,7 +15,7 @@ export default function PromoBanner() {
 
   if (isLoading) {
     return (
-      <section className="max-w-[1280px] mx-auto px-4 py-10">
+      <section className="max-w-[1280px] mx-auto px-4 py-8">
         <div className="w-full aspect-[16/5] bg-gray-200 animate-pulse rounded-xl" />
       </section>
     );

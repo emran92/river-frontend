@@ -179,7 +179,13 @@ export interface Wishlist {
 
 // ─── Banner (placeholder — no API endpoint yet) ───────────────────────────────
 
-export type BannerType = "hero" | "hero_side" | "promo" | "split" | "triple";
+export type BannerType =
+  | "hero"
+  | "hero_secondary"
+  | "promo"
+  | "split"
+  | "triple"
+  | "long";
 
 export interface Banner {
   id: number;

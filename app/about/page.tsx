@@ -80,7 +80,7 @@ export default function AboutPage() {
 
       {/* Stats */}
       <section className="bg-[#127FFF] text-white">
-        <div className="max-w-[1280px] mx-auto px-4 py-10">
+        <div className="max-w-[1280px] mx-auto px-4 py-16">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             {STATS.map((s) => (
               <div key={s.label}>

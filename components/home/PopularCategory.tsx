@@ -19,7 +19,7 @@ export default function PopularCategory() {
     .slice(0, 8);
 
   return (
-    <section className="max-w-[1280px] mx-auto px-4 py-10">
+    <section className="relative max-w-[1280px] mx-auto px-4 py-8">
       <SectionHeader
         title="Popular Category"
         subtitle="BROWSE BY"
