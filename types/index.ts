@@ -54,11 +54,36 @@ export interface FilterBrand {
   count: number;
 }
 
+export interface FilterCategory {
+  id: number;
+  name: string;
+  slug: string;
+  count: number;
+  children: FilterCategory[];
+}
+
 export interface ProductFilters {
   price_range?: { min: number; max: number };
   brands?: FilterBrand[];
+  categories?: FilterCategory[];
   attributes?: FilterAttribute[];
 }
+
+export interface CatalogBrandResponse {
+  type: "brand";
+  resource: Brand[];
+  filters: ProductFilters;
+  products: PaginatedResponse<Product>;
+}
+
+export interface CatalogCategoryResponse {
+  type: "category";
+  resource: Category;
+  filters: ProductFilters;
+  products: PaginatedResponse<Product>;
+}
+
+export type CatalogResponse = CatalogBrandResponse | CatalogCategoryResponse;
 
 // ─── Category ─────────────────────────────────────────────────────────────────
 

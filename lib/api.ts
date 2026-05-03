@@ -5,6 +5,7 @@ import type {
   Banner,
   PaginatedResponse,
   ProductSortTab,
+  CatalogResponse,
 } from "@/types";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000/api";
@@ -56,6 +57,43 @@ export async function fetchBrands(): Promise<Brand[]> {
 
 export async function fetchBrand(slug: string): Promise<Brand> {
   return apiFetch<Brand>(`/v1/brands/${slug}`);
+}
+
+// ─── Universal Catalog ────────────────────────────────────────────────────────
+
+export async function fetchCatalog(
+  slug: string,
+  params: {
+    brand?: string;
+    category?: string;
+    min_price?: number;
+    max_price?: number;
+    on_sale?: 1 | 0;
+    in_stock?: 1 | 0;
+    sort?: string;
+    per_page?: number;
+    page?: number;
+    /** Dynamic attribute filters, e.g. { "screen-size": "55,65" } */
+    attributes?: Record<string, string>;
+  } = {},
+): Promise<CatalogResponse> {
+  const qs = new URLSearchParams();
+  if (params.brand) qs.set("brand", params.brand);
+  if (params.category) qs.set("category", params.category);
+  if (params.min_price) qs.set("min_price", String(params.min_price));
+  if (params.max_price) qs.set("max_price", String(params.max_price));
+  if (params.on_sale) qs.set("on_sale", String(params.on_sale));
+  if (params.in_stock) qs.set("in_stock", String(params.in_stock));
+  if (params.sort) qs.set("sort", params.sort);
+  if (params.per_page) qs.set("per_page", String(params.per_page));
+  if (params.page) qs.set("page", String(params.page));
+  if (params.attributes) {
+    Object.entries(params.attributes).forEach(([k, v]) => {
+      if (v) qs.set(k, v);
+    });
+  }
+  const query = qs.toString() ? `?${qs.toString()}` : "";
+  return apiFetch<CatalogResponse>(`/v1/${slug}${query}`);
 }
 
 // ─── Products ─────────────────────────────────────────────────────────────────

@@ -2,11 +2,13 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { fetchCategory, fetchProducts } from "@/lib/api";
+import { Suspense } from "react";
+import { fetchCatalog } from "@/lib/api";
 import { mediaUrl } from "@/lib/utils";
 import ProductCard from "@/components/ui/ProductCard";
 import Pagination from "@/components/ui/Pagination";
 import ProductFiltersClient from "@/components/ui/ProductFiltersClient";
+import SortSelect from "@/components/ui/SortSelect";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -16,7 +18,11 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   try {
-    const category = await fetchCategory(slug);
+    const catalog = await fetchCatalog(slug);
+    if (catalog.type !== "category") {
+      return { title: "Category Not Found" };
+    }
+    const category = catalog.resource;
     return {
       title: `${category.name} — River Electronics`,
       description: category.description ?? `Shop ${category.name} products at River Electronics`,
@@ -31,57 +37,86 @@ function str(val: string | string[] | undefined): string | undefined {
   return Array.isArray(val) ? val[0] : val;
 }
 
+const RESERVED_PARAMS = new Set([
+  "sort", "page", "per_page", "brand", "category",
+  "min_price", "max_price", "on_sale", "in_stock",
+]);
+
 export default async function CategoryProductsPage({ params, searchParams }: Props) {
   const { slug } = await params;
   const sp = await searchParams;
 
   const sort = str(sp.sort);
-  const brand = str(sp.brand);
   const page = parseInt(str(sp.page) ?? "1", 10);
   const minPrice = sp.min_price ? parseInt(str(sp.min_price)!, 10) : undefined;
   const maxPrice = sp.max_price ? parseInt(str(sp.max_price)!, 10) : undefined;
+  const brandParam = str(sp.brand);
 
-  // Collect attribute filter params (attr_<slug>=<value_id>)
-  const currentAttributes: Record<string, string> = {};
+  // Collect dynamic attribute filters (all non-reserved params)
+  const attributeFilters: Record<string, string> = {};
   Object.entries(sp).forEach(([key, val]) => {
-    if (key.startsWith("attr_")) {
+    if (!RESERVED_PARAMS.has(key)) {
       const v = str(val);
-      if (v) currentAttributes[key.slice(5)] = v;
+      if (v) attributeFilters[key] = v;
     }
   });
 
-  const [category, productsResult] = await Promise.all([
-    fetchCategory(slug).catch(() => null),
-    fetchProducts({
-      category: slug,
-      sort,
-      brand,
-      page,
-      per_page: 20,
-      min_price: minPrice,
-      max_price: maxPrice,
-    }).catch(() => null),
-  ]);
+  const catalog = await fetchCatalog(slug, {
+    brand: brandParam,
+    sort,
+    page,
+    per_page: 20,
+    min_price: minPrice,
+    max_price: maxPrice,
+    attributes: attributeFilters,
+  }).catch(() => null);
 
-  if (!category) notFound();
+  if (!catalog || catalog.type !== "category") notFound();
 
-  const products = productsResult?.data ?? [];
-  const lastPage = productsResult?.last_page ?? 1;
-  const total = productsResult?.total ?? 0;
-  const currentPage = productsResult?.current_page ?? 1;
+  const category = catalog.resource;
+
+  const products = catalog.products.data ?? [];
+  const lastPage = catalog.products.last_page ?? 1;
+  const total = catalog.products.total ?? 0;
+  const currentPage = catalog.products.current_page ?? 1;
+
+  const currentBrands = brandParam ? brandParam.split(",").filter(Boolean) : [];
+  const currentAttributes: Record<string, string[]> = {};
+  Object.entries(attributeFilters).forEach(([k, v]) => {
+    currentAttributes[k] = v.split(",").filter(Boolean);
+  });
 
   function buildHref(p: number) {
     const qs = new URLSearchParams();
     if (sort) qs.set("sort", sort);
-    if (brand) qs.set("brand", brand);
+    if (brandParam) qs.set("brand", brandParam);
     if (minPrice) qs.set("min_price", String(minPrice));
     if (maxPrice) qs.set("max_price", String(maxPrice));
-    Object.entries(currentAttributes).forEach(([k, v]) => qs.set(`attr_${k}`, v));
+    Object.entries(attributeFilters).forEach(([k, v]) => qs.set(k, v));
     qs.set("page", String(p));
     return `/categories/${slug}?${qs.toString()}`;
   }
 
-  const subcategories = category.children?.filter((c) => c.is_active) ?? [];
+  function buildFilterHref(overrides: Record<string, string | null | undefined>) {
+    const qs = new URLSearchParams();
+    const base: Record<string, string | undefined> = {
+      sort,
+      brand: brandParam,
+      min_price: minPrice?.toString(),
+      max_price: maxPrice?.toString(),
+      ...attributeFilters,
+    };
+    const merged = { ...base, ...overrides };
+    Object.entries(merged).forEach(([k, v]) => { if (v) qs.set(k, v); });
+    const s = qs.toString();
+    return s ? `/categories/${slug}?${s}` : `/categories/${slug}`;
+  }
+
+  const hasActiveFilters =
+    currentBrands.length > 0 ||
+    !!minPrice ||
+    !!maxPrice ||
+    Object.values(currentAttributes).some((v) => v.length > 0);
 
   return (
     <main className="max-w-[1280px] mx-auto px-4 py-8">
@@ -119,90 +154,37 @@ export default async function CategoryProductsPage({ params, searchParams }: Pro
         </div>
       </div>
 
-      {/* Subcategories */}
-      {subcategories.length > 0 && (
-        <div className="mb-8">
-          <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-widest mb-3">
-            Sub-categories
-          </h2>
-          <div className="flex flex-wrap gap-2">
-            {subcategories.map((sub) => (
-              <Link
-                key={sub.id}
-                href={`/categories/${sub.slug}`}
-                className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-full text-sm hover:border-blue-400 hover:text-blue-600 transition-colors"
-              >
-                {sub.image_url && (
-                  <div className="relative w-5 h-5 flex-shrink-0">
-                    <Image
-                      src={mediaUrl(sub.image_url)}
-                      alt={sub.name}
-                      fill
-                      className="object-contain"
-                    />
-                  </div>
-                )}
-                {sub.name}
-              </Link>
-            ))}
-          </div>
-        </div>
-      )}
-
       {/* Products section */}
       <div className="flex flex-col lg:flex-row gap-6 items-start">
         {/* Filters sidebar */}
         <ProductFiltersClient
           basePath={`/categories/${slug}`}
-          currentSort={sort}
-          currentBrand={brand}
+          pageType="category"
+          currentBrands={currentBrands}
           currentMinPrice={minPrice}
           currentMaxPrice={maxPrice}
           currentAttributes={currentAttributes}
-          filters={category.filters}
+          filters={catalog.filters}
         />
 
         {/* Product grid */}
         <div className="flex-1 min-w-0">
           {/* Active filter pills */}
-          {(sort || brand || minPrice || maxPrice || Object.keys(currentAttributes).length > 0) && (
+          {hasActiveFilters && (
             <div className="flex flex-wrap gap-2 mb-4">
-              {sort && (
-                <span className="flex items-center gap-1 text-xs bg-river-blue/10 text-blue-700 border border-blue-200 px-2.5 py-1 rounded-full">
-                  Sort: {sort.replace("_", " ")}
-                  <Link
-                    href={buildHref(1).replace(`sort=${sort}&`, "").replace(`sort=${sort}`, "")}
-                    className="ml-0.5 hover:text-red-600"
-                  >
-                    ×
-                  </Link>
-                </span>
-              )}
-              {brand && (
-                <span className="flex items-center gap-1 text-xs bg-river-blue/10 text-blue-700 border border-blue-200 px-2.5 py-1 rounded-full">
-                  Brand: {category.filters?.brands?.find((b) => b.slug === brand)?.name ?? brand}
-                  <Link
-                    href={buildHref(1).replace(`brand=${brand}&`, "").replace(`brand=${brand}`, "")}
-                    className="ml-0.5 hover:text-red-600"
-                  >
-                    ×
-                  </Link>
-                </span>
-              )}
-              {(minPrice || maxPrice) && (
-                <span className="text-xs bg-river-blue/10 text-blue-700 border border-blue-200 px-2.5 py-1 rounded-full">
-                  Price: {minPrice ? `Tk ${minPrice.toLocaleString()}` : "0"} –{" "}
-                  {maxPrice ? `Tk ${maxPrice.toLocaleString()}` : "∞"}
-                </span>
-              )}
-              {Object.entries(currentAttributes).map(([attrSlug, valueId]) => {
-                const attr = category.filters?.attributes?.find((a) => a.slug === attrSlug);
-                const val = attr?.values.find((v) => String(v.id) === valueId);
+              {currentBrands.map((brandSlug) => {
+                const brandLabel =
+                  catalog.filters?.brands?.find((b) => b.slug === brandSlug)?.name ?? brandSlug;
                 return (
-                  <span key={attrSlug} className="flex items-center gap-1 text-xs bg-river-blue/10 text-blue-700 border border-blue-200 px-2.5 py-1 rounded-full">
-                    {attr?.name ?? attrSlug}: {val?.label ?? valueId}
+                  <span
+                    key={brandSlug}
+                    className="flex items-center gap-1 text-xs bg-river-blue/10 text-blue-700 border border-blue-200 px-2.5 py-1 rounded-full"
+                  >
+                    {brandLabel}
                     <Link
-                      href={buildHref(1).replace(`attr_${attrSlug}=${valueId}&`, "").replace(`attr_${attrSlug}=${valueId}`, "")}
+                      href={buildFilterHref({
+                        brand: currentBrands.filter((s) => s !== brandSlug).join(",") || null,
+                      })}
                       className="ml-0.5 hover:text-red-600"
                     >
                       ×
@@ -210,8 +192,49 @@ export default async function CategoryProductsPage({ params, searchParams }: Pro
                   </span>
                 );
               })}
+              {(minPrice || maxPrice) && (
+                <span className="text-xs bg-river-blue/10 text-blue-700 border border-blue-200 px-2.5 py-1 rounded-full">
+                  Price: {minPrice ? `Tk ${minPrice.toLocaleString()}` : "0"} –{" "}
+                  {maxPrice ? `Tk ${maxPrice.toLocaleString()}` : "∞"}
+                </span>
+              )}
+              {Object.entries(currentAttributes).flatMap(([attrSlug, values]) =>
+                values.map((v) => {
+                  const attr = catalog.filters?.attributes?.find((a) => a.slug === attrSlug);
+                  const label = attr?.values.find((av) => av.value === v)?.label ?? v;
+                  return (
+                    <span
+                      key={`${attrSlug}:${v}`}
+                      className="flex items-center gap-1 text-xs bg-river-blue/10 text-blue-700 border border-blue-200 px-2.5 py-1 rounded-full"
+                    >
+                      {attr?.name ?? attrSlug}: {label}
+                      <Link
+                        href={buildFilterHref({
+                          [attrSlug]:
+                            currentAttributes[attrSlug].filter((x) => x !== v).join(",") || null,
+                        })}
+                        className="ml-0.5 hover:text-red-600"
+                      >
+                        ×
+                      </Link>
+                    </span>
+                  );
+                }),
+              )}
             </div>
           )}
+
+          {/* Results header with sort on the right */}
+          <div className="flex items-center justify-between mb-4 gap-2 flex-wrap">
+            <p className="text-sm text-gray-400">
+              {total > 0
+                ? `Showing ${products.length} of ${total} products`
+                : "No products found"}
+            </p>
+            <Suspense fallback={null}>
+              <SortSelect basePath={`/categories/${slug}`} currentSort={sort} />
+            </Suspense>
+          </div>
 
           {products.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-24 text-center">
@@ -229,11 +252,6 @@ export default async function CategoryProductsPage({ params, searchParams }: Pro
             </div>
           ) : (
             <>
-              <div className="flex items-center justify-between mb-4">
-                <p className="text-sm text-gray-400">
-                  Showing {products.length} of {total} products
-                </p>
-              </div>
               <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-4">
                 {products.map((product) => (
                   <ProductCard key={product.id} product={product} />

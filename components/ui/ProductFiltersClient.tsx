@@ -2,30 +2,75 @@
 
 import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import type { ProductFilters } from "@/types";
+import type { ProductFilters, FilterCategory } from "@/types";
 
 interface ProductFiltersClientProps {
   basePath: string;
-  currentSort?: string;
-  currentBrand?: string;
-  currentCategory?: string;
+  /** "category" pages show brand filters; "brand" pages show category filters */
+  pageType: "brand" | "category";
+  currentBrands?: string[];
+  currentCategories?: string[];
   currentMinPrice?: number;
   currentMaxPrice?: number;
-  currentAttributes?: Record<string, string>;
+  /** attr-slug → array of selected values (e.g. { "screen-size": ["55", "65"] }) */
+  currentAttributes?: Record<string, string[]>;
   filters?: ProductFilters;
 }
 
-const SORT_OPTIONS = [
-  { label: "Latest", value: "latest" },
-  { label: "Best Selling", value: "best_selling" },
-  { label: "Top Rated", value: "top_rating" },
-];
+function CategoryFilterTree({
+  cat,
+  currentCategories,
+  onToggle,
+}: {
+  cat: FilterCategory;
+  currentCategories: string[];
+  onToggle: (slug: string) => void;
+}) {
+  return (
+    <div>
+      <label className="flex items-center gap-2.5 cursor-pointer group">
+        <input
+          type="checkbox"
+          checked={currentCategories.includes(cat.slug)}
+          onChange={() => onToggle(cat.slug)}
+          className="w-4 h-4 rounded border-gray-300 text-blue-600 accent-blue-600 cursor-pointer"
+        />
+        <span className="text-sm font-medium text-gray-700 group-hover:text-blue-600 transition-colors leading-none">
+          {cat.name}
+        </span>
+        {cat.count > 0 && (
+          <span className="ml-auto text-xs text-gray-400">{cat.count}</span>
+        )}
+      </label>
+      {cat.children.length > 0 && (
+        <div className="ml-5 mt-1.5 space-y-1.5">
+          {cat.children.map((child) => (
+            <label key={child.id} className="flex items-center gap-2.5 cursor-pointer group">
+              <input
+                type="checkbox"
+                checked={currentCategories.includes(child.slug)}
+                onChange={() => onToggle(child.slug)}
+                className="w-4 h-4 rounded border-gray-300 text-blue-600 accent-blue-600 cursor-pointer"
+              />
+              <span className="text-sm text-gray-700 group-hover:text-blue-600 transition-colors leading-none">
+                {child.name}
+              </span>
+              {child.count > 0 && (
+                <span className="ml-auto text-xs text-gray-400">{child.count}</span>
+              )}
+            </label>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function ProductFiltersClient({
   basePath,
-  currentSort,
-  currentBrand,
-  currentCategory,
+  pageType,
+  currentBrands = [],
+  currentCategories = [],
   currentMinPrice,
   currentMaxPrice,
   currentAttributes = {},
@@ -39,29 +84,56 @@ export default function ProductFiltersClient({
   const buildUrl = useCallback(
     (overrides: Record<string, string | undefined>) => {
       const params = new URLSearchParams();
-      const merged: Record<string, string | undefined> = {
-        sort: currentSort,
-        brand: currentBrand,
-        category: currentCategory,
+      const base: Record<string, string | undefined> = {
+        ...(pageType === "category" && currentBrands.length > 0
+          ? { brand: currentBrands.join(",") }
+          : {}),
+        ...(pageType === "brand" && currentCategories.length > 0
+          ? { category: currentCategories.join(",") }
+          : {}),
         min_price: currentMinPrice?.toString(),
         max_price: currentMaxPrice?.toString(),
-        // spread current attribute params (prefixed with attr_)
         ...Object.fromEntries(
-          Object.entries(currentAttributes).map(([k, v]) => [`attr_${k}`, v]),
+          Object.entries(currentAttributes).map(([k, v]) => [
+            k,
+            v.length > 0 ? v.join(",") : undefined,
+          ]),
         ),
-        ...overrides,
       };
+      const merged = { ...base, ...overrides };
       Object.entries(merged).forEach(([k, v]) => {
         if (v) params.set(k, v);
       });
       const qs = params.toString();
       return qs ? `${basePath}?${qs}` : basePath;
     },
-    [basePath, currentSort, currentBrand, currentCategory, currentMinPrice, currentMaxPrice, currentAttributes],
+    [basePath, pageType, currentBrands, currentCategories, currentMinPrice, currentMaxPrice, currentAttributes],
   );
 
   const navigate = (overrides: Record<string, string | undefined>) => {
     router.push(buildUrl({ ...overrides, page: undefined }));
+  };
+
+  const toggleBrand = (slug: string) => {
+    const updated = currentBrands.includes(slug)
+      ? currentBrands.filter((s) => s !== slug)
+      : [...currentBrands, slug];
+    navigate({ brand: updated.length > 0 ? updated.join(",") : undefined });
+  };
+
+  const toggleCategory = (slug: string) => {
+    const updated = currentCategories.includes(slug)
+      ? currentCategories.filter((s) => s !== slug)
+      : [...currentCategories, slug];
+    navigate({ category: updated.length > 0 ? updated.join(",") : undefined });
+  };
+
+  const toggleAttribute = (attrSlug: string, value: string) => {
+    const current = currentAttributes[attrSlug] ?? [];
+    const updated = current.includes(value)
+      ? current.filter((v) => v !== value)
+      : [...current, value];
+    navigate({ [attrSlug]: updated.length > 0 ? updated.join(",") : undefined });
   };
 
   const applyPrice = () => {
@@ -75,12 +147,11 @@ export default function ProductFiltersClient({
   };
 
   const hasFilters = !!(
-    currentSort ||
-    currentBrand ||
-    currentCategory ||
+    currentBrands.length > 0 ||
+    currentCategories.length > 0 ||
     currentMinPrice ||
     currentMaxPrice ||
-    Object.keys(currentAttributes).length > 0
+    Object.values(currentAttributes).some((v) => v.length > 0)
   );
 
   const filterContent = (
@@ -96,30 +167,6 @@ export default function ProductFiltersClient({
           Clear all filters
         </button>
       )}
-
-      {/* Sort */}
-      <div>
-        <h3 className="text-xs font-semibold text-gray-500 mb-3 uppercase tracking-widest">
-          Sort By
-        </h3>
-        <div className="space-y-1.5">
-          {SORT_OPTIONS.map((opt) => (
-            <button
-              key={opt.value}
-              onClick={() =>
-                navigate({ sort: opt.value === currentSort ? undefined : opt.value })
-              }
-              className={`w-full text-left text-sm px-3 py-2 rounded-lg transition-colors ${
-                currentSort === opt.value
-                  ? "bg-river-blue text-white font-medium"
-                  : "text-gray-700 hover:bg-[#F4F4F4]"
-              }`}
-            >
-              {opt.label}
-            </button>
-          ))}
-        </div>
-      </div>
 
       {/* Price Range */}
       <div>
@@ -145,6 +192,12 @@ export default function ProductFiltersClient({
             className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-400"
           />
         </div>
+        {filters?.price_range && (
+          <p className="text-[11px] text-gray-400 mt-1">
+            Range: Tk {filters.price_range.min.toLocaleString()} – Tk{" "}
+            {filters.price_range.max.toLocaleString()}
+          </p>
+        )}
         <button
           onClick={applyPrice}
           className="mt-2 w-full bg-river-blue text-white text-sm py-2 rounded-lg hover:bg-river-blue transition-colors"
@@ -165,8 +218,8 @@ export default function ProductFiltersClient({
         )}
       </div>
 
-      {/* Brands */}
-      {(filters?.brands ?? []).length > 0 && (
+      {/* Brands (shown on category pages) */}
+      {pageType === "category" && (filters?.brands ?? []).length > 0 && (
         <div>
           <h3 className="text-xs font-semibold text-gray-500 mb-3 uppercase tracking-widest">
             Brand
@@ -176,10 +229,8 @@ export default function ProductFiltersClient({
               <label key={brand.id} className="flex items-center gap-2.5 cursor-pointer group">
                 <input
                   type="checkbox"
-                  checked={currentBrand === brand.slug}
-                  onChange={() =>
-                    navigate({ brand: brand.slug === currentBrand ? undefined : brand.slug })
-                  }
+                  checked={currentBrands.includes(brand.slug)}
+                  onChange={() => toggleBrand(brand.slug)}
                   className="w-4 h-4 rounded border-gray-300 text-blue-600 accent-blue-600 cursor-pointer"
                 />
                 <span className="text-sm text-gray-700 group-hover:text-blue-600 transition-colors leading-none">
@@ -187,6 +238,25 @@ export default function ProductFiltersClient({
                 </span>
                 <span className="ml-auto text-xs text-gray-400">{brand.count}</span>
               </label>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Categories with hierarchy (shown on brand pages) */}
+      {pageType === "brand" && (filters?.categories ?? []).length > 0 && (
+        <div>
+          <h3 className="text-xs font-semibold text-gray-500 mb-3 uppercase tracking-widest">
+            Category
+          </h3>
+          <div className="space-y-3 max-h-64 overflow-y-auto pr-1">
+            {filters!.categories!.map((cat) => (
+              <CategoryFilterTree
+                key={cat.id}
+                cat={cat}
+                currentCategories={currentCategories}
+                onToggle={toggleCategory}
+              />
             ))}
           </div>
         </div>
@@ -200,18 +270,13 @@ export default function ProductFiltersClient({
           </h3>
           <div className="space-y-2 max-h-56 overflow-y-auto pr-1">
             {attr.values.map((val) => {
-              const paramKey = `attr_${attr.slug}`;
-              const isChecked = currentAttributes[attr.slug] === String(val.id);
+              const isChecked = (currentAttributes[attr.slug] ?? []).includes(val.value);
               return (
                 <label key={val.id} className="flex items-center gap-2.5 cursor-pointer group">
                   <input
                     type="checkbox"
                     checked={isChecked}
-                    onChange={() =>
-                      navigate({
-                        [paramKey]: isChecked ? undefined : String(val.id),
-                      })
-                    }
+                    onChange={() => toggleAttribute(attr.slug, val.value)}
                     className="w-4 h-4 rounded border-gray-300 text-blue-600 accent-blue-600 cursor-pointer"
                   />
                   <span className="text-sm text-gray-700 group-hover:text-blue-600 transition-colors leading-none">

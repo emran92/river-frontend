@@ -2,11 +2,14 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { fetchBrand, fetchProducts } from "@/lib/api";
+import { Suspense } from "react";
+import { fetchCatalog } from "@/lib/api";
 import { mediaUrl } from "@/lib/utils";
 import ProductCard from "@/components/ui/ProductCard";
 import Pagination from "@/components/ui/Pagination";
 import ProductFiltersClient from "@/components/ui/ProductFiltersClient";
+import SortSelect from "@/components/ui/SortSelect";
+import type { FilterCategory } from "@/types";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -16,11 +19,14 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   try {
-    const brand = await fetchBrand(slug);
+    const catalog = await fetchCatalog(slug);
+    if (catalog.type !== "brand" || catalog.resource.length === 0) {
+      return { title: "Brand Not Found" };
+    }
+    const brand = catalog.resource[0];
     return {
       title: `${brand.name} Products — River Electronics`,
-      description:
-        brand.description ?? `Shop all ${brand.name} products at River Electronics`,
+      description: brand.description ?? `Shop all ${brand.name} products at River Electronics`,
     };
   } catch {
     return { title: "Brand Not Found" };
@@ -32,6 +38,20 @@ function str(val: string | string[] | undefined): string | undefined {
   return Array.isArray(val) ? val[0] : val;
 }
 
+const RESERVED_PARAMS = new Set([
+  "sort", "page", "per_page", "brand", "category",
+  "min_price", "max_price", "on_sale", "in_stock",
+]);
+
+function findCategoryLabel(cats: FilterCategory[], slug: string): string {
+  for (const cat of cats) {
+    if (cat.slug === slug) return cat.name;
+    const found = findCategoryLabel(cat.children, slug);
+    if (found) return found;
+  }
+  return slug;
+}
+
 export default async function BrandProductsPage({ params, searchParams }: Props) {
   const { slug } = await params;
   const sp = await searchParams;
@@ -40,44 +60,75 @@ export default async function BrandProductsPage({ params, searchParams }: Props)
   const page = parseInt(str(sp.page) ?? "1", 10);
   const minPrice = sp.min_price ? parseInt(str(sp.min_price)!, 10) : undefined;
   const maxPrice = sp.max_price ? parseInt(str(sp.max_price)!, 10) : undefined;
+  const categoryParam = str(sp.category);
 
-  // Collect attribute filter params (attr_<slug>=<value_id>)
-  const currentAttributes: Record<string, string> = {};
+  // Collect dynamic attribute filters (all non-reserved params)
+  const attributeFilters: Record<string, string> = {};
   Object.entries(sp).forEach(([key, val]) => {
-    if (key.startsWith("attr_")) {
+    if (!RESERVED_PARAMS.has(key)) {
       const v = str(val);
-      if (v) currentAttributes[key.slice(5)] = v;
+      if (v) attributeFilters[key] = v;
     }
   });
 
-  const [brand, productsResult] = await Promise.all([
-    fetchBrand(slug).catch(() => null),
-    fetchProducts({
-      brand: slug,
-      sort,
-      page,
-      per_page: 20,
-      min_price: minPrice,
-      max_price: maxPrice,
-    }).catch(() => null),
-  ]);
+  const catalog = await fetchCatalog(slug, {
+    category: categoryParam,
+    sort,
+    page,
+    per_page: 20,
+    min_price: minPrice,
+    max_price: maxPrice,
+    attributes: attributeFilters,
+  }).catch(() => null);
 
-  if (!brand) notFound();
+  if (!catalog || catalog.type !== "brand") notFound();
 
-  const products = productsResult?.data ?? [];
-  const lastPage = productsResult?.last_page ?? 1;
-  const total = productsResult?.total ?? 0;
-  const currentPage = productsResult?.current_page ?? 1;
+  const brand = catalog.resource[0];
+
+  const products = catalog.products.data ?? [];
+  const lastPage = catalog.products.last_page ?? 1;
+  const total = catalog.products.total ?? 0;
+  const currentPage = catalog.products.current_page ?? 1;
+
+  const currentCategories = categoryParam ? categoryParam.split(",").filter(Boolean) : [];
+  const currentAttributes: Record<string, string[]> = {};
+  Object.entries(attributeFilters).forEach(([k, v]) => {
+    currentAttributes[k] = v.split(",").filter(Boolean);
+  });
+
+  const allFilterCategories = catalog.filters?.categories ?? [];
 
   function buildHref(p: number) {
     const qs = new URLSearchParams();
     if (sort) qs.set("sort", sort);
+    if (categoryParam) qs.set("category", categoryParam);
     if (minPrice) qs.set("min_price", String(minPrice));
     if (maxPrice) qs.set("max_price", String(maxPrice));
-    Object.entries(currentAttributes).forEach(([k, v]) => qs.set(`attr_${k}`, v));
+    Object.entries(attributeFilters).forEach(([k, v]) => qs.set(k, v));
     qs.set("page", String(p));
     return `/brands/${slug}?${qs.toString()}`;
   }
+
+  function buildFilterHref(overrides: Record<string, string | null | undefined>) {
+    const qs = new URLSearchParams();
+    const base: Record<string, string | undefined> = {
+      sort,
+      category: categoryParam,
+      min_price: minPrice?.toString(),
+      max_price: maxPrice?.toString(),
+      ...attributeFilters,
+    };
+    const merged = { ...base, ...overrides };
+    Object.entries(merged).forEach(([k, v]) => { if (v) qs.set(k, v); });
+    const s = qs.toString();
+    return s ? `/brands/${slug}?${s}` : `/brands/${slug}`;
+  }
+
+  const hasActiveFilters =
+    currentCategories.length > 0 ||
+    !!minPrice ||
+    !!maxPrice ||
+    Object.values(currentAttributes).some((v) => v.length > 0);
 
   return (
     <main className="max-w-[1280px] mx-auto px-4 py-8">
@@ -129,52 +180,77 @@ export default async function BrandProductsPage({ params, searchParams }: Props)
         {/* Filters sidebar */}
         <ProductFiltersClient
           basePath={`/brands/${slug}`}
-          currentSort={sort}
+          pageType="brand"
+          currentCategories={currentCategories}
           currentMinPrice={minPrice}
           currentMaxPrice={maxPrice}
           currentAttributes={currentAttributes}
-          filters={brand.filters}
+          filters={catalog.filters}
         />
 
         {/* Product grid */}
         <div className="flex-1 min-w-0">
           {/* Active filter pills */}
-          {(sort || minPrice || maxPrice || Object.keys(currentAttributes).length > 0) && (
+          {hasActiveFilters && (
             <div className="flex flex-wrap gap-2 mb-4">
-              {sort && (
-                <span className="flex items-center gap-1 text-xs bg-river-blue/10 text-blue-700 border border-blue-200 px-2.5 py-1 rounded-full">
-                  Sort: {sort.replace("_", " ")}
+              {currentCategories.map((catSlug) => (
+                <span
+                  key={catSlug}
+                  className="flex items-center gap-1 text-xs bg-river-blue/10 text-blue-700 border border-blue-200 px-2.5 py-1 rounded-full"
+                >
+                  {findCategoryLabel(allFilterCategories, catSlug)}
                   <Link
-                    href={buildHref(1).replace(`sort=${sort}&`, "").replace(`sort=${sort}`, "")}
+                    href={buildFilterHref({
+                      category: currentCategories.filter((s) => s !== catSlug).join(",") || null,
+                    })}
                     className="ml-0.5 hover:text-red-600"
                   >
                     ×
                   </Link>
                 </span>
-              )}
+              ))}
               {(minPrice || maxPrice) && (
                 <span className="text-xs bg-river-blue/10 text-blue-700 border border-blue-200 px-2.5 py-1 rounded-full">
                   Price: {minPrice ? `Tk ${minPrice.toLocaleString()}` : "0"} –{" "}
                   {maxPrice ? `Tk ${maxPrice.toLocaleString()}` : "∞"}
                 </span>
               )}
-              {Object.entries(currentAttributes).map(([attrSlug, valueId]) => {
-                const attr = brand.filters?.attributes?.find((a) => a.slug === attrSlug);
-                const val = attr?.values.find((v) => String(v.id) === valueId);
-                return (
-                  <span key={attrSlug} className="flex items-center gap-1 text-xs bg-river-blue/10 text-blue-700 border border-blue-200 px-2.5 py-1 rounded-full">
-                    {attr?.name ?? attrSlug}: {val?.label ?? valueId}
-                    <Link
-                      href={buildHref(1).replace(`attr_${attrSlug}=${valueId}&`, "").replace(`attr_${attrSlug}=${valueId}`, "")}
-                      className="ml-0.5 hover:text-red-600"
+              {Object.entries(currentAttributes).flatMap(([attrSlug, values]) =>
+                values.map((v) => {
+                  const attr = catalog.filters?.attributes?.find((a) => a.slug === attrSlug);
+                  const label = attr?.values.find((av) => av.value === v)?.label ?? v;
+                  return (
+                    <span
+                      key={`${attrSlug}:${v}`}
+                      className="flex items-center gap-1 text-xs bg-river-blue/10 text-blue-700 border border-blue-200 px-2.5 py-1 rounded-full"
                     >
-                      ×
-                    </Link>
-                  </span>
-                );
-              })}
+                      {attr?.name ?? attrSlug}: {label}
+                      <Link
+                        href={buildFilterHref({
+                          [attrSlug]: currentAttributes[attrSlug].filter((x) => x !== v).join(",") || null,
+                        })}
+                        className="ml-0.5 hover:text-red-600"
+                      >
+                        ×
+                      </Link>
+                    </span>
+                  );
+                }),
+              )}
             </div>
           )}
+
+          {/* Results header with sort on the right */}
+          <div className="flex items-center justify-between mb-4 gap-2 flex-wrap">
+            <p className="text-sm text-gray-400">
+              {total > 0
+                ? `Showing ${products.length} of ${total} products`
+                : "No products found"}
+            </p>
+            <Suspense fallback={null}>
+              <SortSelect basePath={`/brands/${slug}`} currentSort={sort} />
+            </Suspense>
+          </div>
 
           {products.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-24 text-center">
@@ -192,11 +268,6 @@ export default async function BrandProductsPage({ params, searchParams }: Props)
             </div>
           ) : (
             <>
-              <div className="flex items-center justify-between mb-4">
-                <p className="text-sm text-gray-400">
-                  Showing {products.length} of {total} products
-                </p>
-              </div>
               <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-4">
                 {products.map((product) => (
                   <ProductCard key={product.id} product={product} />
