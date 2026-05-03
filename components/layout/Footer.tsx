@@ -10,12 +10,12 @@ const USEFUL_LINKS = [
 ];
 
 const CATEGORIES = [
-  { label: "Televisions", href: "/categories/televisions" },
-  { label: "Refrigerators", href: "/categories/refrigerators" },
-  { label: "Air Conditioners", href: "/categories/air-conditioners" },
-  { label: "Washing Machines", href: "/categories/washing-machines" },
-  { label: "Kitchen Appliances", href: "/categories/kitchen" },
-  { label: "Small Appliances", href: "/categories/small-appliances" },
+  { label: "Televisions", href: "/televisions" },
+  { label: "Refrigerators", href: "/refrigerators" },
+  { label: "Air Conditioners", href: "/air-conditioners" },
+  { label: "Washing Machines", href: "/washing-machines" },
+  { label: "Kitchen Appliances", href: "/kitchen" },
+  { label: "Small Appliances", href: "/small-appliances" },
 ];
 
 const SOCIAL_LINKS = [

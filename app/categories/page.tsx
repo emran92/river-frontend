@@ -7,6 +7,7 @@ import { fetchCategories } from "@/lib/api";
 import { useFetch } from "@/hooks/useFetch";
 import { mediaUrl } from "@/lib/utils";
 import type { Category } from "@/types";
+import Dropdown from "@/components/ui/Dropdown";
 
 type SortKey = "default" | "name_asc" | "name_desc";
 type TypeFilter = "all" | "top" | "sub";
@@ -15,7 +16,7 @@ function CategoryGridCard({ category }: { category: Category }) {
   const childCount = category.children?.length ?? 0;
   return (
     <Link
-      href={`/categories/${category.slug}`}
+      href={`/${category.slug}`}
       className="group flex flex-col items-center bg-white rounded-2xl border border-gray-100 p-5 hover:shadow-md hover:border-blue-100 transition-all duration-200"
     >
       <div className="relative w-full aspect-square rounded-xl overflow-hidden bg-[#F7F7F7] mb-3">
@@ -179,18 +180,17 @@ export default function CategoriesPage() {
         </div>
 
         {/* Sort */}
-        <div className="flex items-center gap-2 ml-auto">
-          <span className="text-sm text-gray-500 whitespace-nowrap">Sort:</span>
-          <select
-            value={sort}
-            onChange={(e) => setSort(e.target.value as SortKey)}
-            className="border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:border-blue-400"
-          >
-            <option value="default">Default Order</option>
-            <option value="name_asc">Name A → Z</option>
-            <option value="name_desc">Name Z → A</option>
-          </select>
-        </div>
+        <Dropdown
+          label="Sort:"
+          className="ml-auto"
+          value={sort}
+          onChange={(v) => setSort(v as SortKey)}
+          options={[
+            { label: "Default Order", value: "default" },
+            { label: "Name A → Z", value: "name_asc" },
+            { label: "Name Z → A", value: "name_desc" },
+          ]}
+        />
       </div>
 
       {/* Results count */}

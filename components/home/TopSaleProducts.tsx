@@ -51,6 +51,7 @@ export default function TopSaleProducts() {
       <SectionHeader
         title="Top Sale Product"
         seeAllHref="/products/on-sale"
+        subtitle="Limited Time"
         tabs={PRODUCT_SORT_TABS}
         activeTab={activeTab}
         onTabChange={setActiveTab}

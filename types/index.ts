@@ -7,7 +7,12 @@ export interface PaginatedResponse<T> {
   from: number | null;
   last_page: number;
   last_page_url: string;
-  links: Record<string, unknown>;
+  links: Array<{
+    url: string | null;
+    label: string;
+    page: number | null;
+    active: boolean;
+  }>;
   next_page_url: string | null;
   path: string | null;
   per_page: number;
@@ -76,11 +81,20 @@ export interface CatalogBrandResponse {
   products: PaginatedResponse<Product>;
 }
 
+export interface Subcategory {
+  id: number;
+  name: string;
+  slug: string;
+  parent_id: number | null;
+  count: number;
+}
+
 export interface CatalogCategoryResponse {
   type: "category";
   resource: Category;
   filters: ProductFilters;
   products: PaginatedResponse<Product>;
+  subcategories?: Subcategory[];
 }
 
 export type CatalogResponse = CatalogBrandResponse | CatalogCategoryResponse;

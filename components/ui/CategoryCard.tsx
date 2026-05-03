@@ -10,7 +10,7 @@ interface CategoryCardProps {
 export default function CategoryCard({ category }: CategoryCardProps) {
   return (
     <Link
-      href={`/categories/${category.slug}`}
+      href={`/${category.slug}`}
       className="group block bg-white rounded-2xl border border-gray-100 overflow-hidden p-3 flex flex-col items-center gap-2"
     >
       {/* Image area */}

@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
+import Dropdown from "@/components/ui/Dropdown";
 
 const SORT_OPTIONS = [
   { label: "Default", value: "" },
@@ -34,19 +35,11 @@ export default function SortSelect({ basePath, currentSort }: SortSelectProps) {
   };
 
   return (
-    <div className="flex items-center gap-2">
-      <span className="text-sm text-gray-500 whitespace-nowrap">Sort by:</span>
-      <select
-        value={currentSort ?? ""}
-        onChange={(e) => handleChange(e.target.value)}
-        className="text-sm border border-gray-200 rounded-lg px-3 py-2 bg-white text-gray-700 focus:outline-none focus:border-blue-400 cursor-pointer"
-      >
-        {SORT_OPTIONS.map((opt) => (
-          <option key={opt.value} value={opt.value}>
-            {opt.label}
-          </option>
-        ))}
-      </select>
-    </div>
+    <Dropdown
+      label="Sort by:"
+      options={SORT_OPTIONS}
+      value={currentSort ?? ""}
+      onChange={handleChange}
+    />
   );
 }

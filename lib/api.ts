@@ -139,10 +139,40 @@ export async function fetchProduct(slug: string): Promise<Product> {
   return apiFetch<Product>(`/v1/products/${slug}`);
 }
 
-export async function searchProducts(q: string): Promise<{ data: Product[] }> {
-  if (q.length < 2) return { data: [] };
+export async function searchProducts(
+  q: string,
+  params: {
+    category?: string;
+    category_id?: number;
+    page?: number;
+    per_page?: number;
+  } = {},
+): Promise<PaginatedResponse<Product>> {
+  if (q.length < 2)
+    return {
+      data: [],
+      current_page: 1,
+      first_page_url: "",
+      last_page: 1,
+      last_page_url: "",
+      links: [],
+      next_page_url: null,
+      path: null,
+      per_page: 20,
+      prev_page_url: null,
+      from: null,
+      to: null,
+      total: 0,
+    };
   const qs = new URLSearchParams({ q });
-  return apiFetch<{ data: Product[] }>(`/v1/products/search?${qs.toString()}`);
+  if (params.category) qs.set("category", params.category);
+  if (params.category_id != null)
+    qs.set("category_id", String(params.category_id));
+  if (params.page != null) qs.set("page", String(params.page));
+  if (params.per_page != null) qs.set("per_page", String(params.per_page));
+  return apiFetch<PaginatedResponse<Product>>(
+    `/v1/products/search?${qs.toString()}`,
+  );
 }
 
 // ─── Banners (placeholder — no real endpoint yet) ─────────────────────────────

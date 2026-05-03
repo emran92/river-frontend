@@ -13,7 +13,7 @@ export default function ShopByBrand() {
     fetchBrands
   );
 
-  const activebrands = (brands ?? []).filter((b) => b.is_active).slice(0, 12);
+  const activebrands = (brands ?? []).filter((b) => b.is_active).slice(0, 10);
 
   return (
     <section className="max-w-[1280px] mx-auto px-4 py-8">
@@ -21,16 +21,17 @@ export default function ShopByBrand() {
         title="Shop By Brand"
         seeAllHref="/brands"
         seeAllLabel="See All Brands"
+        subtitle="Top brands"
       />
 
       {isLoading ? (
-        <div className="grid grid-cols-3 sm:grid-cols-6 gap-4">
-          {Array.from({ length: 12 }).map((_, i) => (
-            <div key={i} className="aspect-square bg-gray-200 animate-pulse rounded-2xl" />
+        <div className="grid grid-cols-5 sm:grid-cols-10 gap-3">
+          {Array.from({ length: 10 }).map((_, i) => (
+            <div key={i} className="h-[88px] bg-gray-200 animate-pulse rounded-2xl" />
           ))}
         </div>
       ) : (
-        <div className="grid grid-cols-3 sm:grid-cols-6 gap-4">
+        <div className="grid grid-cols-5 sm:grid-cols-10 gap-3">
           {activebrands.map((brand) => (
             <BrandCard key={brand.id} brand={brand} />
           ))}

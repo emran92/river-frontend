@@ -39,14 +39,15 @@ export default function Header() {
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(async () => {
       try {
-        const res = await searchProducts(query);
+        const opts = selectedCategory ? { category: selectedCategory.slug } : {};
+        const res = await searchProducts(query, opts);
         setResults(res.data ?? []);
         setSearchOpen(true);
       } catch {
         setResults([]);
       }
     }, 300);
-  }, [query]);
+  }, [query, selectedCategory]);
 
   // Close dropdowns on outside click
   useEffect(() => {
@@ -74,6 +75,22 @@ export default function Header() {
   return (
     <header className="pt-4">
       <div className="max-w-[1280px] mx-auto px-4">
+
+        {/* Top bar */}
+        <div className="flex items-center justify-between text-xs text-gray-500 mb-2 px-1 pb-2 border-b border-gray-100">
+          <div className="flex items-center gap-1.5">
+            <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            <span>Deliver to 64 Districts of Bangladesh</span>
+          </div>
+          <div className="flex items-center gap-4">
+            <Link href="/support" className="hover:text-blue-600 transition-colors">Help Center</Link>
+            <Link href="/track-order" className="hover:text-blue-600 transition-colors">Track Order</Link>
+          </div>
+        </div>
+
         <div className="bg-[#F4F4F4] rounded-lg shadow-sm px-4 md:px-6 py-3.5 flex items-center gap-3 md:gap-6">
 
           {/* Logo */}
@@ -124,7 +141,7 @@ export default function Header() {
                   </svg>
                 </button>
                 {catDropOpen && (
-                  <div className="absolute top-full right-0 mt-1 w-52 bg-white border border-gray-200 rounded-xl shadow-xl z-50 max-h-72 overflow-y-auto py-1">
+                  <div className="absolute top-full right-0 mt-1 w-52 bg-white border border-gray-200 rounded-xl shadow-xl z-[60] max-h-72 overflow-y-auto py-1">
                     <button
                       className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-river-blue/10 hover:text-blue-700"
                       onClick={() => { setSelectedCategory(null); setCatDropOpen(false); }}

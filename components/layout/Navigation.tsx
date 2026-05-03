@@ -59,7 +59,7 @@ export default function Navigation() {
                     activeCategories.map((cat) => (
                       <Link
                         key={cat.id}
-                        href={`/categories/${cat.slug}`}
+                        href={`/${cat.slug}`}
                         className="block px-4 py-2.5 text-sm text-gray-700 hover:bg-river-blue/10 hover:text-blue-700 transition-colors"
                         onClick={() => setCategoryOpen(false)}
                       >

@@ -7,13 +7,14 @@ import { fetchBrands } from "@/lib/api";
 import { useFetch } from "@/hooks/useFetch";
 import { mediaUrl } from "@/lib/utils";
 import type { Brand } from "@/types";
+import Dropdown from "@/components/ui/Dropdown";
 
 type SortKey = "default" | "name_asc" | "name_desc" | "products_desc";
 
 function BrandGridCard({ brand }: { brand: Brand }) {
   return (
     <Link
-      href={`/brands/${brand.slug}`}
+      href={`/${brand.slug}`}
       className="group flex flex-col items-center bg-white rounded-2xl border border-gray-100 p-5"
     >
       <div className="relative w-full aspect-square rounded-xl overflow-hidden flex items-center justify-center mb-3">
@@ -157,39 +158,30 @@ export default function BrandsPage() {
 
         {/* Country filter */}
         {countries.length > 0 && (
-          <div className="flex items-center gap-2">
-            <span className="text-sm text-gray-500 whitespace-nowrap">Country:</span>
-            <select
-              value={country}
-              onChange={(e) => setCountry(e.target.value)}
-              className="border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:border-blue-400"
-            >
-              <option value="all">All countries</option>
-              {countries.map((c) => (
-                <option key={c} value={c}>
-                  {c}
-                </option>
-              ))}
-            </select>
-          </div>
+          <Dropdown
+            label="Country:"
+            value={country}
+            onChange={setCountry}
+            options={[
+              { label: "All countries", value: "all" },
+              ...countries.map((c) => ({ label: c, value: c })),
+            ]}
+          />
         )}
 
         {/* Sort */}
-        <div className="flex items-center gap-2 sm:ml-auto">
-          <span className="text-sm text-gray-500 whitespace-nowrap">Sort:</span>
-          <select
-            value={sort}
-            onChange={(e) => setSort(e.target.value as SortKey)}
-            className="border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:border-blue-400"
-          >
-            <option value="default">Default Order</option>
-            <option value="name_asc">Name A → Z</option>
-            <option value="name_desc">Name Z → A</option>
-            {hasProducts && (
-              <option value="products_desc">Most Products</option>
-            )}
-          </select>
-        </div>
+        <Dropdown
+          label="Sort:"
+          className="sm:ml-auto"
+          value={sort}
+          onChange={(v) => setSort(v as SortKey)}
+          options={[
+            { label: "Default Order", value: "default" },
+            { label: "Name A → Z", value: "name_asc" },
+            { label: "Name Z → A", value: "name_desc" },
+            ...(hasProducts ? [{ label: "Most Products", value: "products_desc" }] : []),
+          ]}
+        />
 
         {/* Active filters clear */}
         {(search || country !== "all" || sort !== "default") && (

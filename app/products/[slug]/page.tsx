@@ -85,7 +85,7 @@ export default async function ProductPage({ params }: Props) {
         {product.category && (
           <>
             <Link
-              href={`/categories/${product.category.slug}`}
+              href={`/${product.category.slug}`}
               className="hover:text-blue-600 transition-colors"
             >
               {product.category.name}
@@ -109,7 +109,7 @@ export default async function ProductPage({ params }: Props) {
           <div className="flex items-center gap-3 flex-wrap">
             {product.brand && (
               <Link
-                href={`/brands/${product.brand.slug}`}
+                href={`/${product.brand.slug}`}
                 className="text-xs font-semibold text-blue-600 bg-river-blue/10 px-3 py-1 rounded-full hover:bg-river-blue/20 transition-colors"
               >
                 {product.brand.name}
