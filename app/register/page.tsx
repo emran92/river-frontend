@@ -51,7 +51,7 @@ export default function RegisterPage() {
         password_confirmation: form.password_confirmation,
         ...(form.phone.trim() ? { phone: form.phone.trim() } : {}),
       });
-      router.push("/");
+      router.push("/verify-email");
       router.refresh();
     } catch (err: unknown) {
       const apiErr = err as ApiError;

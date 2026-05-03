@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { Product } from "@/types";
+import { useCart } from "@/context/CartContext";
 
 interface Props {
   product: Product;
@@ -12,17 +13,24 @@ export default function AddToCartSection({ product, inStock }: Props) {
   const [qty, setQty] = useState(1);
   const [adding, setAdding] = useState(false);
   const [added, setAdded] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const { addItem } = useCart();
 
   const max = product.stock_quantity;
 
   async function handleAddToCart() {
     if (!inStock) return;
     setAdding(true);
-    // TODO: wire up real cart API
-    await new Promise((r) => setTimeout(r, 600));
-    setAdding(false);
-    setAdded(true);
-    setTimeout(() => setAdded(false), 2000);
+    setError(null);
+    try {
+      await addItem(product.id, qty);
+      setAdded(true);
+      setTimeout(() => setAdded(false), 2000);
+    } catch (err: unknown) {
+      setError((err as { message?: string }).message ?? "Failed to add to cart. Please try again.");
+    } finally {
+      setAdding(false);
+    }
   }
 
   return (
@@ -101,6 +109,9 @@ export default function AddToCartSection({ product, inStock }: Props) {
         <p className="text-sm text-red-500 font-medium">
           This product is currently out of stock.
         </p>
+      )}
+      {error && (
+        <p className="text-sm text-red-500 font-medium">{error}</p>
       )}
     </div>
   );

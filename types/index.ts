@@ -185,7 +185,11 @@ export interface CartItem {
   product_id: number;
   variant_id: number | null;
   quantity: number;
+  price: string;
+  created_at: string | null;
+  updated_at: string | null;
   product?: Product;
+  variant?: null;
 }
 
 export interface Cart {
@@ -195,14 +199,68 @@ export interface Cart {
   coupon_id: number | null;
   created_at: string | null;
   updated_at: string | null;
-  items?: CartItem[];
+  items: CartItem[];
+  coupon: unknown | null;
 }
 
 export interface CartSummary {
   cart: Cart;
+  subtotal: number;
+  discount_amount: number;
+  total: number;
+}
+
+// ─── Order ────────────────────────────────────────────────────────────────────
+
+export type OrderStatus =
+  | "pending"
+  | "processing"
+  | "shipped"
+  | "delivered"
+  | "cancelled"
+  | "refunded";
+
+export type PaymentStatus = "unpaid" | "paid" | "refunded";
+
+export interface OrderItem {
+  id: number;
+  order_id: number;
+  product_id: number;
+  variant_id: number | null;
+  product_name: string;
+  sku: string | null;
+  quantity: number;
+  unit_price: string;
+  total_price: string;
+  created_at: string | null;
+  updated_at: string | null;
+  product?: Product;
+  variant?: null;
+}
+
+export interface Order {
+  id: number;
+  user_id: number;
+  order_number: string;
+  status: OrderStatus;
+  payment_status: PaymentStatus;
+  payment_method: string;
+  transaction_id: string | null;
+  shipping_name: string;
+  shipping_phone: string;
+  shipping_address: string;
+  shipping_city: string;
+  shipping_district: string;
   subtotal: string;
-  discount_amount: string;
+  discount: string;
+  shipping_fee: string;
+  tax: string;
   total: string;
+  coupon_code: string | null;
+  notes: string | null;
+  items: OrderItem[];
+  created_at: string | null;
+  updated_at: string | null;
 }
 
 // ─── Address ──────────────────────────────────────────────────────────────────

@@ -1,14 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { login } from "@/lib/auth";
 import type { ApiError } from "@/types";
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectTo = searchParams.get("redirect") ?? "/";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -31,7 +33,7 @@ export default function LoginPage() {
     setLoading(true);
     try {
       await login({ email: email.trim(), password });
-      router.push("/");
+      router.push(redirectTo);
       router.refresh();
     } catch (err: unknown) {
       const apiErr = err as ApiError;
@@ -166,5 +168,13 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense>
+      <LoginForm />
+    </Suspense>
   );
 }

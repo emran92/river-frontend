@@ -83,4 +83,8 @@ export async function updateMe(payload: {
   });
 }
 
+export async function resendVerification(): Promise<void> {
+  await authFetch("/v1/auth/email/resend", { method: "POST" });
+}
+
 export { getToken };

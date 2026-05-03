@@ -4,6 +4,7 @@ import Header from "@/components/layout/Header";
 import Navigation from "@/components/layout/Navigation";
 import Footer from "@/components/layout/Footer";
 import FeatureBar from "@/components/home/FeatureBar";
+import Providers from "@/components/Providers";
 
 export const metadata: Metadata = {
   title: "River Electronics — Premium Home Appliances in Bangladesh",
@@ -20,11 +21,13 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full">
       <body className="min-h-full flex flex-col bg-gray-50 antialiased">
-        <Header />
-        <Navigation />
-        <main className="flex-1">{children}</main>
-        <FeatureBar />
-        <Footer />
+        <Providers>
+          <Header />
+          <Navigation />
+          <main className="flex-1">{children}</main>
+          <FeatureBar />
+          <Footer />
+        </Providers>
       </body>
     </html>
   );

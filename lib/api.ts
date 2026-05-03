@@ -6,7 +6,11 @@ import type {
   PaginatedResponse,
   ProductSortTab,
   CatalogResponse,
+  CartSummary,
+  Address,
+  Order,
 } from "@/types";
+import { getToken } from "@/lib/auth";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000/api";
 
@@ -298,4 +302,127 @@ export async function fetchBanners(type: Banner["type"]): Promise<Banner[]> {
       (a, b) => a.sort_order - b.sort_order,
     ),
   );
+}
+
+// ─── Authenticated fetch helper ────────────────────────────────────────────────
+
+async function authApiFetch<T>(
+  path: string,
+  options: RequestInit = {},
+): Promise<T> {
+  const token = getToken();
+  const url = `${API_BASE}${path}`;
+  const res = await fetch(url, {
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      ...options.headers,
+    },
+    ...options,
+  });
+  if (!res.ok) {
+    const error = await res.json().catch(() => ({ message: res.statusText }));
+    throw error;
+  }
+  return res.json() as Promise<T>;
+}
+
+// ─── Cart ─────────────────────────────────────────────────────────────────────
+
+export async function getCart(): Promise<CartSummary> {
+  return authApiFetch<CartSummary>("/v1/cart");
+}
+
+export async function addToCart(payload: {
+  product_id: number;
+  quantity: number;
+  variant_id?: number | null;
+}): Promise<CartSummary["cart"]> {
+  return authApiFetch("/v1/cart", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function updateCartItem(
+  id: number,
+  quantity: number,
+): Promise<void> {
+  await authApiFetch(`/v1/cart/${id}`, {
+    method: "PUT",
+    body: JSON.stringify({ quantity }),
+  });
+}
+
+export async function removeCartItem(id: number): Promise<void> {
+  await authApiFetch(`/v1/cart/${id}`, { method: "DELETE" });
+}
+
+export async function applyCoupon(
+  code: string,
+): Promise<{ message: string; discount_amount: string }> {
+  return authApiFetch("/v1/cart/apply-coupon", {
+    method: "POST",
+    body: JSON.stringify({ code }),
+  });
+}
+
+export async function removeCoupon(): Promise<{ message: string }> {
+  return authApiFetch("/v1/cart/remove-coupon", { method: "DELETE" });
+}
+
+// ─── Addresses ────────────────────────────────────────────────────────────────
+
+export async function getAddresses(): Promise<Address[]> {
+  return authApiFetch<Address[]>("/v1/addresses");
+}
+
+export async function createAddress(
+  data: Omit<Address, "id" | "user_id" | "created_at" | "updated_at">,
+): Promise<Address> {
+  return authApiFetch<Address>("/v1/addresses", {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+}
+
+export async function updateAddress(
+  id: number,
+  data: Partial<Omit<Address, "id" | "user_id" | "created_at" | "updated_at">>,
+): Promise<Address> {
+  return authApiFetch<Address>(`/v1/addresses/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(data),
+  });
+}
+
+export async function deleteAddress(id: number): Promise<void> {
+  await authApiFetch(`/v1/addresses/${id}`, { method: "DELETE" });
+}
+
+// ─── Orders ───────────────────────────────────────────────────────────────────
+
+export async function getOrders(page = 1): Promise<PaginatedResponse<Order>> {
+  return authApiFetch<PaginatedResponse<Order>>(`/v1/orders?page=${page}`);
+}
+
+export async function getOrder(id: number): Promise<Order> {
+  return authApiFetch<Order>(`/v1/orders/${id}`);
+}
+
+export async function cancelOrder(id: number): Promise<void> {
+  await authApiFetch(`/v1/orders/${id}/cancel`, { method: "POST" });
+}
+
+export async function checkout(payload: {
+  address_id: number;
+  payment_method: string;
+  notes?: string | null;
+  redeem_points?: boolean;
+}): Promise<Order> {
+  return authApiFetch<Order>("/v1/checkout", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
 }
