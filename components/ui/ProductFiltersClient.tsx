@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import type { Brand, Category } from "@/types";
+import type { ProductFilters } from "@/types";
 
 interface ProductFiltersClientProps {
   basePath: string;
@@ -11,8 +11,8 @@ interface ProductFiltersClientProps {
   currentCategory?: string;
   currentMinPrice?: number;
   currentMaxPrice?: number;
-  brands?: Brand[];
-  categories?: Category[];
+  currentAttributes?: Record<string, string>;
+  filters?: ProductFilters;
 }
 
 const SORT_OPTIONS = [
@@ -28,8 +28,8 @@ export default function ProductFiltersClient({
   currentCategory,
   currentMinPrice,
   currentMaxPrice,
-  brands = [],
-  categories = [],
+  currentAttributes = {},
+  filters,
 }: ProductFiltersClientProps) {
   const router = useRouter();
   const [minPrice, setMinPrice] = useState(currentMinPrice?.toString() ?? "");
@@ -45,6 +45,10 @@ export default function ProductFiltersClient({
         category: currentCategory,
         min_price: currentMinPrice?.toString(),
         max_price: currentMaxPrice?.toString(),
+        // spread current attribute params (prefixed with attr_)
+        ...Object.fromEntries(
+          Object.entries(currentAttributes).map(([k, v]) => [`attr_${k}`, v]),
+        ),
         ...overrides,
       };
       Object.entries(merged).forEach(([k, v]) => {
@@ -53,7 +57,7 @@ export default function ProductFiltersClient({
       const qs = params.toString();
       return qs ? `${basePath}?${qs}` : basePath;
     },
-    [basePath, currentSort, currentBrand, currentCategory, currentMinPrice, currentMaxPrice],
+    [basePath, currentSort, currentBrand, currentCategory, currentMinPrice, currentMaxPrice, currentAttributes],
   );
 
   const navigate = (overrides: Record<string, string | undefined>) => {
@@ -75,7 +79,8 @@ export default function ProductFiltersClient({
     currentBrand ||
     currentCategory ||
     currentMinPrice ||
-    currentMaxPrice
+    currentMaxPrice ||
+    Object.keys(currentAttributes).length > 0
   );
 
   const filterContent = (
@@ -161,13 +166,13 @@ export default function ProductFiltersClient({
       </div>
 
       {/* Brands */}
-      {brands.length > 0 && (
+      {(filters?.brands ?? []).length > 0 && (
         <div>
           <h3 className="text-xs font-semibold text-gray-500 mb-3 uppercase tracking-widest">
             Brand
           </h3>
           <div className="space-y-2 max-h-56 overflow-y-auto pr-1">
-            {brands.map((brand) => (
+            {filters!.brands!.map((brand) => (
               <label key={brand.id} className="flex items-center gap-2.5 cursor-pointer group">
                 <input
                   type="checkbox"
@@ -180,40 +185,45 @@ export default function ProductFiltersClient({
                 <span className="text-sm text-gray-700 group-hover:text-blue-600 transition-colors leading-none">
                   {brand.name}
                 </span>
-                {brand.products_count !== undefined && (
-                  <span className="ml-auto text-xs text-gray-400">{brand.products_count}</span>
-                )}
+                <span className="ml-auto text-xs text-gray-400">{brand.count}</span>
               </label>
             ))}
           </div>
         </div>
       )}
 
-      {/* Categories */}
-      {categories.length > 0 && (
-        <div>
+      {/* Attributes */}
+      {(filters?.attributes ?? []).map((attr) => (
+        <div key={attr.slug}>
           <h3 className="text-xs font-semibold text-gray-500 mb-3 uppercase tracking-widest">
-            Category
+            {attr.name}
           </h3>
           <div className="space-y-2 max-h-56 overflow-y-auto pr-1">
-            {categories.map((cat) => (
-              <label key={cat.id} className="flex items-center gap-2.5 cursor-pointer group">
-                <input
-                  type="checkbox"
-                  checked={currentCategory === cat.slug}
-                  onChange={() =>
-                    navigate({ category: cat.slug === currentCategory ? undefined : cat.slug })
-                  }
-                  className="w-4 h-4 rounded border-gray-300 text-blue-600 accent-blue-600 cursor-pointer"
-                />
-                <span className="text-sm text-gray-700 group-hover:text-blue-600 transition-colors leading-none">
-                  {cat.name}
-                </span>
-              </label>
-            ))}
+            {attr.values.map((val) => {
+              const paramKey = `attr_${attr.slug}`;
+              const isChecked = currentAttributes[attr.slug] === String(val.id);
+              return (
+                <label key={val.id} className="flex items-center gap-2.5 cursor-pointer group">
+                  <input
+                    type="checkbox"
+                    checked={isChecked}
+                    onChange={() =>
+                      navigate({
+                        [paramKey]: isChecked ? undefined : String(val.id),
+                      })
+                    }
+                    className="w-4 h-4 rounded border-gray-300 text-blue-600 accent-blue-600 cursor-pointer"
+                  />
+                  <span className="text-sm text-gray-700 group-hover:text-blue-600 transition-colors leading-none">
+                    {val.label}
+                  </span>
+                  <span className="ml-auto text-xs text-gray-400">{val.count}</span>
+                </label>
+              );
+            })}
           </div>
         </div>
-      )}
+      ))}
     </div>
   );
 

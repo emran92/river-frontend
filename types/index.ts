@@ -29,6 +29,37 @@ export interface User {
   updated_at: string | null;
 }
 
+// ─── Product Filters ──────────────────────────────────────────────────────────
+
+export interface FilterAttributeValue {
+  id: number;
+  value: string;
+  label: string;
+  count: number;
+}
+
+export interface FilterAttribute {
+  name: string;
+  slug: string;
+  type: string;
+  sort_order: number;
+  values: FilterAttributeValue[];
+}
+
+export interface FilterBrand {
+  id: number;
+  name: string;
+  slug: string;
+  logo_url: string | null;
+  count: number;
+}
+
+export interface ProductFilters {
+  price_range?: { min: number; max: number };
+  brands?: FilterBrand[];
+  attributes?: FilterAttribute[];
+}
+
 // ─── Category ─────────────────────────────────────────────────────────────────
 
 export interface Category {
@@ -42,9 +73,10 @@ export interface Category {
   sort_order: number;
   created_at: string | null;
   updated_at: string | null;
-  products_count: number;
+  products_count?: number;
   children?: Category[];
   media?: unknown[];
+  filters?: ProductFilters;
 }
 
 // ─── Brand ────────────────────────────────────────────────────────────────────
@@ -62,6 +94,7 @@ export interface Brand {
   created_at: string | null;
   updated_at: string | null;
   media?: unknown[];
+  filters?: ProductFilters;
 }
 
 // ─── Product ──────────────────────────────────────────────────────────────────

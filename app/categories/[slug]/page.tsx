@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { fetchCategory, fetchProducts, fetchBrands } from "@/lib/api";
+import { fetchCategory, fetchProducts } from "@/lib/api";
 import { mediaUrl } from "@/lib/utils";
 import ProductCard from "@/components/ui/ProductCard";
 import Pagination from "@/components/ui/Pagination";
@@ -41,7 +41,16 @@ export default async function CategoryProductsPage({ params, searchParams }: Pro
   const minPrice = sp.min_price ? parseInt(str(sp.min_price)!, 10) : undefined;
   const maxPrice = sp.max_price ? parseInt(str(sp.max_price)!, 10) : undefined;
 
-  const [category, productsResult, brands] = await Promise.all([
+  // Collect attribute filter params (attr_<slug>=<value_id>)
+  const currentAttributes: Record<string, string> = {};
+  Object.entries(sp).forEach(([key, val]) => {
+    if (key.startsWith("attr_")) {
+      const v = str(val);
+      if (v) currentAttributes[key.slice(5)] = v;
+    }
+  });
+
+  const [category, productsResult] = await Promise.all([
     fetchCategory(slug).catch(() => null),
     fetchProducts({
       category: slug,
@@ -52,7 +61,6 @@ export default async function CategoryProductsPage({ params, searchParams }: Pro
       min_price: minPrice,
       max_price: maxPrice,
     }).catch(() => null),
-    fetchBrands().catch(() => []),
   ]);
 
   if (!category) notFound();
@@ -68,6 +76,7 @@ export default async function CategoryProductsPage({ params, searchParams }: Pro
     if (brand) qs.set("brand", brand);
     if (minPrice) qs.set("min_price", String(minPrice));
     if (maxPrice) qs.set("max_price", String(maxPrice));
+    Object.entries(currentAttributes).forEach(([k, v]) => qs.set(`attr_${k}`, v));
     qs.set("page", String(p));
     return `/categories/${slug}?${qs.toString()}`;
   }
@@ -149,13 +158,14 @@ export default async function CategoryProductsPage({ params, searchParams }: Pro
           currentBrand={brand}
           currentMinPrice={minPrice}
           currentMaxPrice={maxPrice}
-          brands={brands}
+          currentAttributes={currentAttributes}
+          filters={category.filters}
         />
 
         {/* Product grid */}
         <div className="flex-1 min-w-0">
           {/* Active filter pills */}
-          {(sort || brand || minPrice || maxPrice) && (
+          {(sort || brand || minPrice || maxPrice || Object.keys(currentAttributes).length > 0) && (
             <div className="flex flex-wrap gap-2 mb-4">
               {sort && (
                 <span className="flex items-center gap-1 text-xs bg-river-blue/10 text-blue-700 border border-blue-200 px-2.5 py-1 rounded-full">
@@ -170,7 +180,7 @@ export default async function CategoryProductsPage({ params, searchParams }: Pro
               )}
               {brand && (
                 <span className="flex items-center gap-1 text-xs bg-river-blue/10 text-blue-700 border border-blue-200 px-2.5 py-1 rounded-full">
-                  Brand: {brands.find((b) => b.slug === brand)?.name ?? brand}
+                  Brand: {category.filters?.brands?.find((b) => b.slug === brand)?.name ?? brand}
                   <Link
                     href={buildHref(1).replace(`brand=${brand}&`, "").replace(`brand=${brand}`, "")}
                     className="ml-0.5 hover:text-red-600"
@@ -185,6 +195,21 @@ export default async function CategoryProductsPage({ params, searchParams }: Pro
                   {maxPrice ? `Tk ${maxPrice.toLocaleString()}` : "∞"}
                 </span>
               )}
+              {Object.entries(currentAttributes).map(([attrSlug, valueId]) => {
+                const attr = category.filters?.attributes?.find((a) => a.slug === attrSlug);
+                const val = attr?.values.find((v) => String(v.id) === valueId);
+                return (
+                  <span key={attrSlug} className="flex items-center gap-1 text-xs bg-river-blue/10 text-blue-700 border border-blue-200 px-2.5 py-1 rounded-full">
+                    {attr?.name ?? attrSlug}: {val?.label ?? valueId}
+                    <Link
+                      href={buildHref(1).replace(`attr_${attrSlug}=${valueId}&`, "").replace(`attr_${attrSlug}=${valueId}`, "")}
+                      className="ml-0.5 hover:text-red-600"
+                    >
+                      ×
+                    </Link>
+                  </span>
+                );
+              })}
             </div>
           )}
 

@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { fetchBrand, fetchProducts, fetchCategories } from "@/lib/api";
+import { fetchBrand, fetchProducts } from "@/lib/api";
 import { mediaUrl } from "@/lib/utils";
 import ProductCard from "@/components/ui/ProductCard";
 import Pagination from "@/components/ui/Pagination";
@@ -37,23 +37,29 @@ export default async function BrandProductsPage({ params, searchParams }: Props)
   const sp = await searchParams;
 
   const sort = str(sp.sort);
-  const category = str(sp.category);
   const page = parseInt(str(sp.page) ?? "1", 10);
   const minPrice = sp.min_price ? parseInt(str(sp.min_price)!, 10) : undefined;
   const maxPrice = sp.max_price ? parseInt(str(sp.max_price)!, 10) : undefined;
 
-  const [brand, productsResult, categories] = await Promise.all([
+  // Collect attribute filter params (attr_<slug>=<value_id>)
+  const currentAttributes: Record<string, string> = {};
+  Object.entries(sp).forEach(([key, val]) => {
+    if (key.startsWith("attr_")) {
+      const v = str(val);
+      if (v) currentAttributes[key.slice(5)] = v;
+    }
+  });
+
+  const [brand, productsResult] = await Promise.all([
     fetchBrand(slug).catch(() => null),
     fetchProducts({
       brand: slug,
       sort,
-      category,
       page,
       per_page: 20,
       min_price: minPrice,
       max_price: maxPrice,
     }).catch(() => null),
-    fetchCategories().catch(() => []),
   ]);
 
   if (!brand) notFound();
@@ -63,15 +69,12 @@ export default async function BrandProductsPage({ params, searchParams }: Props)
   const total = productsResult?.total ?? 0;
   const currentPage = productsResult?.current_page ?? 1;
 
-  // Only show top-level categories in the filter
-  const topCategories = categories.filter((c) => c.parent_id === null && c.is_active);
-
   function buildHref(p: number) {
     const qs = new URLSearchParams();
     if (sort) qs.set("sort", sort);
-    if (category) qs.set("category", category);
     if (minPrice) qs.set("min_price", String(minPrice));
     if (maxPrice) qs.set("max_price", String(maxPrice));
+    Object.entries(currentAttributes).forEach(([k, v]) => qs.set(`attr_${k}`, v));
     qs.set("page", String(p));
     return `/brands/${slug}?${qs.toString()}`;
   }
@@ -127,16 +130,16 @@ export default async function BrandProductsPage({ params, searchParams }: Props)
         <ProductFiltersClient
           basePath={`/brands/${slug}`}
           currentSort={sort}
-          currentCategory={category}
           currentMinPrice={minPrice}
           currentMaxPrice={maxPrice}
-          categories={topCategories}
+          currentAttributes={currentAttributes}
+          filters={brand.filters}
         />
 
         {/* Product grid */}
         <div className="flex-1 min-w-0">
           {/* Active filter pills */}
-          {(sort || category || minPrice || maxPrice) && (
+          {(sort || minPrice || maxPrice || Object.keys(currentAttributes).length > 0) && (
             <div className="flex flex-wrap gap-2 mb-4">
               {sort && (
                 <span className="flex items-center gap-1 text-xs bg-river-blue/10 text-blue-700 border border-blue-200 px-2.5 py-1 rounded-full">
@@ -149,25 +152,27 @@ export default async function BrandProductsPage({ params, searchParams }: Props)
                   </Link>
                 </span>
               )}
-              {category && (
-                <span className="flex items-center gap-1 text-xs bg-river-blue/10 text-blue-700 border border-blue-200 px-2.5 py-1 rounded-full">
-                  Category: {categories.find((c) => c.slug === category)?.name ?? category}
-                  <Link
-                    href={buildHref(1)
-                      .replace(`category=${category}&`, "")
-                      .replace(`category=${category}`, "")}
-                    className="ml-0.5 hover:text-red-600"
-                  >
-                    ×
-                  </Link>
-                </span>
-              )}
               {(minPrice || maxPrice) && (
                 <span className="text-xs bg-river-blue/10 text-blue-700 border border-blue-200 px-2.5 py-1 rounded-full">
                   Price: {minPrice ? `Tk ${minPrice.toLocaleString()}` : "0"} –{" "}
                   {maxPrice ? `Tk ${maxPrice.toLocaleString()}` : "∞"}
                 </span>
               )}
+              {Object.entries(currentAttributes).map(([attrSlug, valueId]) => {
+                const attr = brand.filters?.attributes?.find((a) => a.slug === attrSlug);
+                const val = attr?.values.find((v) => String(v.id) === valueId);
+                return (
+                  <span key={attrSlug} className="flex items-center gap-1 text-xs bg-river-blue/10 text-blue-700 border border-blue-200 px-2.5 py-1 rounded-full">
+                    {attr?.name ?? attrSlug}: {val?.label ?? valueId}
+                    <Link
+                      href={buildHref(1).replace(`attr_${attrSlug}=${valueId}&`, "").replace(`attr_${attrSlug}=${valueId}`, "")}
+                      className="ml-0.5 hover:text-red-600"
+                    >
+                      ×
+                    </Link>
+                  </span>
+                );
+              })}
             </div>
           )}
 
