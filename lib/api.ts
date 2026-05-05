@@ -9,6 +9,9 @@ import type {
   CartSummary,
   Address,
   Order,
+  CollectionMeta,
+  CollectionDetail,
+  BannerSectionData,
 } from "@/types";
 import { getToken } from "@/lib/auth";
 
@@ -302,6 +305,26 @@ export async function fetchBanners(type: Banner["type"]): Promise<Banner[]> {
       (a, b) => a.sort_order - b.sort_order,
     ),
   );
+}
+
+// ─── Collections ──────────────────────────────────────────────────────────────
+
+export async function fetchCollectionsMeta(): Promise<CollectionMeta[]> {
+  return apiFetch<CollectionMeta[]>("/v1/collections");
+}
+
+export async function fetchCollectionDetail(
+  slug: string,
+  filter?: string,
+): Promise<CollectionDetail> {
+  const qs = filter ? `?filter=${filter}` : "";
+  return apiFetch<CollectionDetail>(`/v1/collections/${slug}${qs}`);
+}
+
+// ─── Banner Sections ──────────────────────────────────────────────────────────
+
+export async function fetchBannerSections(): Promise<BannerSectionData[]> {
+  return apiFetch<BannerSectionData[]>("/v1/banner-sections");
 }
 
 // ─── Authenticated fetch helper ────────────────────────────────────────────────

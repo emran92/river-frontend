@@ -2,22 +2,41 @@
 
 import { useState, useEffect, useCallback } from "react";
 import BannerCard from "@/components/ui/BannerCard";
-import { useFetch } from "@/hooks/useFetch";
-import { fetchBanners } from "@/lib/api";
-import type { Banner } from "@/types";
+import { mediaUrl } from "@/lib/utils";
+import type { Banner, BannerSectionData, BannerItem } from "@/types";
 
-export default function HeroBanner() {
-  const { data: heroBanners } = useFetch<Banner[]>(
-    "/banners/hero",
-    () => fetchBanners("hero")
-  );
-  const { data: sideBanners } = useFetch<Banner[]>(
-    "/banners/hero_secondary",
-    () => fetchBanners("hero_secondary")
-  );
+function bannerItemToCard(item: BannerItem): Banner {
+  return {
+    id: item.id,
+    type: "hero",
+    title: item.title ?? "",
+    subtitle: item.subtitle ?? undefined,
+    badge: item.badge_text ?? undefined,
+    cta_label: item.cta_text ?? undefined,
+    cta_href: item.cta_url ?? undefined,
+    image: mediaUrl(item.image_url),
+    sort_order: item.sort_order,
+  };
+}
+
+interface HeroBannerProps {
+  carousel: BannerSectionData | null;
+  sidebar: BannerSectionData | null;
+}
+
+export default function HeroBanner({ carousel, sidebar }: HeroBannerProps) {
+  const slides = (carousel?.banners ?? [])
+    .slice()
+    .sort((a, b) => a.sort_order - b.sort_order)
+    .map(bannerItemToCard);
+
+  const sideBanners = (sidebar?.banners ?? [])
+    .slice()
+    .sort((a, b) => a.sort_order - b.sort_order)
+    .slice(0, 2)
+    .map(bannerItemToCard);
 
   const [activeSlide, setActiveSlide] = useState(0);
-  const slides = heroBanners ?? [];
 
   const nextSlide = useCallback(() => {
     setActiveSlide((prev) => (prev + 1) % Math.max(slides.length, 1));
@@ -101,21 +120,22 @@ export default function HeroBanner() {
 
         {/* Right: 2 stacked side banners */}
         <div className="hidden lg:flex flex-col gap-4">
-          {(sideBanners ?? [{ id: 0, type: "hero_secondary" as const, title: "", image: "", sort_order: 0 }, { id: 1, type: "hero_secondary" as const, title: "", image: "", sort_order: 1 }])
-            .slice(0, 2)
-            .map((banner, i) =>
-              banner.image ? (
-                <BannerCard
-                  key={banner.id}
-                  banner={banner}
-                  aspect="aspect-[16/9]"
-                  priority={i === 0}
-                  className="flex-1"
-                />
-              ) : (
-                <div key={i} className="flex-1 animate-pulse bg-gray-200 dark:bg-gray-700 rounded-xl" />
-              )
-            )}
+          {sideBanners.length === 0 ? (
+            <>
+              <div className="flex-1 animate-pulse bg-gray-200 dark:bg-gray-700 rounded-xl" />
+              <div className="flex-1 animate-pulse bg-gray-200 dark:bg-gray-700 rounded-xl" />
+            </>
+          ) : (
+            sideBanners.map((banner, i) => (
+              <BannerCard
+                key={banner.id}
+                banner={banner}
+                aspect="aspect-[16/9]"
+                priority={i === 0}
+                className="flex-1"
+              />
+            ))
+          )}
         </div>
       </div>
     </section>

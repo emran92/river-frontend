@@ -375,3 +375,46 @@ export interface ApiError {
 // ─── Product sort tabs ────────────────────────────────────────────────────────
 
 export type ProductSortTab = "latest" | "best_selling" | "top_rating";
+
+export type CollectionFilterTab = "latest" | "best_selling" | "top_rated";
+
+// ─── Collections ──────────────────────────────────────────────────────────────
+
+export interface CollectionMeta {
+  id: number;
+  title: string;
+  slug: string;
+  subtitle: string | null;
+  sort_order: number;
+  banner_enabled: boolean;
+  banner_type: string | null;
+  banner_image_url: string | null;
+  banner_cta_url: string | null;
+}
+
+export interface CollectionDetail {
+  collection: CollectionMeta;
+  products: PaginatedResponse<Product>;
+}
+
+// ─── Banner Sections ──────────────────────────────────────────────────────────
+
+export interface BannerItem {
+  id: number;
+  title: string | null;
+  subtitle: string | null;
+  badge_text: string | null;
+  cta_text: string | null;
+  cta_url: string | null;
+  sort_order: number;
+  image_url: string | null;
+}
+
+export interface BannerSectionData {
+  id: number;
+  title: string;
+  identifier: string;
+  layout_type: string;
+  sort_order: number;
+  banners: BannerItem[];
+}

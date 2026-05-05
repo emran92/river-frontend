@@ -1,6 +1,6 @@
 "use client";
 
-import type { ProductSortTab } from "@/types";
+import type { ProductSortTab, CollectionFilterTab } from "@/types";
 
 export interface Tab<T extends string = string> {
   key: T;
@@ -9,7 +9,7 @@ export interface Tab<T extends string = string> {
 
 interface TabFilterProps<T extends string = string> {
   tabs: Tab<T>[];
-  active: T;
+  active: T | null;
   onChange: (key: T) => void;
   className?: string;
 }
@@ -43,4 +43,10 @@ export const PRODUCT_SORT_TABS: Tab<ProductSortTab>[] = [
   { key: "latest", label: "Latest Products" },
   { key: "best_selling", label: "Best Selling" },
   { key: "top_rating", label: "Top Rating" },
+];
+
+export const COLLECTION_FILTER_TABS: Tab<CollectionFilterTab>[] = [
+  { key: "latest", label: "Latest" },
+  { key: "best_selling", label: "Best Selling" },
+  { key: "top_rated", label: "Top Rated" },
 ];

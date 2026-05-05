@@ -7,7 +7,7 @@ interface SectionHeaderProps<T extends string = string> {
   seeAllHref?: string;
   seeAllLabel?: string;
   tabs?: Tab<T>[];
-  activeTab?: T;
+  activeTab?: T | null;
   onTabChange?: (key: T) => void;
   className?: string;
 }
@@ -32,8 +32,8 @@ export default function SectionHeader<T extends string = string>({
       </div>
 
       <div className="flex items-center gap-3 flex-wrap">
-        {tabs && activeTab && onTabChange && (
-          <TabFilter tabs={tabs} active={activeTab} onChange={onTabChange} />
+        {tabs && onTabChange && (
+          <TabFilter tabs={tabs} active={activeTab ?? null} onChange={onTabChange} />
         )}
         {seeAllHref && (
           <Link
