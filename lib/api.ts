@@ -12,6 +12,7 @@ import type {
   CollectionMeta,
   CollectionDetail,
   BannerSectionData,
+  HomepageSection,
 } from "@/types";
 import { getToken } from "@/lib/auth";
 
@@ -325,6 +326,12 @@ export async function fetchCollectionDetail(
 
 export async function fetchBannerSections(): Promise<BannerSectionData[]> {
   return apiFetch<BannerSectionData[]>("/v1/banner-sections");
+}
+
+// ─── Homepage ─────────────────────────────────────────────────────────────────
+
+export async function fetchHomepage(): Promise<HomepageSection[]> {
+  return apiFetch<HomepageSection[]>("/v1/homepage");
 }
 
 // ─── Authenticated fetch helper ────────────────────────────────────────────────

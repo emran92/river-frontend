@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import BannerCard from "@/components/ui/BannerCard";
 import { mediaUrl } from "@/lib/utils";
-import type { Banner, BannerSectionData, BannerItem } from "@/types";
+import type { Banner, HomepageBannerGroup, BannerItem } from "@/types";
 
 function bannerItemToCard(item: BannerItem): Banner {
   return {
@@ -20,8 +20,8 @@ function bannerItemToCard(item: BannerItem): Banner {
 }
 
 interface HeroBannerProps {
-  carousel: BannerSectionData | null;
-  sidebar: BannerSectionData | null;
+  carousel: HomepageBannerGroup | null;
+  sidebar: HomepageBannerGroup | null;
 }
 
 export default function HeroBanner({ carousel, sidebar }: HeroBannerProps) {

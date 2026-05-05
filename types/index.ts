@@ -76,7 +76,7 @@ export interface ProductFilters {
 
 export interface CatalogBrandResponse {
   type: "brand";
-  resource: Brand[];
+  resource: Brand;
   filters: ProductFilters;
   products: PaginatedResponse<Product>;
 }
@@ -100,7 +100,14 @@ export interface CatalogCategoryResponse {
   subcategories?: Subcategory[];
 }
 
-export type CatalogResponse = CatalogBrandResponse | CatalogCategoryResponse;
+export interface CatalogCollectionResponse {
+  type: "collection";
+  resource: CollectionMeta;
+  filters: ProductFilters;
+  products: PaginatedResponse<Product>;
+}
+
+export type CatalogResponse = CatalogBrandResponse | CatalogCategoryResponse | CatalogCollectionResponse;
 
 // ─── Category ─────────────────────────────────────────────────────────────────
 
@@ -418,3 +425,87 @@ export interface BannerSectionData {
   sort_order: number;
   banners: BannerItem[];
 }
+
+// ─── Homepage API ─────────────────────────────────────────────────────────────
+
+export interface HomepageBannerGroup {
+  id: number;
+  title: string;
+  identifier: string;
+  banners: BannerItem[];
+}
+
+export interface HomepageBannerSection {
+  hero_left: HomepageBannerGroup | null;
+  hero_right: HomepageBannerGroup | null;
+  full_width: HomepageBannerGroup | null;
+  two_column: HomepageBannerGroup | null;
+  three_column: HomepageBannerGroup | null;
+}
+
+export interface HomepageCollectionData {
+  id: number;
+  title: string;
+  slug: string;
+  subtitle: string | null;
+  sort_order: number;
+  banner_enabled: boolean;
+  banner_type: string | null;
+  banner_image_url: string | null;
+  banner_cta_url: string | null;
+  products: Product[];
+}
+
+export interface HomepageCategoryGridItem {
+  id: number;
+  name: string;
+  slug: string;
+  logo_url: string | null;
+  icon_url: string | null;
+  banner_url: string | null;
+}
+
+export interface HomepageBrandGridItem {
+  id: number;
+  name: string;
+  slug: string;
+  logo_url: string | null;
+  icon_url: string | null;
+}
+
+export type HomepageSection =
+  | {
+      type: "banner_section";
+      title: string | null;
+      sort_order: number;
+      reference_type: null;
+      data: HomepageBannerSection;
+    }
+  | {
+      type: "collection";
+      title: string | null;
+      sort_order: number;
+      reference_type: null;
+      data: HomepageCollectionData;
+    }
+  | {
+      type: "category_grid";
+      title: string | null;
+      sort_order: number;
+      reference_type: null;
+      data: HomepageCategoryGridItem[];
+    }
+  | {
+      type: "brand_grid";
+      title: string | null;
+      sort_order: number;
+      reference_type: null;
+      data: HomepageBrandGridItem[];
+    }
+  | {
+      type: "product_grid";
+      title: string | null;
+      sort_order: number;
+      reference_type: string | null;
+      data: Product[];
+    };

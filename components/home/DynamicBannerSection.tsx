@@ -2,10 +2,10 @@
 
 import BannerCard from "@/components/ui/BannerCard";
 import { mediaUrl } from "@/lib/utils";
-import type { BannerSectionData, BannerItem, Banner } from "@/types";
+import type { HomepageBannerSection, HomepageBannerGroup, BannerItem, Banner } from "@/types";
 
 interface DynamicBannerSectionProps {
-  section: BannerSectionData;
+  data: HomepageBannerSection;
 }
 
 function bannerItemToCard(item: BannerItem): Banner {
@@ -22,46 +22,47 @@ function bannerItemToCard(item: BannerItem): Banner {
   };
 }
 
-export default function DynamicBannerSection({ section }: DynamicBannerSectionProps) {
-  const { layout_type, banners } = section;
+function sortedCards(group: HomepageBannerGroup): Banner[] {
+  return [...group.banners]
+    .sort((a, b) => a.sort_order - b.sort_order)
+    .map(bannerItemToCard);
+}
 
-  if (!banners || banners.length === 0) return null;
-
-  const sorted = [...banners].sort((a, b) => a.sort_order - b.sort_order);
-
-  if (layout_type === "full-width") {
-    const banner = sorted[0];
+export default function DynamicBannerSection({ data }: DynamicBannerSectionProps) {
+  if (data.full_width) {
+    const cards = sortedCards(data.full_width);
+    if (cards.length === 0) return null;
     return (
       <section className="max-w-[1280px] mx-auto px-4 py-4">
-        <BannerCard banner={bannerItemToCard(banner)} aspect="aspect-[16/5]" />
+        <BannerCard banner={cards[0]} aspect="aspect-[16/5]" />
       </section>
     );
   }
 
-  if (layout_type === "two-column") {
-    const [first, second] = sorted;
+  if (data.two_column) {
+    const cards = sortedCards(data.two_column);
+    if (cards.length === 0) return null;
     return (
       <section className="max-w-[1280px] mx-auto px-4 py-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {first && (
-            <BannerCard banner={bannerItemToCard(first)} aspect="aspect-[16/9]" />
-          )}
-          {second && (
-            <BannerCard banner={bannerItemToCard(second)} aspect="aspect-[16/9]" />
-          )}
+          {cards.slice(0, 2).map((banner) => (
+            <BannerCard key={banner.id} banner={banner} aspect="aspect-[16/9]" />
+          ))}
         </div>
       </section>
     );
   }
 
-  if (layout_type === "three-column") {
+  if (data.three_column) {
+    const cards = sortedCards(data.three_column);
+    if (cards.length === 0) return null;
     return (
       <section className="max-w-[1280px] mx-auto px-4 py-4">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {sorted.map((item) => (
+          {cards.map((banner) => (
             <BannerCard
-              key={item.id}
-              banner={bannerItemToCard(item)}
+              key={banner.id}
+              banner={banner}
               fit="object-fill"
               aspect="aspect-[4/3]"
             />
@@ -71,11 +72,5 @@ export default function DynamicBannerSection({ section }: DynamicBannerSectionPr
     );
   }
 
-  // Fallback: render first banner full-width for unknown layout types
-  const banner = sorted[0];
-  return (
-    <section className="max-w-[1280px] mx-auto px-4 py-4">
-      <BannerCard banner={bannerItemToCard(banner)} aspect="aspect-[16/5]" />
-    </section>
-  );
+  return null;
 }

@@ -6,8 +6,8 @@ import type { ProductFilters, FilterCategory } from "@/types";
 
 interface ProductFiltersClientProps {
   basePath: string;
-  /** "category" pages show brand filters; "brand" pages show category filters */
-  pageType: "brand" | "category";
+  /** "category" pages show brand filters; "brand" pages show category filters; "collection" shows both */
+  pageType: "brand" | "category" | "collection";
   currentBrands?: string[];
   currentCategories?: string[];
   currentMinPrice?: number;
@@ -85,10 +85,10 @@ export default function ProductFiltersClient({
     (overrides: Record<string, string | undefined>) => {
       const params = new URLSearchParams();
       const base: Record<string, string | undefined> = {
-        ...(pageType === "category" && currentBrands.length > 0
+        ...(pageType !== "brand" && currentBrands.length > 0
           ? { brand: currentBrands.join(",") }
           : {}),
-        ...(pageType === "brand" && currentCategories.length > 0
+        ...(pageType !== "category" && currentCategories.length > 0
           ? { category: currentCategories.join(",") }
           : {}),
         min_price: currentMinPrice?.toString(),
@@ -218,8 +218,8 @@ export default function ProductFiltersClient({
         )}
       </div>
 
-      {/* Brands (shown on category pages) */}
-      {pageType === "category" && (filters?.brands ?? []).length > 0 && (
+      {/* Brands (shown on category and collection pages) */}
+      {pageType !== "brand" && (filters?.brands ?? []).length > 0 && (
         <div>
           <h3 className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-3 uppercase tracking-widest">
             Brand
@@ -243,8 +243,8 @@ export default function ProductFiltersClient({
         </div>
       )}
 
-      {/* Categories with hierarchy (shown on brand pages) */}
-      {pageType === "brand" && (filters?.categories ?? []).length > 0 && (
+      {/* Categories with hierarchy (shown on brand and collection pages) */}
+      {pageType !== "category" && (filters?.categories ?? []).length > 0 && (
         <div>
           <h3 className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-3 uppercase tracking-widest">
             Category

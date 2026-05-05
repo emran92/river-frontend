@@ -9,10 +9,10 @@ import { COLLECTION_FILTER_TABS } from "@/components/ui/TabFilter";
 import { useFetch } from "@/hooks/useFetch";
 import { fetchCollectionDetail } from "@/lib/api";
 import { mediaUrl } from "@/lib/utils";
-import type { CollectionMeta, CollectionDetail, CollectionFilterTab } from "@/types";
+import type { HomepageCollectionData, CollectionDetail, CollectionFilterTab } from "@/types";
 
 interface CollectionSectionProps {
-  collection: CollectionMeta;
+  data: HomepageCollectionData;
 }
 
 const SKELETON_CARDS = Array.from({ length: 5 });
@@ -30,15 +30,21 @@ function ProductSkeleton() {
   );
 }
 
-export default function CollectionSection({ collection }: CollectionSectionProps) {
+export default function CollectionSection({ data: collection }: CollectionSectionProps) {
   const [activeTab, setActiveTab] = useState<CollectionFilterTab | null>(null);
 
-  const { data, isLoading } = useFetch<CollectionDetail>(
-    `/v1/collections/${collection.slug}${activeTab ? `?filter=${activeTab}` : ""}`,
+  function handleTabChange(key: CollectionFilterTab) {
+    setActiveTab((prev) => (prev === key ? null : key));
+  }
+
+  const { data: fetchedData, isLoading } = useFetch<CollectionDetail>(
+    activeTab ? `/v1/collections/${collection.slug}?filter=${activeTab}` : null,
     () => fetchCollectionDetail(collection.slug, activeTab ?? undefined),
   );
 
-  const products = data?.products.data ?? [];
+  const products = activeTab
+    ? (fetchedData?.products.data ?? [])
+    : collection.products;
   const hasBanner =
     collection.banner_enabled && collection.banner_image_url;
   const maxProducts = hasBanner ? 8 : 5;
@@ -49,10 +55,10 @@ export default function CollectionSection({ collection }: CollectionSectionProps
       <SectionHeader
         title={collection.title}
         subtitle={collection.subtitle ?? undefined}
-        seeAllHref={`/products`}
+        seeAllHref={`/${collection.slug}`}
         tabs={COLLECTION_FILTER_TABS}
         activeTab={activeTab}
-        onTabChange={setActiveTab}
+        onTabChange={handleTabChange}
       />
 
       {hasBanner ? (
@@ -64,7 +70,7 @@ export default function CollectionSection({ collection }: CollectionSectionProps
               <Link href={collection.banner_cta_url} className="block h-full">
                 <div className="relative w-full aspect-[1/2] overflow-hidden rounded-xl">
                   <Image
-                    src={mediaUrl(collection.banner_image_url)}
+                    src={mediaUrl(collection.banner_image_url!)}
                     alt={collection.title}
                     fill
                     className="object-cover"
@@ -75,7 +81,7 @@ export default function CollectionSection({ collection }: CollectionSectionProps
             ) : (
               <div className="relative w-full aspect-[1/2] overflow-hidden rounded-xl">
                 <Image
-                  src={mediaUrl(collection.banner_image_url)}
+                  src={mediaUrl(collection.banner_image_url!)}
                   alt={collection.title}
                   fill
                   className="object-cover"

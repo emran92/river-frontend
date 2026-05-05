@@ -109,7 +109,7 @@ export default async function ProductPage({ params }: Props) {
           <div className="flex items-center gap-3 flex-wrap">
             {product.brand && (
               <Link
-                href={`/${product.brand.slug}`}
+                href={`/${product.brand.slug}?category=${product.category?.slug ?? ""}`}
                 className="text-xs font-semibold text-blue-600 bg-river-blue/10 px-3 py-1 rounded-full hover:bg-river-blue/20 transition-colors"
               >
                 {product.brand.name}

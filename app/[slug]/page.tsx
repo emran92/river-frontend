@@ -21,11 +21,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   try {
     const catalog = await fetchCatalog(slug);
     if (catalog.type === "brand") {
-      const brand = catalog.resource[0];
+      const brand = catalog.resource;
       return {
         title: `${brand.name} Products — River Electronics`,
         description:
           brand.description ?? `Shop all ${brand.name} products at River Electronics`,
+      };
+    }
+    if (catalog.type === "collection") {
+      const collection = catalog.resource;
+      return {
+        title: `${collection.title} Collection — River Electronics`,
+        description:
+           `Shop the ${collection.title} collection at River Electronics`,
       };
     }
     const category = catalog.resource;
@@ -151,10 +159,11 @@ export default async function CatalogPage({ params, searchParams }: Props) {
     Object.values(currentAttributes).some((v) => v.length > 0);
 
   // ── Derived header data ────────────────────────────────────────────────────
-  const brand = isBrand && catalog.type === "brand" ? catalog.resource[0] : null;
-  const category = !isBrand && catalog.type === "category" ? catalog.resource : null;
+  const brand = catalog.type === "brand" ? catalog.resource : null;
+  const category = catalog.type === "category" ? catalog.resource : null;
+  const collection = catalog.type === "collection" ? catalog.resource : null;
   const subcategories: Subcategory[] =
-    !isBrand && catalog.type === "category" ? (catalog.subcategories ?? []) : [];
+    catalog.type === "category" ? (catalog.subcategories ?? []) : [];
 
   return (
     <main className="max-w-[1280px] mx-auto px-4 py-8">
@@ -164,7 +173,7 @@ export default async function CatalogPage({ params, searchParams }: Props) {
           Home
         </Link>
         <span>/</span>
-        {isBrand ? (
+        {catalog.type === "brand" ? (
           <>
             <Link href="/brands" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
               Brands
@@ -172,6 +181,8 @@ export default async function CatalogPage({ params, searchParams }: Props) {
             <span>/</span>
             <span className="text-gray-900 dark:text-gray-100 font-medium">{brand?.name}</span>
           </>
+        ) : catalog.type === "collection" ? (
+          <span className="text-gray-900 dark:text-gray-100 font-medium">{collection?.title}</span>
         ) : (
           <>
             <Link href="/categories" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
@@ -184,7 +195,7 @@ export default async function CatalogPage({ params, searchParams }: Props) {
       </nav>
 
       {/* Page header — brand */}
-      {isBrand && brand && (
+      {catalog.type === "brand" && brand && (
         <div className="flex items-center gap-6 mb-8 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl p-6">
           {brand.logo_url && (
             <div className="relative w-24 h-24 rounded-xl bg-[#F7F7F7] dark:bg-gray-700 flex-shrink-0 overflow-hidden border border-gray-100 dark:border-gray-600">
@@ -215,8 +226,18 @@ export default async function CatalogPage({ params, searchParams }: Props) {
         </div>
       )}
 
+      {/* Page header — collection */}
+      {catalog.type === "collection" && collection && (
+        <div className="mb-6">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">{collection.title}</h1>
+          {collection.subtitle && (
+            <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">{collection.subtitle}</p>
+          )}
+        </div>
+      )}
+
       {/* Page header — category */}
-      {!isBrand && category && (
+      {catalog.type === "category" && category && (
         <>
           {/* Banner */}
           {category.banner_url ? (
@@ -285,7 +306,7 @@ export default async function CatalogPage({ params, searchParams }: Props) {
         {/* Filters sidebar */}
         <ProductFiltersClient
           basePath={`/${slug}`}
-          pageType={isBrand ? "brand" : "category"}
+          pageType={catalog.type === "brand" ? "brand" : catalog.type === "collection" ? "collection" : "category"}
           currentBrands={currentBrands}
           currentCategories={currentCategories}
           currentMinPrice={minPrice}
