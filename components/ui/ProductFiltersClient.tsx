@@ -35,7 +35,7 @@ function CategoryFilterTree({
           onChange={() => onToggle(cat.slug)}
           className="w-4 h-4 rounded border-gray-300 text-blue-600 accent-blue-600 cursor-pointer"
         />
-        <span className="text-sm font-medium text-gray-700 group-hover:text-blue-600 transition-colors leading-none">
+        <span className="text-sm font-medium text-gray-700 dark:text-gray-200 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors leading-none">
           {cat.name}
         </span>
         {cat.count > 0 && (
@@ -52,11 +52,11 @@ function CategoryFilterTree({
                 onChange={() => onToggle(child.slug)}
                 className="w-4 h-4 rounded border-gray-300 text-blue-600 accent-blue-600 cursor-pointer"
               />
-              <span className="text-sm text-gray-700 group-hover:text-blue-600 transition-colors leading-none">
+              <span className="text-sm text-gray-700 dark:text-gray-200 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors leading-none">
                 {child.name}
               </span>
               {child.count > 0 && (
-                <span className="ml-auto text-xs text-gray-400">{child.count}</span>
+                <span className="ml-auto text-xs text-gray-400 dark:text-gray-500">{child.count}</span>
               )}
             </label>
           ))}
@@ -170,7 +170,7 @@ export default function ProductFiltersClient({
 
       {/* Price Range */}
       <div>
-        <h3 className="text-xs font-semibold text-gray-500 mb-3 uppercase tracking-widest">
+        <h3 className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-3 uppercase tracking-widest">
           Price Range (Tk)
         </h3>
         <div className="flex gap-2 items-center">
@@ -180,20 +180,20 @@ export default function ProductFiltersClient({
             min={0}
             value={minPrice}
             onChange={(e) => setMinPrice(e.target.value)}
-            className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-400"
+            className="w-full border border-gray-200 dark:border-gray-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-400 bg-white dark:bg-gray-800 text-foreground"
           />
-          <span className="text-gray-400 flex-shrink-0 text-xs">–</span>
+          <span className="text-gray-400 dark:text-gray-500 flex-shrink-0 text-xs">–</span>
           <input
             type="number"
             placeholder="Max"
             min={0}
             value={maxPrice}
             onChange={(e) => setMaxPrice(e.target.value)}
-            className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-400"
+            className="w-full border border-gray-200 dark:border-gray-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-400 bg-white dark:bg-gray-800 text-foreground"
           />
         </div>
         {filters?.price_range && (
-          <p className="text-[11px] text-gray-400 mt-1">
+          <p className="text-[11px] text-gray-400 dark:text-gray-500 mt-1">
             Range: Tk {filters.price_range.min.toLocaleString()} – Tk{" "}
             {filters.price_range.max.toLocaleString()}
           </p>
@@ -211,7 +211,7 @@ export default function ProductFiltersClient({
               setMaxPrice("");
               navigate({ min_price: undefined, max_price: undefined });
             }}
-            className="mt-1 w-full text-xs text-gray-400 hover:text-red-500 transition-colors"
+            className="mt-1 w-full text-xs text-gray-400 dark:text-gray-500 hover:text-red-500 transition-colors"
           >
             Reset price
           </button>
@@ -221,7 +221,7 @@ export default function ProductFiltersClient({
       {/* Brands (shown on category pages) */}
       {pageType === "category" && (filters?.brands ?? []).length > 0 && (
         <div>
-          <h3 className="text-xs font-semibold text-gray-500 mb-3 uppercase tracking-widest">
+          <h3 className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-3 uppercase tracking-widest">
             Brand
           </h3>
           <div className="space-y-2 max-h-56 overflow-y-auto pr-1">
@@ -233,10 +233,10 @@ export default function ProductFiltersClient({
                   onChange={() => toggleBrand(brand.slug)}
                   className="w-4 h-4 rounded border-gray-300 text-blue-600 accent-blue-600 cursor-pointer"
                 />
-                <span className="text-sm text-gray-700 group-hover:text-blue-600 transition-colors leading-none">
+                <span className="text-sm text-gray-700 dark:text-gray-200 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors leading-none">
                   {brand.name}
                 </span>
-                <span className="ml-auto text-xs text-gray-400">{brand.count}</span>
+                <span className="ml-auto text-xs text-gray-400 dark:text-gray-500">{brand.count}</span>
               </label>
             ))}
           </div>
@@ -246,7 +246,7 @@ export default function ProductFiltersClient({
       {/* Categories with hierarchy (shown on brand pages) */}
       {pageType === "brand" && (filters?.categories ?? []).length > 0 && (
         <div>
-          <h3 className="text-xs font-semibold text-gray-500 mb-3 uppercase tracking-widest">
+          <h3 className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-3 uppercase tracking-widest">
             Category
           </h3>
           <div className="space-y-3 max-h-64 overflow-y-auto pr-1">
@@ -265,7 +265,7 @@ export default function ProductFiltersClient({
       {/* Attributes */}
       {(filters?.attributes ?? []).map((attr) => (
         <div key={attr.slug}>
-          <h3 className="text-xs font-semibold text-gray-500 mb-3 uppercase tracking-widest">
+          <h3 className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-3 uppercase tracking-widest">
             {attr.name}
           </h3>
           <div className="space-y-2 max-h-56 overflow-y-auto pr-1">
@@ -279,10 +279,10 @@ export default function ProductFiltersClient({
                     onChange={() => toggleAttribute(attr.slug, val.value)}
                     className="w-4 h-4 rounded border-gray-300 text-blue-600 accent-blue-600 cursor-pointer"
                   />
-                  <span className="text-sm text-gray-700 group-hover:text-blue-600 transition-colors leading-none">
+                  <span className="text-sm text-gray-700 dark:text-gray-200 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors leading-none">
                     {val.label}
                   </span>
-                  <span className="ml-auto text-xs text-gray-400">{val.count}</span>
+                  <span className="ml-auto text-xs text-gray-400 dark:text-gray-500">{val.count}</span>
                 </label>
               );
             })}
@@ -298,9 +298,9 @@ export default function ProductFiltersClient({
       <div className="w-full lg:hidden">
         <button
           onClick={() => setMobileOpen((v) => !v)}
-          className="flex items-center gap-2 px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm font-medium shadow-sm"
+          className="flex items-center gap-2 px-4 py-2.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm font-medium shadow-sm text-gray-700 dark:text-gray-200"
         >
-          <svg className="w-4 h-4 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-4 h-4 text-gray-600 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -324,15 +324,15 @@ export default function ProductFiltersClient({
           </svg>
         </button>
         {mobileOpen && (
-          <div className="mt-3 p-4 bg-white border border-gray-200 rounded-xl shadow-lg">
+          <div className="mt-3 p-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg">
             {filterContent}
           </div>
         )}
       </div>
 
       {/* Desktop sidebar */}
-      <aside className="hidden lg:block w-52 flex-shrink-0 bg-white border border-gray-200 rounded-xl p-5 sticky top-20">
-        <h2 className="font-semibold text-gray-900 mb-5 flex items-center gap-2">
+      <aside className="hidden lg:block w-52 flex-shrink-0 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-5 sticky top-20">
+        <h2 className="font-semibold text-gray-900 dark:text-gray-100 mb-5 flex items-center gap-2">
           <svg className="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4h18M7 12h10M11 20h2" />
           </svg>

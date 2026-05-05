@@ -41,20 +41,20 @@ export default function ProfilePage() {
     <div className="space-y-6">
       {/* Page header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Profile</h1>
-        <p className="text-sm text-gray-500 mt-1">Manage your personal information</p>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Profile</h1>
+        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Manage your personal information</p>
       </div>
 
       {/* Account info card */}
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
-        <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-4">Account Info</h2>
+      <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-6">
+        <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-4">Account Info</h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="bg-gray-50 rounded-xl p-4">
-            <p className="text-xs text-gray-400 mb-1">Email</p>
-            <p className="text-sm font-semibold text-gray-800 truncate">{user?.email ?? "—"}</p>
+          <div className="bg-gray-50 dark:bg-gray-700 rounded-xl p-4">
+            <p className="text-xs text-gray-400 dark:text-gray-500 mb-1">Email</p>
+            <p className="text-sm font-semibold text-gray-800 dark:text-gray-100 truncate">{user?.email ?? "—"}</p>
           </div>
-          <div className="bg-gray-50 rounded-xl p-4">
-            <p className="text-xs text-gray-400 mb-1">Email Status</p>
+          <div className="bg-gray-50 dark:bg-gray-700 rounded-xl p-4">
+            <p className="text-xs text-gray-400 dark:text-gray-500 mb-1">Email Status</p>
             {user?.email_verified_at ? (
               <span className="inline-flex items-center gap-1 text-green-700 text-sm font-semibold">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -84,8 +84,8 @@ export default function ProfilePage() {
       </div>
 
       {/* Edit form */}
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
-        <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-4">Edit Details</h2>
+      <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-6">
+        <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-4">Edit Details</h2>
 
         {success && (
           <div className="mb-5 flex items-center gap-3 rounded-xl bg-green-50 border border-green-200 px-4 py-3 text-sm text-green-700">
@@ -107,7 +107,7 @@ export default function ProfilePage() {
         <form onSubmit={handleSubmit} className="space-y-5">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1.5">
                 Full Name <span className="text-red-400">*</span>
               </label>
               <input
@@ -116,17 +116,17 @@ export default function ProfilePage() {
                 onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))}
                 placeholder="Your full name"
                 required
-                className="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm text-gray-900 outline-none transition focus:border-river-blue focus:ring-2 focus:ring-river-blue/20 bg-gray-50 focus:bg-white"
+                className="w-full rounded-xl border border-gray-200 dark:border-gray-600 px-4 py-2.5 text-sm text-gray-900 dark:text-gray-100 outline-none transition focus:border-river-blue focus:ring-2 focus:ring-river-blue/20 bg-gray-50 dark:bg-gray-700 focus:bg-white dark:focus:bg-gray-700"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">Phone Number</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1.5">Phone Number</label>
               <input
                 type="tel"
                 value={form.phone}
                 onChange={(e) => setForm((p) => ({ ...p, phone: e.target.value }))}
                 placeholder="+880..."
-                className="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm text-gray-900 outline-none transition focus:border-river-blue focus:ring-2 focus:ring-river-blue/20 bg-gray-50 focus:bg-white"
+                className="w-full rounded-xl border border-gray-200 dark:border-gray-600 px-4 py-2.5 text-sm text-gray-900 dark:text-gray-100 outline-none transition focus:border-river-blue focus:ring-2 focus:ring-river-blue/20 bg-gray-50 dark:bg-gray-700 focus:bg-white dark:focus:bg-gray-700"
               />
             </div>
           </div>

@@ -93,7 +93,7 @@ const SECTIONS = [
 
 export default function PrivacyPage() {
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="bg-gray-50 dark:bg-gray-900 min-h-screen">
       {/* Hero */}
       <section className="bg-[#010103] text-white py-14">
         <div className="max-w-[1280px] mx-auto px-4">
@@ -118,11 +118,11 @@ export default function PrivacyPage() {
           {/* Sections */}
           <div className="space-y-6">
             {SECTIONS.map((section) => (
-              <div key={section.title} className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
-                <h2 className="text-base font-semibold text-gray-900 mb-4">{section.title}</h2>
+              <div key={section.title} className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 p-6 shadow-sm">
+                <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100 mb-4">{section.title}</h2>
                 <ul className="space-y-2.5">
                   {section.content.map((item) => (
-                    <li key={item} className="flex items-start gap-3 text-sm text-gray-600">
+                    <li key={item} className="flex items-start gap-3 text-sm text-gray-600 dark:text-gray-300">
                       <svg className="w-4 h-4 text-blue-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                       </svg>

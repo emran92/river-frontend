@@ -33,9 +33,9 @@ export default function HeroBanner() {
     <section className="max-w-[1280px] mx-auto px-4 py-8">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 h-auto">
         {/* Left: Main carousel */}
-        <div className="lg:col-span-2 relative overflow-hidden rounded-xl bg-gray-100">
+        <div className="lg:col-span-2 relative overflow-hidden rounded-xl bg-gray-100 dark:bg-gray-800">
           {slides.length === 0 ? (
-            <div className="h-[240px] lg:h-full animate-pulse bg-gray-200 rounded-xl" />
+            <div className="h-[240px] lg:h-full animate-pulse bg-gray-200 dark:bg-gray-700 rounded-xl" />
           ) : (
             <>
               <div
@@ -113,7 +113,7 @@ export default function HeroBanner() {
                   className="flex-1"
                 />
               ) : (
-                <div key={i} className="flex-1 animate-pulse bg-gray-200 rounded-xl" />
+                <div key={i} className="flex-1 animate-pulse bg-gray-200 dark:bg-gray-700 rounded-xl" />
               )
             )}
         </div>

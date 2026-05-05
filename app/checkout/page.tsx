@@ -123,16 +123,16 @@ export default function CheckoutPage() {
 
   return (
     <div className="max-w-[1100px] mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold text-gray-900 mb-6">Checkout</h1>
+      <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">Checkout</h1>
 
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Left: Address + Payment */}
           <div className="lg:col-span-2 space-y-6">
             {/* Delivery Address */}
-            <section className="bg-white rounded-2xl border border-gray-100 p-6">
+            <section className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 p-6">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="font-semibold text-gray-900">Delivery Address</h2>
+                <h2 className="font-semibold text-gray-900 dark:text-gray-100">Delivery Address</h2>
                 {!showNewAddr && (
                   <button
                     type="button"
@@ -151,7 +151,7 @@ export default function CheckoutPage() {
               ) : (
                 <div className="space-y-2 mb-4">
                   {addresses.map((addr) => (
-                    <label key={addr.id} className={`flex gap-3 border rounded-xl p-3 cursor-pointer transition-colors ${selectedAddressId === addr.id ? "border-river-blue bg-river-blue/5" : "border-gray-200 hover:border-gray-300"}`}>
+                    <label key={addr.id} className={`flex gap-3 border rounded-xl p-3 cursor-pointer transition-colors ${selectedAddressId === addr.id ? "border-river-blue bg-river-blue/5" : "border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500"}`}>
                       <input
                         type="radio"
                         name="address"
@@ -161,21 +161,21 @@ export default function CheckoutPage() {
                         className="mt-0.5 accent-river-blue"
                       />
                       <div className="text-sm">
-                        <p className="font-semibold text-gray-900">{addr.label} — {addr.recipient_name}</p>
-                        <p className="text-gray-500">{addr.phone}</p>
-                        <p className="text-gray-500">{addr.address_line_1}{addr.address_line_2 ? `, ${addr.address_line_2}` : ""}, {addr.city}{addr.district ? `, ${addr.district}` : ""}</p>
+                        <p className="font-semibold text-gray-900 dark:text-gray-100">{addr.label} — {addr.recipient_name}</p>
+                        <p className="text-gray-500 dark:text-gray-400">{addr.phone}</p>
+                        <p className="text-gray-500 dark:text-gray-400">{addr.address_line_1}{addr.address_line_2 ? `, ${addr.address_line_2}` : ""}, {addr.city}{addr.district ? `, ${addr.district}` : ""}</p>
                       </div>
                     </label>
                   ))}
                   {addresses.length === 0 && !showNewAddr && (
-                    <p className="text-sm text-gray-400">No addresses saved. Please add one.</p>
+                    <p className="text-sm text-gray-400 dark:text-gray-500">No addresses saved. Please add one.</p>
                   )}
                 </div>
               )}
 
               {showNewAddr && (
-                <div className="border border-gray-200 rounded-xl p-4 space-y-3">
-                  <h3 className="font-semibold text-sm text-gray-900">New Address</h3>
+                <div className="border border-gray-200 dark:border-gray-600 rounded-xl p-4 space-y-3">
+                  <h3 className="font-semibold text-sm text-gray-900 dark:text-gray-100">New Address</h3>
                   {addrError && <p className="text-xs text-red-600">{addrError}</p>}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     {(
@@ -189,13 +189,13 @@ export default function CheckoutPage() {
                       ] as [string, keyof AddressFormData, string, string][]
                     ).map(([lbl, field, type, ph]) => (
                       <div key={field} className={field === "address_line_1" ? "sm:col-span-2" : ""}>
-                        <label className="block text-xs font-medium text-gray-700 mb-1">{lbl}</label>
+                        <label className="block text-xs font-medium text-gray-700 dark:text-gray-200 mb-1">{lbl}</label>
                         <input
                           type={type}
                           placeholder={ph}
                           value={(addrForm[field] as string) ?? ""}
                           onChange={(e) => setAddrForm((p) => ({ ...p, [field]: e.target.value || null }))}
-                          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:border-river-blue focus:ring-2 focus:ring-river-blue/20"
+                          className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-sm outline-none focus:border-river-blue focus:ring-2 focus:ring-river-blue/20 bg-white dark:bg-gray-700 text-foreground"
                         />
                       </div>
                     ))}
@@ -212,7 +212,7 @@ export default function CheckoutPage() {
                     <button
                       type="button"
                       onClick={() => { setShowNewAddr(false); setAddrForm(EMPTY_ADDR_FORM); setAddrError(""); }}
-                      className="text-sm text-gray-500 px-4 py-2 rounded-xl border border-gray-200 hover:bg-gray-50 transition-colors"
+                      className="text-sm text-gray-500 dark:text-gray-400 px-4 py-2 rounded-xl border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
                     >
                       Cancel
                     </button>
@@ -222,13 +222,13 @@ export default function CheckoutPage() {
             </section>
 
             {/* Payment Method */}
-            <section className="bg-white rounded-2xl border border-gray-100 p-6">
-              <h2 className="font-semibold text-gray-900 mb-4">Payment Method</h2>
+            <section className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 p-6">
+              <h2 className="font-semibold text-gray-900 dark:text-gray-100 mb-4">Payment Method</h2>
               <div className="space-y-2">
                 {PAYMENT_METHODS.map((pm) => (
                   <label
                     key={pm.value}
-                    className={`flex items-center gap-3 border rounded-xl p-3 cursor-pointer transition-colors ${paymentMethod === pm.value ? "border-river-blue bg-river-blue/5" : "border-gray-200 hover:border-gray-300"}`}
+                    className={`flex items-center gap-3 border rounded-xl p-3 cursor-pointer transition-colors ${paymentMethod === pm.value ? "border-river-blue bg-river-blue/5" : "border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500"}`}
                   >
                     <input
                       type="radio"
@@ -238,27 +238,27 @@ export default function CheckoutPage() {
                       onChange={() => setPaymentMethod(pm.value)}
                       className="accent-river-blue"
                     />
-                    <span className="text-sm font-medium text-gray-800">{pm.label}</span>
+                    <span className="text-sm font-medium text-gray-800 dark:text-gray-200">{pm.label}</span>
                   </label>
                 ))}
               </div>
             </section>
 
             {/* Notes */}
-            <section className="bg-white rounded-2xl border border-gray-100 p-6">
-              <h2 className="font-semibold text-gray-900 mb-3">Order Notes (optional)</h2>
+            <section className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 p-6">
+              <h2 className="font-semibold text-gray-900 dark:text-gray-100 mb-3">Order Notes (optional)</h2>
               <textarea
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
                 rows={3}
                 placeholder="Any special instructions for your order?"
-                className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm outline-none resize-none focus:border-river-blue focus:ring-2 focus:ring-river-blue/20"
+                className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3 text-sm outline-none resize-none focus:border-river-blue focus:ring-2 focus:ring-river-blue/20 bg-white dark:bg-gray-700 text-foreground dark:placeholder:text-gray-500"
               />
             </section>
 
             {/* Loyalty Points */}
             {user && user.loyalty_points > 0 && (
-              <section className="bg-white rounded-2xl border border-gray-100 p-4">
+              <section className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 p-4">
                 <label className="flex items-center gap-3 cursor-pointer">
                   <input
                     type="checkbox"
@@ -266,7 +266,7 @@ export default function CheckoutPage() {
                     onChange={(e) => setRedeemPoints(e.target.checked)}
                     className="rounded border-gray-300 accent-river-blue"
                   />
-                  <span className="text-sm text-gray-700">
+                  <span className="text-sm text-gray-700 dark:text-gray-200">
                     Redeem loyalty points ({user.loyalty_points} pts available)
                   </span>
                 </label>
@@ -276,8 +276,8 @@ export default function CheckoutPage() {
 
           {/* Right: Order Summary */}
           <div className="space-y-4">
-            <div className="bg-white rounded-2xl border border-gray-100 p-6 space-y-3">
-              <h2 className="font-semibold text-gray-900">Order Summary</h2>
+            <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 p-6 space-y-3">
+              <h2 className="font-semibold text-gray-900 dark:text-gray-100">Order Summary</h2>
 
               {cartLoading ? (
                 <div className="flex items-center justify-center min-h-[60px]">
@@ -285,21 +285,21 @@ export default function CheckoutPage() {
                 </div>
               ) : (
                 <>
-                  <div className="divide-y divide-gray-100 text-sm">
+                  <div className="divide-y divide-gray-100 dark:divide-gray-700 text-sm">
                     {items.map((item) => (
                       <div key={item.id} className="py-2 flex justify-between gap-2">
-                        <span className="text-gray-600 truncate flex-1">
+                        <span className="text-gray-600 dark:text-gray-300 truncate flex-1">
                           {item.product?.name ?? `Product #${item.product_id}`}
-                          <span className="text-gray-400"> ×{item.quantity}</span>
+                          <span className="text-gray-400 dark:text-gray-500"> ×{item.quantity}</span>
                         </span>
-                        <span className="font-medium text-gray-900 flex-shrink-0">
+                        <span className="font-medium text-gray-900 dark:text-gray-100 flex-shrink-0">
                           {formatBDT(Number(item.price) * item.quantity)}
                         </span>
                       </div>
                     ))}
                   </div>
-                  <div className="border-t border-gray-100 pt-3 space-y-2 text-sm">
-                    <div className="flex justify-between text-gray-600">
+                  <div className="border-t border-gray-100 dark:border-gray-700 pt-3 space-y-2 text-sm">
+                    <div className="flex justify-between text-gray-600 dark:text-gray-300">
                       <span>Subtotal</span><span>{formatBDT(subtotal)}</span>
                     </div>
                     {discountAmount > 0 && (
@@ -307,7 +307,7 @@ export default function CheckoutPage() {
                         <span>Discount</span><span>-{formatBDT(discountAmount)}</span>
                       </div>
                     )}
-                    <div className="flex justify-between font-bold text-gray-900 border-t border-gray-100 pt-2">
+                    <div className="flex justify-between font-bold text-gray-900 dark:text-gray-100 border-t border-gray-100 dark:border-gray-700 pt-2">
                       <span>Total</span><span>{formatBDT(total)}</span>
                     </div>
                   </div>

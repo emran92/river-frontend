@@ -70,7 +70,7 @@ export default function CorporatePage() {
   }
 
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="bg-gray-50 dark:bg-gray-900 min-h-screen">
       {/* Hero */}
       <section className="bg-[#010103] text-white py-14">
         <div className="max-w-[1280px] mx-auto px-4">
@@ -89,12 +89,12 @@ export default function CorporatePage() {
         {/* Benefits */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {BENEFITS.map((b) => (
-            <div key={b.title} className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
+            <div key={b.title} className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 p-5 shadow-sm">
               <div className="w-11 h-11 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600 mb-3">
                 {b.icon}
               </div>
-              <h3 className="text-sm font-semibold text-gray-900 mb-1.5">{b.title}</h3>
-              <p className="text-xs text-gray-500 leading-relaxed">{b.description}</p>
+              <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-1.5">{b.title}</h3>
+              <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{b.description}</p>
             </div>
           ))}
         </div>
@@ -103,8 +103,8 @@ export default function CorporatePage() {
         <div className="grid lg:grid-cols-3 gap-10">
           {/* Side info */}
           <div className="space-y-6">
-            <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
-              <h3 className="text-base font-semibold text-gray-900 mb-4">Who Should Apply?</h3>
+            <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 p-6 shadow-sm">
+              <h3 className="text-base font-semibold text-gray-900 dark:text-gray-100 mb-4">Who Should Apply?</h3>
               <ul className="space-y-3">
                 {[
                   "Retail electronics stores",
@@ -114,7 +114,7 @@ export default function CorporatePage() {
                   "Corporate offices & institutions",
                   "Online resellers & distributors",
                 ].map((item) => (
-                  <li key={item} className="flex items-center gap-2 text-sm text-gray-600">
+                  <li key={item} className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
                     <svg className="w-4 h-4 text-blue-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
@@ -140,7 +140,7 @@ export default function CorporatePage() {
 
           {/* Form */}
           <div className="lg:col-span-2">
-            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-8">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-8">
               {submitted ? (
                 <div className="text-center py-12">
                   <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -148,19 +148,19 @@ export default function CorporatePage() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">Inquiry Submitted!</h3>
-                  <p className="text-sm text-gray-500 max-w-sm mx-auto">
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">Inquiry Submitted!</h3>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 max-w-sm mx-auto">
                     Thank you for your interest in partnering with River Electronics. Our corporate
                     team will contact you within 1–2 business days.
                   </p>
                 </div>
               ) : (
                 <>
-                  <h2 className="text-xl font-bold text-gray-900 mb-6">Partnership Inquiry Form</h2>
+                  <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-6">Partnership Inquiry Form</h2>
                   <form onSubmit={handleSubmit} className="space-y-5">
                     <div className="grid sm:grid-cols-2 gap-5">
                       <div>
-                        <label htmlFor="company" className="block text-xs font-semibold text-gray-600 mb-1.5">
+                        <label htmlFor="company" className="block text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1.5">
                           Company Name <span className="text-red-500">*</span>
                         </label>
                         <input
@@ -170,12 +170,12 @@ export default function CorporatePage() {
                           required
                           value={form.company}
                           onChange={handleChange}
-                          className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                          className="w-full border border-gray-200 dark:border-gray-600 rounded-lg px-4 py-2.5 text-sm text-gray-800 dark:text-gray-100 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                           placeholder="Your Company Ltd."
                         />
                       </div>
                       <div>
-                        <label htmlFor="contactName" className="block text-xs font-semibold text-gray-600 mb-1.5">
+                        <label htmlFor="contactName" className="block text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1.5">
                           Contact Person <span className="text-red-500">*</span>
                         </label>
                         <input
@@ -185,7 +185,7 @@ export default function CorporatePage() {
                           required
                           value={form.contactName}
                           onChange={handleChange}
-                          className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                          className="w-full border border-gray-200 dark:border-gray-600 rounded-lg px-4 py-2.5 text-sm text-gray-800 dark:text-gray-100 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                           placeholder="Full Name"
                         />
                       </div>
@@ -193,7 +193,7 @@ export default function CorporatePage() {
 
                     <div className="grid sm:grid-cols-2 gap-5">
                       <div>
-                        <label htmlFor="email" className="block text-xs font-semibold text-gray-600 mb-1.5">
+                        <label htmlFor="email" className="block text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1.5">
                           Email Address <span className="text-red-500">*</span>
                         </label>
                         <input
@@ -203,12 +203,12 @@ export default function CorporatePage() {
                           required
                           value={form.email}
                           onChange={handleChange}
-                          className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                          className="w-full border border-gray-200 dark:border-gray-600 rounded-lg px-4 py-2.5 text-sm text-gray-800 dark:text-gray-100 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                           placeholder="you@company.com"
                         />
                       </div>
                       <div>
-                        <label htmlFor="phone" className="block text-xs font-semibold text-gray-600 mb-1.5">
+                        <label htmlFor="phone" className="block text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1.5">
                           Phone Number <span className="text-red-500">*</span>
                         </label>
                         <input
@@ -218,7 +218,7 @@ export default function CorporatePage() {
                           required
                           value={form.phone}
                           onChange={handleChange}
-                          className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                          className="w-full border border-gray-200 dark:border-gray-600 rounded-lg px-4 py-2.5 text-sm text-gray-800 dark:text-gray-100 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                           placeholder="01XXXXXXXXX"
                         />
                       </div>
@@ -226,7 +226,7 @@ export default function CorporatePage() {
 
                     <div className="grid sm:grid-cols-2 gap-5">
                       <div>
-                        <label htmlFor="type" className="block text-xs font-semibold text-gray-600 mb-1.5">
+                        <label htmlFor="type" className="block text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1.5">
                           Business Type <span className="text-red-500">*</span>
                         </label>
                         <select
@@ -235,7 +235,7 @@ export default function CorporatePage() {
                           required
                           value={form.type}
                           onChange={handleChange}
-                          className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition bg-white"
+                          className="w-full border border-gray-200 dark:border-gray-600 rounded-lg px-4 py-2.5 text-sm text-gray-800 dark:text-gray-100 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition bg-white"
                         >
                           <option value="">Select type</option>
                           <option value="retailer">Retailer</option>
@@ -247,7 +247,7 @@ export default function CorporatePage() {
                         </select>
                       </div>
                       <div>
-                        <label htmlFor="employees" className="block text-xs font-semibold text-gray-600 mb-1.5">
+                        <label htmlFor="employees" className="block text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1.5">
                           Company Size
                         </label>
                         <select
@@ -255,7 +255,7 @@ export default function CorporatePage() {
                           name="employees"
                           value={form.employees}
                           onChange={handleChange}
-                          className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition bg-white"
+                          className="w-full border border-gray-200 dark:border-gray-600 rounded-lg px-4 py-2.5 text-sm text-gray-800 dark:text-gray-100 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition bg-white"
                         >
                           <option value="">Select size</option>
                           <option value="1-10">1–10 employees</option>
@@ -267,7 +267,7 @@ export default function CorporatePage() {
                     </div>
 
                     <div>
-                      <label htmlFor="products" className="block text-xs font-semibold text-gray-600 mb-1.5">
+                      <label htmlFor="products" className="block text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1.5">
                         Products of Interest
                       </label>
                       <input
@@ -276,13 +276,13 @@ export default function CorporatePage() {
                         type="text"
                         value={form.products}
                         onChange={handleChange}
-                        className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                        className="w-full border border-gray-200 dark:border-gray-600 rounded-lg px-4 py-2.5 text-sm text-gray-800 dark:text-gray-100 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                         placeholder="e.g. Televisions, Air Conditioners, Refrigerators"
                       />
                     </div>
 
                     <div>
-                      <label htmlFor="message" className="block text-xs font-semibold text-gray-600 mb-1.5">
+                      <label htmlFor="message" className="block text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1.5">
                         Additional Message
                       </label>
                       <textarea
@@ -291,7 +291,7 @@ export default function CorporatePage() {
                         rows={4}
                         value={form.message}
                         onChange={handleChange}
-                        className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition resize-none"
+                        className="w-full border border-gray-200 dark:border-gray-600 rounded-lg px-4 py-2.5 text-sm text-gray-800 dark:text-gray-100 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition resize-none"
                         placeholder="Tell us more about your requirements..."
                       />
                     </div>

@@ -88,14 +88,14 @@ const FAQ_ITEMS = [
 function AccordionItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="border-b border-gray-100 last:border-b-0">
+    <div className="border-b border-gray-100 dark:border-gray-700 last:border-b-0">
       <button
         className="w-full flex items-center justify-between py-4 text-left gap-4"
         onClick={() => setOpen(!open)}
       >
-        <span className="text-sm font-medium text-gray-800">{q}</span>
+        <span className="text-sm font-medium text-gray-800 dark:text-gray-100">{q}</span>
         <svg
-          className={`w-4 h-4 flex-shrink-0 text-gray-400 transition-transform ${open ? "rotate-180" : ""}`}
+          className={`w-4 h-4 flex-shrink-0 text-gray-400 dark:text-gray-500 transition-transform ${open ? "rotate-180" : ""}`}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -104,7 +104,7 @@ function AccordionItem({ q, a }: { q: string; a: string }) {
         </svg>
       </button>
       {open && (
-        <p className="text-sm text-gray-500 leading-relaxed pb-4">{a}</p>
+        <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed pb-4">{a}</p>
       )}
     </div>
   );
@@ -112,7 +112,7 @@ function AccordionItem({ q, a }: { q: string; a: string }) {
 
 export default function FAQPage() {
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="bg-gray-50 dark:bg-gray-900 min-h-screen">
       {/* Hero */}
       <section className="bg-[#010103] text-white py-14">
         <div className="max-w-[1280px] mx-auto px-4 text-center">
@@ -137,9 +137,9 @@ export default function FAQPage() {
       <section className="max-w-[1280px] mx-auto px-4 py-16">
         <div className="max-w-3xl mx-auto space-y-8">
           {FAQ_ITEMS.map((section) => (
-            <div key={section.category} className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-              <div className="bg-gray-50 border-b border-gray-100 px-6 py-4">
-                <h2 className="text-base font-semibold text-gray-900">{section.category}</h2>
+            <div key={section.category} className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm overflow-hidden">
+              <div className="bg-gray-50 dark:bg-gray-700 border-b border-gray-100 dark:border-gray-600 px-6 py-4">
+                <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100">{section.category}</h2>
               </div>
               <div className="px-6">
                 {section.questions.map((item) => (

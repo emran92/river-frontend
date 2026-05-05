@@ -59,7 +59,7 @@ const STEPS = [
 
 export default function ShippingPage() {
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="bg-gray-50 dark:bg-gray-900 min-h-screen">
       {/* Hero */}
       <section className="bg-[#010103] text-white py-14">
         <div className="max-w-[1280px] mx-auto px-4">
@@ -77,15 +77,15 @@ export default function ShippingPage() {
       <div className="max-w-[1280px] mx-auto px-4 py-16 space-y-12">
         {/* Delivery Process */}
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">How Delivery Works</h2>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">How Delivery Works</h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {STEPS.map((s) => (
-              <div key={s.step} className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm relative">
+              <div key={s.step} className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 p-6 shadow-sm relative">
                 <div className="w-9 h-9 bg-[#127FFF] text-white rounded-full flex items-center justify-center text-sm font-bold mb-4">
                   {s.step}
                 </div>
-                <h3 className="text-sm font-semibold text-gray-900 mb-2">{s.title}</h3>
-                <p className="text-xs text-gray-500 leading-relaxed">{s.description}</p>
+                <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-2">{s.title}</h3>
+                <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{s.description}</p>
               </div>
             ))}
           </div>
@@ -93,38 +93,38 @@ export default function ShippingPage() {
 
         {/* Zones & Fees */}
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Delivery Zones & Fees</h2>
-          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">Delivery Zones & Fees</h2>
+          <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
-                <thead className="bg-gray-50 border-b border-gray-100">
+                <thead className="bg-gray-50 dark:bg-gray-700 border-b border-gray-100 dark:border-gray-600">
                   <tr>
-                    <th className="text-left px-6 py-4 font-semibold text-gray-700">Zone</th>
-                    <th className="text-left px-6 py-4 font-semibold text-gray-700">Estimated Delivery</th>
-                    <th className="text-left px-6 py-4 font-semibold text-gray-700">Shipping Fee</th>
+                    <th className="text-left px-6 py-4 font-semibold text-gray-700 dark:text-gray-200">Zone</th>
+                    <th className="text-left px-6 py-4 font-semibold text-gray-700 dark:text-gray-200">Estimated Delivery</th>
+                    <th className="text-left px-6 py-4 font-semibold text-gray-700 dark:text-gray-200">Shipping Fee</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-50">
+                <tbody className="divide-y divide-gray-50 dark:divide-gray-700">
                   {ZONES.map((z) => (
-                    <tr key={z.zone} className="hover:bg-gray-50 transition-colors">
-                      <td className="px-6 py-4 font-medium text-gray-800">{z.zone}</td>
-                      <td className="px-6 py-4 text-gray-600">{z.delivery}</td>
-                      <td className="px-6 py-4 text-gray-600">{z.fee}</td>
+                    <tr key={z.zone} className="hover:bg-gray-50 dark:hover:bg-gray-700/40 transition-colors">
+                      <td className="px-6 py-4 font-medium text-gray-800 dark:text-gray-100">{z.zone}</td>
+                      <td className="px-6 py-4 text-gray-600 dark:text-gray-300">{z.delivery}</td>
+                      <td className="px-6 py-4 text-gray-600 dark:text-gray-300">{z.fee}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
           </div>
-          <p className="text-xs text-gray-400 mt-3">
+          <p className="text-xs text-gray-400 dark:text-gray-500 mt-3">
             * Free shipping on Dhaka metro orders above ৳5,000. Large appliances (refrigerators, ACs, washing machines) may incur additional handling charges.
           </p>
         </div>
 
         {/* Important Notes */}
         <div className="grid md:grid-cols-2 gap-6">
-          <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
-            <h3 className="text-base font-semibold text-gray-900 mb-4">Important Notes</h3>
+          <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 p-6 shadow-sm">
+            <h3 className="text-base font-semibold text-gray-900 dark:text-gray-100 mb-4">Important Notes</h3>
             <ul className="space-y-3">
               {[
                 "Orders placed before 2 PM are dispatched the same day (business days only).",
@@ -133,7 +133,7 @@ export default function ShippingPage() {
                 "If you miss the delivery, re-delivery will be attempted the next business day.",
                 "Some remote areas may require additional time or special arrangements.",
               ].map((note) => (
-                <li key={note} className="flex items-start gap-3 text-sm text-gray-600">
+                <li key={note} className="flex items-start gap-3 text-sm text-gray-600 dark:text-gray-300">
                   <svg className="w-4 h-4 text-blue-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
@@ -143,8 +143,8 @@ export default function ShippingPage() {
             </ul>
           </div>
 
-          <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
-            <h3 className="text-base font-semibold text-gray-900 mb-4">Large Appliance Delivery</h3>
+          <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 p-6 shadow-sm">
+            <h3 className="text-base font-semibold text-gray-900 dark:text-gray-100 mb-4">Large Appliance Delivery</h3>
             <ul className="space-y-3">
               {[
                 "Refrigerators, ACs, and washing machines are delivered by specialized teams.",
@@ -153,7 +153,7 @@ export default function ShippingPage() {
                 "Stair-carry service is available upon request for an additional fee.",
                 "Our technician will test the appliance after installation.",
               ].map((note) => (
-                <li key={note} className="flex items-start gap-3 text-sm text-gray-600">
+                <li key={note} className="flex items-start gap-3 text-sm text-gray-600 dark:text-gray-300">
                   <svg className="w-4 h-4 text-blue-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>

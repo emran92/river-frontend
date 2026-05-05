@@ -76,8 +76,8 @@ export default function CartPage() {
         <svg className="w-16 h-16 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
         </svg>
-        <h2 className="text-xl font-bold text-gray-900 mb-2">Your cart is empty</h2>
-        <p className="text-sm text-gray-500 mb-6">Looks like you haven&apos;t added anything yet.</p>
+        <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">Your cart is empty</h2>
+        <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">Looks like you haven&apos;t added anything yet.</p>
         <Link href="/products" className="inline-block bg-river-blue text-white text-sm font-semibold px-6 py-3 rounded-xl hover:bg-river-blue/90 transition-colors">
           Shop Now
         </Link>
@@ -87,7 +87,7 @@ export default function CartPage() {
 
   return (
     <div className="max-w-[1280px] mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold text-gray-900 mb-6">Shopping Cart</h1>
+      <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">Shopping Cart</h1>
 
       {isLoading ? (
         <div className="flex items-center justify-center min-h-[200px]">
@@ -98,7 +98,7 @@ export default function CartPage() {
           {/* Items */}
           <div className="lg:col-span-2 space-y-3">
             {items.map((item) => (
-              <div key={item.id} className="bg-white rounded-xl border border-gray-100 p-4 flex gap-4">
+              <div key={item.id} className="bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 p-4 flex gap-4">
                 {item.product && (
                   <Link href={`/products/${item.product.slug}`} className="flex-shrink-0">
                     <Image
@@ -106,24 +106,24 @@ export default function CartPage() {
                       alt={item.product.name}
                       width={80}
                       height={80}
-                      className="w-20 h-20 object-contain rounded-lg bg-gray-50"
+                      className="w-20 h-20 object-contain rounded-lg bg-gray-50 dark:bg-gray-700"
                     />
                   </Link>
                 )}
                 <div className="flex-1 min-w-0">
                   {item.product ? (
-                    <Link href={`/products/${item.product.slug}`} className="font-semibold text-sm text-gray-900 line-clamp-2 hover:text-river-blue transition-colors">
+                    <Link href={`/products/${item.product.slug}`} className="font-semibold text-sm text-gray-900 dark:text-gray-100 line-clamp-2 hover:text-river-blue transition-colors">
                       {item.product.name}
                     </Link>
                   ) : (
-                    <p className="font-semibold text-sm text-gray-900">Product #{item.product_id}</p>
+                    <p className="font-semibold text-sm text-gray-900 dark:text-gray-100">Product #{item.product_id}</p>
                   )}
-                  <p className="text-sm text-gray-500 mt-0.5">{formatBDT(Number(item.price))}</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">{formatBDT(Number(item.price))}</p>
 
                   <div className="flex items-center gap-3 mt-3">
-                    <div className="flex items-center border border-gray-200 rounded-lg overflow-hidden">
+                    <div className="flex items-center border border-gray-200 dark:border-gray-600 rounded-lg overflow-hidden">
                       <button
-                        className="w-8 h-8 flex items-center justify-center text-gray-600 hover:bg-gray-100 disabled:opacity-30 transition-colors"
+                        className="w-8 h-8 flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 disabled:opacity-30 transition-colors"
                         onClick={() => handleQtyChange(item.id, item.quantity - 1)}
                         disabled={item.quantity <= 1 || updatingId === item.id}
                         aria-label="Decrease"
@@ -136,7 +136,7 @@ export default function CartPage() {
                         {updatingId === item.id ? "…" : item.quantity}
                       </span>
                       <button
-                        className="w-8 h-8 flex items-center justify-center text-gray-600 hover:bg-gray-100 disabled:opacity-30 transition-colors"
+                        className="w-8 h-8 flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 disabled:opacity-30 transition-colors"
                         onClick={() => handleQtyChange(item.id, item.quantity + 1)}
                         disabled={updatingId === item.id}
                         aria-label="Increase"
@@ -156,7 +156,7 @@ export default function CartPage() {
                   </div>
                 </div>
                 <div className="text-right flex-shrink-0">
-                  <p className="font-bold text-gray-900 text-sm">
+                  <p className="font-bold text-gray-900 dark:text-gray-100 text-sm">
                     {formatBDT(Number(item.price) * item.quantity)}
                   </p>
                 </div>
@@ -167,8 +167,8 @@ export default function CartPage() {
           {/* Order Summary */}
           <div className="space-y-4">
             {/* Coupon */}
-            <div className="bg-white rounded-xl border border-gray-100 p-4">
-              <h3 className="font-semibold text-sm text-gray-900 mb-3">Coupon Code</h3>
+            <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 p-4">
+              <h3 className="font-semibold text-sm text-gray-900 dark:text-gray-100 mb-3">Coupon Code</h3>
               {hasCoupon ? (
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-green-700 font-medium">Coupon applied!</span>
@@ -187,7 +187,7 @@ export default function CartPage() {
                     value={couponInput}
                     onChange={(e) => setCouponInput(e.target.value)}
                     placeholder="Enter coupon"
-                    className="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:border-river-blue focus:ring-2 focus:ring-river-blue/20"
+                    className="flex-1 border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-sm outline-none focus:border-river-blue focus:ring-2 focus:ring-river-blue/20 bg-white dark:bg-gray-700 text-foreground"
                   />
                   <button
                     type="submit"
@@ -202,9 +202,9 @@ export default function CartPage() {
             </div>
 
             {/* Summary */}
-            <div className="bg-white rounded-xl border border-gray-100 p-4 space-y-3">
-              <h3 className="font-semibold text-sm text-gray-900">Order Summary</h3>
-              <div className="flex justify-between text-sm text-gray-600">
+            <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 p-4 space-y-3">
+              <h3 className="font-semibold text-sm text-gray-900 dark:text-gray-100">Order Summary</h3>
+              <div className="flex justify-between text-sm text-gray-600 dark:text-gray-300">
                 <span>Subtotal</span>
                 <span>{formatBDT(subtotal)}</span>
               </div>
@@ -214,11 +214,11 @@ export default function CartPage() {
                   <span>-{formatBDT(discountAmount)}</span>
                 </div>
               )}
-              <div className="flex justify-between text-sm text-gray-500 border-t border-gray-100 pt-3">
+              <div className="flex justify-between text-sm text-gray-500 dark:text-gray-400 border-t border-gray-100 dark:border-gray-700 pt-3">
                 <span>Shipping</span>
                 <span className="text-green-600">Calculated at checkout</span>
               </div>
-              <div className="flex justify-between font-bold text-gray-900 border-t border-gray-100 pt-3">
+              <div className="flex justify-between font-bold text-gray-900 dark:text-gray-100 border-t border-gray-100 dark:border-gray-700 pt-3">
                 <span>Total</span>
                 <span>{formatBDT(total)}</span>
               </div>
@@ -230,7 +230,7 @@ export default function CartPage() {
               </Link>
               <Link
                 href="/products"
-                className="block w-full text-center text-sm text-gray-500 hover:text-gray-700 transition-colors"
+                className="block w-full text-center text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
               >
                 Continue Shopping
               </Link>

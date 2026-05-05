@@ -32,7 +32,7 @@ export default function ImageViewer({ images, productName }: ImageViewerProps) {
       {/* Main image */}
       <div
         ref={mainRef}
-        className="relative w-full aspect-square bg-white rounded-2xl border border-[#E6E8EB] overflow-hidden cursor-zoom-in select-none"
+        className="relative w-full aspect-square bg-white dark:bg-gray-800 rounded-2xl border border-[#E6E8EB] dark:border-gray-700 overflow-hidden cursor-zoom-in select-none"
         onMouseEnter={() => setZoomed(true)}
         onMouseLeave={() => setZoomed(false)}
         onMouseMove={handleMouseMove}
@@ -67,7 +67,7 @@ export default function ImageViewer({ images, productName }: ImageViewerProps) {
               className={`relative w-16 h-16 rounded-xl border-2 overflow-hidden flex-shrink-0 transition-colors ${
                 i === active
                   ? "border-blue-500"
-                  : "border-[#E6E8EB] hover:border-blue-300"
+                  : "border-[#E6E8EB] dark:border-gray-600 hover:border-blue-300"
               }`}
             >
               <Image

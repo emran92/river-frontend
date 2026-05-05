@@ -74,15 +74,15 @@ const FEATURES = [
 
 export default function FeatureBar() {
   return (
-    <section className="border-t border-gray-200 bg-white py-8">
+    <section className="border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 py-8">
       <div className="max-w-[1280px] mx-auto px-4 py-8">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {FEATURES.map((feature) => (
             <div key={feature.title} className="flex flex-col gap-2 h-full">
-              <div className="w-fit rounded-full border border-gray-200 p-4">{feature.icon}</div>
+              <div className="w-fit rounded-full border border-gray-200 dark:border-gray-700 p-4 dark:invert">{feature.icon}</div>
               <div>
-                <p className="font-semibold text-gray-900 text-sm">{feature.title}</p>
-                <p className="text-xs text-gray-500 mt-0.5">{feature.subtitle}</p>
+                <p className="font-semibold text-gray-900 dark:text-gray-100 text-sm">{feature.title}</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{feature.subtitle}</p>
               </div>
             </div>
           ))}

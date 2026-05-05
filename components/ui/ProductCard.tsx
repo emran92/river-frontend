@@ -58,7 +58,7 @@ export default function ProductCard({ product }: ProductCardProps) {
   return (
     <Link
       href={`/products/${product.slug}`}
-      className="group block bg-white border border-[#E6E8EB] rounded-lg overflow-hidden transition-shadow duration-200"
+      className="group block bg-white dark:bg-gray-800 border border-[#E6E8EB] dark:border-gray-700 rounded-lg overflow-hidden transition-shadow duration-200 hover:shadow-md dark:hover:shadow-gray-900"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -77,7 +77,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             {galleryImages.map((_, i) => (
               <span
                 key={i}
-                className={`block w-1.5 h-1.5 rounded-full transition-colors duration-200 ${i === activeIndex ? "bg-gray-700" : "bg-gray-300"}`}
+                className={`block w-1.5 h-1.5 rounded-full transition-colors duration-200 ${i === activeIndex ? "bg-gray-700 dark:bg-gray-200" : "bg-gray-300 dark:bg-gray-600"}`}
               />
             ))}
           </div>
@@ -97,17 +97,17 @@ export default function ProductCard({ product }: ProductCardProps) {
 
       {/* Info */}
       <div className="p-3">
-        <h3 className="text-sm text-black font-medium line-clamp-2 leading-snug mb-2 min-h-[2.5rem]">
+        <h3 className="text-sm text-black dark:text-gray-100 font-medium line-clamp-2 leading-snug mb-2 min-h-[2.5rem]">
           {product.name}
         </h3>
 
         {/* Price */}
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-base font-bold text-gray-900">
+          <span className="text-base font-bold text-gray-900 dark:text-gray-100">
             {formatBDT(displayPrice)}
           </span>
           {hasDiscount && (
-            <span className="text-xs text-gray-400 line-through">
+            <span className="text-xs text-gray-400 dark:text-gray-500 line-through">
               {formatBDT(product.price)}
             </span>
           )}

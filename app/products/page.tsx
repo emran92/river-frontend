@@ -42,16 +42,16 @@ export default async function ProductsPage({ searchParams }: Props) {
   return (
     <main className="max-w-[1280px] mx-auto px-4 py-8">
       {/* Breadcrumb */}
-      <nav className="flex gap-2 text-sm text-gray-400 mb-6">
-        <Link href="/" className="hover:text-blue-600 transition-colors">Home</Link>
+      <nav className="flex gap-2 text-sm text-gray-400 dark:text-gray-500 mb-6">
+        <Link href="/" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Home</Link>
         <span>/</span>
-        <span className="text-gray-900 font-medium">All Products</span>
+        <span className="text-gray-900 dark:text-gray-100 font-medium">All Products</span>
       </nav>
 
       <div className="flex items-center justify-between mb-6 gap-2 flex-wrap">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">All Products</h1>
-          <p className="text-sm text-gray-400 mt-1">{total > 0 ? `${total} products available` : "No products found"}</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">All Products</h1>
+          <p className="text-sm text-gray-400 dark:text-gray-500 mt-1">{total > 0 ? `${total} products available` : "No products found"}</p>
         </div>
         <Suspense fallback={null}>
           <SortSelect basePath="/products" currentSort={sort} />
@@ -61,8 +61,8 @@ export default async function ProductsPage({ searchParams }: Props) {
       {products.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-24 text-center">
           <div className="text-5xl mb-4">📦</div>
-          <h3 className="text-lg font-semibold text-gray-700 mb-2">No products found</h3>
-          <p className="text-gray-400 text-sm">Check back soon or browse by category.</p>
+          <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-2">No products found</h3>
+          <p className="text-gray-400 dark:text-gray-500 text-sm">Check back soon or browse by category.</p>
         </div>
       ) : (
         <>

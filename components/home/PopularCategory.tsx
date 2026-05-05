@@ -30,9 +30,9 @@ export default function PopularCategory() {
       {isLoading ? (
         <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-4">
           {Array.from({ length: 8 }).map((_, i) => (
-            <div key={i} className="flex flex-col items-center gap-4 rounded-2xl border border-gray-100 p-5 animate-pulse">
-              <div className="w-16 h-16 md:w-20 md:h-20 rounded-xl bg-gray-200 animate-pulse" />
-              <div className="w-14 h-3 bg-gray-200 rounded animate-pulse" />
+            <div key={i} className="flex flex-col items-center gap-4 rounded-2xl border border-gray-100 dark:border-gray-700 p-5 animate-pulse">
+              <div className="w-16 h-16 md:w-20 md:h-20 rounded-xl bg-gray-200 dark:bg-gray-700 animate-pulse" />
+              <div className="w-14 h-3 bg-gray-200 dark:bg-gray-700 rounded animate-pulse" />
             </div>
           ))}
         </div>

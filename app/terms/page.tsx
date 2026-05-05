@@ -67,7 +67,7 @@ const SECTIONS = [
 
 export default function TermsPage() {
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="bg-gray-50 dark:bg-gray-900 min-h-screen">
       {/* Hero */}
       <section className="bg-[#010103] text-white py-14">
         <div className="max-w-[1280px] mx-auto px-4">
@@ -93,9 +93,9 @@ export default function TermsPage() {
           {/* Sections */}
           <div className="space-y-8">
             {SECTIONS.map((section) => (
-              <div key={section.title} className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
-                <h2 className="text-base font-semibold text-gray-900 mb-3">{section.title}</h2>
-                <p className="text-sm text-gray-600 leading-relaxed">{section.content}</p>
+              <div key={section.title} className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 p-6 shadow-sm">
+                <h2 className="text-base font-semibold text-gray-900 dark:text-gray-100 mb-3">{section.title}</h2>
+                <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">{section.content}</p>
               </div>
             ))}
           </div>

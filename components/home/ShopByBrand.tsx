@@ -27,7 +27,7 @@ export default function ShopByBrand() {
       {isLoading ? (
         <div className="grid grid-cols-5 sm:grid-cols-10 gap-3">
           {Array.from({ length: 10 }).map((_, i) => (
-            <div key={i} className="h-[88px] bg-gray-200 animate-pulse rounded-2xl" />
+            <div key={i} className="h-[88px] bg-gray-200 dark:bg-gray-700 animate-pulse rounded-2xl" />
           ))}
         </div>
       ) : (

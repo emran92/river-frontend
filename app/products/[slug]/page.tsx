@@ -79,21 +79,21 @@ export default async function ProductPage({ params }: Props) {
   return (
     <div className="max-w-[1280px] mx-auto px-4 py-6">
       {/* Breadcrumb */}
-      <nav className="flex items-center gap-2 text-xs text-gray-400 mb-6">
-        <Link href="/" className="hover:text-blue-600 transition-colors">Home</Link>
+      <nav className="flex items-center gap-2 text-xs text-gray-400 dark:text-gray-500 mb-6">
+        <Link href="/" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Home</Link>
         <span>/</span>
         {product.category && (
           <>
             <Link
               href={`/${product.category.slug}`}
-              className="hover:text-blue-600 transition-colors"
+              className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
             >
               {product.category.name}
             </Link>
             <span>/</span>
           </>
         )}
-        <span className="text-gray-600 line-clamp-1">{product.name}</span>
+        <span className="text-gray-600 dark:text-gray-300 line-clamp-1">{product.name}</span>
       </nav>
 
       {/* Main layout */}
@@ -128,7 +128,7 @@ export default async function ProductPage({ params }: Props) {
           </div>
 
           {/* Name */}
-          <h1 className="text-2xl font-bold text-gray-900 leading-snug">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 leading-snug">
             {product.name}
           </h1>
 
@@ -139,7 +139,7 @@ export default async function ProductPage({ params }: Props) {
                 {[1, 2, 3, 4, 5].map((s) => (
                   <svg
                     key={s}
-                    className={`w-4 h-4 ${s <= Math.round(product.average_rating!) ? "text-yellow-400" : "text-gray-200"}`}
+                    className={`w-4 h-4 ${s <= Math.round(product.average_rating!) ? "text-yellow-400" : "text-gray-200 dark:text-gray-600"}`}
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -147,7 +147,7 @@ export default async function ProductPage({ params }: Props) {
                   </svg>
                 ))}
               </div>
-              <span className="text-sm text-gray-500">
+              <span className="text-sm text-gray-500 dark:text-gray-400">
                 {product.average_rating.toFixed(1)} ({product.reviews_count ?? 0} reviews)
               </span>
             </div>
@@ -155,12 +155,12 @@ export default async function ProductPage({ params }: Props) {
 
           {/* Price */}
           <div className="flex items-center gap-4 flex-wrap">
-            <span className="text-3xl font-bold text-gray-900">
+            <span className="text-3xl font-bold text-gray-900 dark:text-gray-100">
               {formatBDT(displayPrice)}
             </span>
             {hasDiscount && (
               <>
-                <span className="text-lg text-gray-400 line-through">
+                <span className="text-lg text-gray-400 dark:text-gray-500 line-through">
                   {formatBDT(product.price)}
                 </span>
                 <span className="bg-red-500 text-white text-sm font-bold px-2.5 py-1 rounded-lg">
@@ -172,7 +172,7 @@ export default async function ProductPage({ params }: Props) {
 
           {/* Short description */}
           {product.short_description && (
-            <p className="text-sm text-gray-600 leading-relaxed border-t border-gray-100 pt-4">
+            <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed border-t border-gray-100 dark:border-gray-700 pt-4">
               {product.short_description}
             </p>
           )}
@@ -180,29 +180,29 @@ export default async function ProductPage({ params }: Props) {
           {/* Meta info */}
           <div className="grid grid-cols-2 gap-3 text-sm">
             {product.model_number && (
-              <div className="bg-[#F4F4F4] rounded-xl px-4 py-3">
-                <p className="text-xs text-gray-400 mb-0.5">Model</p>
-                <p className="font-semibold text-gray-800">{product.model_number}</p>
+              <div className="bg-[#F4F4F4] dark:bg-gray-700 rounded-xl px-4 py-3">
+                <p className="text-xs text-gray-400 dark:text-gray-500 mb-0.5">Model</p>
+                <p className="font-semibold text-gray-800 dark:text-gray-100">{product.model_number}</p>
               </div>
             )}
             {product.sku && (
-              <div className="bg-[#F4F4F4] rounded-xl px-4 py-3">
-                <p className="text-xs text-gray-400 mb-0.5">SKU</p>
-                <p className="font-semibold text-gray-800">{product.sku}</p>
+              <div className="bg-[#F4F4F4] dark:bg-gray-700 rounded-xl px-4 py-3">
+                <p className="text-xs text-gray-400 dark:text-gray-500 mb-0.5">SKU</p>
+                <p className="font-semibold text-gray-800 dark:text-gray-100">{product.sku}</p>
               </div>
             )}
             {product.warranty_months > 0 && (
-              <div className="bg-[#F4F4F4] rounded-xl px-4 py-3">
-                <p className="text-xs text-gray-400 mb-0.5">Warranty</p>
-                <p className="font-semibold text-gray-800">
+              <div className="bg-[#F4F4F4] dark:bg-gray-700 rounded-xl px-4 py-3">
+                <p className="text-xs text-gray-400 dark:text-gray-500 mb-0.5">Warranty</p>
+                <p className="font-semibold text-gray-800 dark:text-gray-100">
                   {product.warranty_months >= 12
                     ? `${product.warranty_months / 12} Year${product.warranty_months > 12 ? "s" : ""}`
                     : `${product.warranty_months} Month${product.warranty_months > 1 ? "s" : ""}`}
                 </p>
               </div>
             )}
-            <div className="bg-[#F4F4F4] rounded-xl px-4 py-3">
-              <p className="text-xs text-gray-400 mb-0.5">Availability</p>
+            <div className="bg-[#F4F4F4] dark:bg-gray-700 rounded-xl px-4 py-3">
+              <p className="text-xs text-gray-400 dark:text-gray-500 mb-0.5">Availability</p>
               <p className={`font-semibold ${inStock ? "text-green-600" : "text-red-500"}`}>
                 {inStock ? `In Stock (${product.stock_quantity})` : "Out of Stock"}
               </p>
@@ -213,7 +213,7 @@ export default async function ProductPage({ params }: Props) {
           <AddToCartSection product={product} inStock={inStock} />
 
           {/* Trust badges */}
-          <div className="grid grid-cols-3 gap-3 border-t border-gray-100 pt-5 text-center">
+          <div className="grid grid-cols-3 gap-3 border-t border-gray-100 dark:border-gray-700 pt-5 text-center">
             {[
               { icon: "M3 10h18M3 6h18M3 14h18M3 18h12", label: "Free Delivery" },
               { icon: "M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15", label: "14-Day Returns" },
@@ -225,7 +225,7 @@ export default async function ProductPage({ params }: Props) {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d={icon} />
                   </svg>
                 </div>
-                <span className="text-xs text-gray-500 font-medium">{label}</span>
+                <span className="text-xs text-gray-500 dark:text-gray-400 font-medium">{label}</span>
               </div>
             ))}
           </div>
@@ -238,7 +238,7 @@ export default async function ProductPage({ params }: Props) {
       {/* Related products */}
       {related.length > 0 && (
         <section className="mt-12">
-          <h2 className="text-xl font-bold text-gray-900 mb-5">Related Products</h2>
+          <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-5">Related Products</h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
             {related.map((p) => (
               <ProductCard key={p.id} product={p} />

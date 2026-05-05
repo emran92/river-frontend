@@ -59,7 +59,7 @@ const VALUES = [
 
 export default function AboutPage() {
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="bg-gray-50 dark:bg-gray-900 min-h-screen">
       {/* Hero */}
       <section className="bg-[#010103] text-white py-16">
         <div className="max-w-[1280px] mx-auto px-4">
@@ -99,10 +99,10 @@ export default function AboutPage() {
             <p className="text-xs font-semibold text-blue-600 uppercase tracking-widest mb-3">
               Who We Are
             </p>
-            <h2 className="text-3xl font-bold text-gray-900 mb-5">
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-5">
               More Than Just an Electronics Store
             </h2>
-            <div className="space-y-4 text-sm text-gray-600 leading-relaxed">
+            <div className="space-y-4 text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
               <p>
                 Founded with a vision to make premium home appliances accessible to every
                 Bangladeshi household, River Electronics has grown into one of the country's
@@ -121,15 +121,15 @@ export default function AboutPage() {
               </p>
             </div>
           </div>
-          <div className="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Our Mission</h3>
-            <p className="text-sm text-gray-600 leading-relaxed mb-6">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 p-8 shadow-sm">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Our Mission</h3>
+            <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
               To enrich the lives of Bangladeshi families by providing access to world-class home
               appliances — backed by honest advice, transparent pricing, and reliable after-sales
               service.
             </p>
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Our Vision</h3>
-            <p className="text-sm text-gray-600 leading-relaxed">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Our Vision</h3>
+            <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
               To be Bangladesh's most trusted home appliance brand — known not just for our
               products, but for the relationships we build and the lives we improve.
             </p>
@@ -138,25 +138,25 @@ export default function AboutPage() {
       </section>
 
       {/* Values */}
-      <section className="bg-white border-t border-gray-100 py-16">
+      <section className="bg-white dark:bg-gray-800 border-t border-gray-100 dark:border-gray-700 py-16">
         <div className="max-w-[1280px] mx-auto px-4">
           <div className="text-center mb-10">
             <p className="text-xs font-semibold text-blue-600 uppercase tracking-widest mb-2">
               What Drives Us
             </p>
-            <h2 className="text-3xl font-bold text-gray-900">Our Core Values</h2>
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100">Our Core Values</h2>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {VALUES.map((v) => (
               <div
                 key={v.title}
-                className="bg-gray-50 rounded-2xl border border-gray-100 p-6 hover:shadow-md hover:border-blue-100 transition-all"
+                className="bg-gray-50 dark:bg-gray-700 rounded-2xl border border-gray-100 dark:border-gray-600 p-6 hover:shadow-md hover:border-blue-100 transition-all"
               >
                 <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600 mb-4">
                   {v.icon}
                 </div>
-                <h3 className="text-base font-semibold text-gray-900 mb-2">{v.title}</h3>
-                <p className="text-sm text-gray-500 leading-relaxed">{v.description}</p>
+                <h3 className="text-base font-semibold text-gray-900 dark:text-gray-100 mb-2">{v.title}</h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">{v.description}</p>
               </div>
             ))}
           </div>

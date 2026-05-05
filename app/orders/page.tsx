@@ -60,7 +60,7 @@ export default function OrdersPage() {
 
   return (
     <div className="max-w-[900px] mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold text-gray-900 mb-6">My Orders</h1>
+      <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">My Orders</h1>
 
       {loading && (
         <div className="flex items-center justify-center min-h-[200px]">
@@ -76,7 +76,7 @@ export default function OrdersPage() {
 
       {!loading && !error && orders.length === 0 && (
         <div className="text-center py-16">
-          <p className="text-gray-500 text-sm mb-4">You haven&apos;t placed any orders yet.</p>
+          <p className="text-gray-500 dark:text-gray-400 text-sm mb-4">You haven&apos;t placed any orders yet.</p>
           <Link href="/products" className="inline-block bg-river-blue text-white text-sm font-semibold px-6 py-3 rounded-xl hover:bg-river-blue/90 transition-colors">
             Start Shopping
           </Link>
@@ -89,20 +89,20 @@ export default function OrdersPage() {
             <Link
               key={order.id}
               href={`/orders/${order.id}`}
-              className="block bg-white rounded-xl border border-gray-100 p-4 hover:border-river-blue/30 transition-colors group"
+              className="block bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 p-4 hover:border-river-blue/30 transition-colors group"
             >
               <div className="flex items-start justify-between gap-4">
                 <div>
-                  <p className="font-semibold text-sm text-gray-900 group-hover:text-river-blue transition-colors">
+                  <p className="font-semibold text-sm text-gray-900 dark:text-gray-100 group-hover:text-river-blue transition-colors">
                     #{order.order_number}
                   </p>
-                  <p className="text-xs text-gray-400 mt-0.5">{formatDate(order.created_at)}</p>
-                  <p className="text-xs text-gray-500 mt-1">
+                  <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">{formatDate(order.created_at)}</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                     {order.items.length} item{order.items.length !== 1 ? "s" : ""}
                   </p>
                 </div>
                 <div className="text-right flex-shrink-0">
-                  <p className="font-bold text-gray-900 text-sm">{formatBDT(Number(order.total))}</p>
+                  <p className="font-bold text-gray-900 dark:text-gray-100 text-sm">{formatBDT(Number(order.total))}</p>
                   <span className={`inline-block mt-1 text-[11px] font-semibold px-2 py-0.5 rounded-full capitalize ${STATUS_STYLES[order.status]}`}>
                     {order.status}
                   </span>

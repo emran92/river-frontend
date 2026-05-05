@@ -28,7 +28,7 @@ export default function SectionHeader<T extends string = string>({
         {subtitle && (
           <p className="text-xs font-semibold text-blue-600 uppercase tracking-widest mb-1">{subtitle}</p>
         )}
-        <h2 className="text-lg md:text-2xl font-semibold text-gray-900">{title}</h2>
+        <h2 className="text-lg md:text-2xl font-semibold text-gray-900 dark:text-gray-100">{title}</h2>
       </div>
 
       <div className="flex items-center gap-3 flex-wrap">
@@ -38,7 +38,7 @@ export default function SectionHeader<T extends string = string>({
         {seeAllHref && (
           <Link
             href={seeAllHref}
-            className="bg-[#F4F4F4] rounded-lg text-black text-sm font-medium hover:bg-river-blue hover:text-white transition-colors px-4 py-2 border border-gray-200"
+            className="bg-[#F4F4F4] dark:bg-gray-800 rounded-lg text-black dark:text-gray-100 text-sm font-medium hover:bg-river-blue hover:text-white transition-colors px-4 py-2 border border-gray-200 dark:border-gray-700"
           >
             {seeAllLabel} →
           </Link>

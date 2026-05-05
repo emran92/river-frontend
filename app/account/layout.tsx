@@ -85,7 +85,7 @@ export default function AccountLayout({ children }: { children: React.ReactNode 
   const initials = user ? getInitials(user.name) : "?";
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <div className="max-w-[1200px] mx-auto px-4 py-8">
         {/* Mobile header */}
         <div className="flex items-center justify-between mb-4 lg:hidden">
@@ -94,13 +94,13 @@ export default function AccountLayout({ children }: { children: React.ReactNode 
               {initials}
             </div>
             <div>
-              <p className="font-semibold text-gray-900 text-sm leading-tight">{user?.name}</p>
-              <p className="text-xs text-gray-400">My Account</p>
+              <p className="font-semibold text-gray-900 dark:text-gray-100 text-sm leading-tight">{user?.name}</p>
+              <p className="text-xs text-gray-400 dark:text-gray-500">My Account</p>
             </div>
           </div>
           <button
             onClick={() => setMobileOpen((o) => !o)}
-            className="p-2 rounded-xl border border-gray-200 bg-white text-gray-600 hover:bg-gray-50 transition-colors"
+            className="p-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
             aria-label="Toggle menu"
           >
             {mobileOpen ? (
@@ -117,18 +117,18 @@ export default function AccountLayout({ children }: { children: React.ReactNode 
 
         {/* Mobile dropdown nav */}
         {mobileOpen && (
-          <div className="lg:hidden mb-4 bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+          <div className="lg:hidden mb-4 bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm overflow-hidden">
             {NAV_ITEMS.map((item) => {
               const active = pathname === item.href || pathname.startsWith(item.href + "/");
               return (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`flex items-center gap-3 px-4 py-3 text-sm font-medium transition-colors border-b border-gray-50 last:border-0 ${
-                    active ? "text-river-blue bg-river-blue/5" : "text-gray-700 hover:bg-gray-50"
+                  className={`flex items-center gap-3 px-4 py-3 text-sm font-medium transition-colors border-b border-gray-50 dark:border-gray-700 last:border-0 ${
+                    active ? "text-river-blue bg-river-blue/5" : "text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700"
                   }`}
                 >
-                  <span className={active ? "text-river-blue" : "text-gray-400"}>{item.icon}</span>
+                  <span className={active ? "text-river-blue" : "text-gray-400 dark:text-gray-500"}>{item.icon}</span>
                   {item.label}
                   {active && <span className="ml-auto w-1.5 h-1.5 rounded-full bg-river-blue" />}
                 </Link>
@@ -151,16 +151,16 @@ export default function AccountLayout({ children }: { children: React.ReactNode 
           {/* Sidebar — desktop */}
           <aside className="hidden lg:flex flex-col w-64 flex-shrink-0 sticky top-6 gap-4">
             {/* User card */}
-            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm overflow-hidden">
               {/* Gradient header */}
               <div className="h-16 relative" />
               <div className="px-5 pb-5">
                 {/* Avatar overlapping gradient */}
-                <div className="w-16 h-16 rounded-full bg-white border-4 border-white shadow-md flex items-center justify-center -mt-8 mb-3">
+                <div className="w-16 h-16 rounded-full bg-white dark:bg-gray-700 border-4 border-white dark:border-gray-700 shadow-md flex items-center justify-center -mt-8 mb-3">
                   <span className="text-xl font-bold text-river-blue">{initials}</span>
                 </div>
-                <p className="font-bold text-gray-900 text-base leading-tight truncate">{user?.name}</p>
-                <p className="text-xs text-gray-400 mt-0.5 truncate">{user?.email}</p>
+                <p className="font-bold text-gray-900 dark:text-gray-100 text-base leading-tight truncate">{user?.name}</p>
+                <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5 truncate">{user?.email}</p>
                 {user && user.loyalty_points > 0 && (
                   <div className="mt-3 inline-flex items-center gap-1.5 bg-amber-50 border border-amber-200 text-amber-700 text-xs font-semibold px-3 py-1 rounded-full">
                     <svg className="w-3.5 h-3.5 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
@@ -173,7 +173,7 @@ export default function AccountLayout({ children }: { children: React.ReactNode 
             </div>
 
             {/* Nav card */}
-            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm overflow-hidden">
               <nav className="p-2">
                 {NAV_ITEMS.map((item) => {
                   const active = pathname === item.href || pathname.startsWith(item.href + "/");
@@ -184,7 +184,7 @@ export default function AccountLayout({ children }: { children: React.ReactNode 
                       className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all mb-0.5 last:mb-0 ${
                         active
                           ? "bg-river-blue text-white shadow-sm shadow-river-blue/30"
-                          : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                          : "text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white"
                       }`}
                     >
                       <span className={active ? "opacity-90" : "opacity-60"}>{item.icon}</span>
@@ -194,11 +194,11 @@ export default function AccountLayout({ children }: { children: React.ReactNode 
                 })}
               </nav>
 
-              <div className="mx-2 border-t border-gray-100 pt-2 pb-2">
+              <div className="mx-2 border-t border-gray-100 dark:border-gray-700 pt-2 pb-2">
                 <button
                   onClick={handleLogout}
                   disabled={loggingOut}
-                  className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-500 hover:bg-red-50 hover:text-red-600 transition-all disabled:opacity-50"
+                  className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-500 dark:text-gray-400 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 transition-all disabled:opacity-50"
                 >
                   <svg className="w-5 h-5 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />

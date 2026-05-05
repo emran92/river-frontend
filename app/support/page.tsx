@@ -70,7 +70,7 @@ const TOPICS = [
 
 export default function SupportPage() {
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="bg-gray-50 dark:bg-gray-900 min-h-screen">
       {/* Hero */}
       <section className="bg-[#010103] text-white py-14">
         <div className="max-w-[1280px] mx-auto px-4 text-center">
@@ -91,18 +91,18 @@ export default function SupportPage() {
           {SUPPORT_OPTIONS.map((opt) => (
             <div
               key={opt.title}
-              className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm flex flex-col"
+              className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 p-6 shadow-sm flex flex-col"
             >
               <div className="w-14 h-14 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600 mb-4">
                 {opt.icon}
               </div>
-              <h3 className="text-base font-semibold text-gray-900 mb-1">{opt.title}</h3>
-              <p className="text-xs text-gray-500 mb-3">{opt.description}</p>
-              <p className="text-sm font-medium text-gray-800 mb-1">{opt.detail}</p>
-              <p className="text-xs text-gray-400 mb-5">{opt.sub}</p>
+              <h3 className="text-base font-semibold text-gray-900 dark:text-gray-100 mb-1">{opt.title}</h3>
+              <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">{opt.description}</p>
+              <p className="text-sm font-medium text-gray-800 dark:text-gray-100 mb-1">{opt.detail}</p>
+              <p className="text-xs text-gray-400 dark:text-gray-500 mb-5">{opt.sub}</p>
               <a
                 href={opt.action.href}
-                className="mt-auto block text-center bg-[#F4F4F4] hover:bg-[#127FFF] hover:text-white text-gray-800 text-sm font-medium py-2.5 rounded-lg transition-colors"
+                className="mt-auto block text-center bg-[#F4F4F4] dark:bg-gray-700 hover:bg-[#127FFF] hover:text-white text-gray-800 dark:text-gray-100 text-sm font-medium py-2.5 rounded-lg transition-colors"
               >
                 {opt.action.label}
               </a>
@@ -112,29 +112,29 @@ export default function SupportPage() {
 
         {/* Quick topics */}
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Browse by Topic</h2>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">Browse by Topic</h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
             {TOPICS.map((t) => (
               <Link
                 key={t.label}
                 href={t.href}
-                className="bg-white rounded-xl border border-gray-100 p-4 text-center hover:shadow-md hover:border-blue-100 transition-all"
+                className="bg-white dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 p-4 text-center hover:shadow-md hover:border-blue-100 transition-all"
               >
                 <div className="text-2xl mb-2">{t.icon}</div>
-                <p className="text-xs font-medium text-gray-700 leading-tight">{t.label}</p>
+                <p className="text-xs font-medium text-gray-700 dark:text-gray-200 leading-tight">{t.label}</p>
               </Link>
             ))}
           </div>
         </div>
 
         {/* FAQ Teaser */}
-        <div className="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 p-8 shadow-sm">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div>
-              <h2 className="text-xl font-bold text-gray-900 mb-2">
+              <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">
                 Check our FAQ First
               </h2>
-              <p className="text-sm text-gray-500 max-w-lg">
+              <p className="text-sm text-gray-500 dark:text-gray-400 max-w-lg">
                 Many common questions about orders, shipping, returns, and products are answered
                 in our FAQ section. You might find your answer instantly.
               </p>

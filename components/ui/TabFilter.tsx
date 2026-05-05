@@ -28,8 +28,8 @@ export default function TabFilter<T extends string = string>({
           onClick={() => onChange(tab.key)}
           className={`text-sm px-4 py-2 rounded-lg font-medium transition-colors ${
             active === tab.key
-              ? "bg-[#F4F4F4] text-black border border-gray-200"
-              : "text-black hover:bg-river-blue hover:text-white hover:border-blue-700"
+              ? "bg-[#F4F4F4] dark:bg-gray-700 text-black dark:text-gray-100 border border-gray-200 dark:border-gray-600"
+              : "text-black dark:text-gray-200 hover:bg-river-blue hover:text-white hover:border-blue-700"
           }`}
         >
           {tab.label}

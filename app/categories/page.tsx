@@ -17,7 +17,7 @@ function CategoryGridCard({ category }: { category: Category }) {
   return (
     <Link
       href={`/${category.slug}`}
-      className="group flex flex-col items-center bg-white rounded-2xl border border-gray-100 p-5 hover:shadow-md hover:border-blue-100 transition-all duration-200"
+      className="group flex flex-col items-center bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 p-5 hover:shadow-md hover:border-blue-100 dark:hover:border-blue-900 transition-all duration-200"
     >
       <div className="relative w-full aspect-square rounded-xl overflow-hidden bg-[#F7F7F7] mb-3">
         {category.image_url ? (
@@ -29,7 +29,7 @@ function CategoryGridCard({ category }: { category: Category }) {
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 16vw"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-4xl text-gray-300">
+          <div className="w-full h-full flex items-center justify-center text-4xl text-gray-300 dark:text-gray-600">
             📦
           </div>
         )}
@@ -39,7 +39,7 @@ function CategoryGridCard({ category }: { category: Category }) {
           </span>
         )}
       </div>
-      <p className="text-sm font-semibold text-gray-900 text-center leading-tight line-clamp-2 mb-1">
+      <p className="text-sm font-semibold text-gray-900 dark:text-gray-100 text-center leading-tight line-clamp-2 mb-1">
         {category.name}
       </p>
       {childCount > 0 && (
@@ -56,10 +56,10 @@ function CategoryGridCard({ category }: { category: Category }) {
 
 function SkeletonCard() {
   return (
-    <div className="flex flex-col items-center bg-white rounded-2xl border border-gray-100 p-5 animate-pulse">
-      <div className="w-full aspect-square rounded-xl bg-gray-100 mb-3" />
-      <div className="h-4 bg-gray-100 rounded w-3/4 mb-1" />
-      <div className="h-3 bg-gray-100 rounded w-1/2" />
+    <div className="flex flex-col items-center bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 p-5 animate-pulse">
+      <div className="w-full aspect-square rounded-xl bg-gray-100 dark:bg-gray-700 mb-3" />
+      <div className="h-4 bg-gray-100 dark:bg-gray-700 rounded w-3/4 mb-1" />
+      <div className="h-3 bg-gray-100 dark:bg-gray-700 rounded w-1/2" />
     </div>
   );
 }
@@ -106,24 +106,24 @@ export default function CategoriesPage() {
   return (
     <main className="max-w-[1280px] mx-auto px-4 py-8">
       {/* Breadcrumb */}
-      <nav className="flex gap-2 text-sm text-gray-400 mb-6">
-        <Link href="/" className="hover:text-blue-600 transition-colors">
+      <nav className="flex gap-2 text-sm text-gray-400 dark:text-gray-500 mb-6">
+        <Link href="/" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
           Home
         </Link>
         <span>/</span>
-        <span className="text-gray-900 font-medium">Categories</span>
+        <span className="text-gray-900 dark:text-gray-100 font-medium">Categories</span>
       </nav>
 
       {/* Page header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-1">All Categories</h1>
-        <p className="text-gray-500 text-sm">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-1">All Categories</h1>
+        <p className="text-gray-500 dark:text-gray-400 text-sm">
           Browse our full range of product categories
         </p>
       </div>
 
       {/* Filter bar */}
-      <div className="bg-white border border-gray-200 rounded-2xl p-4 mb-8 flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+      <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-4 mb-8 flex flex-col sm:flex-row gap-4 items-start sm:items-center">
         {/* Search */}
         <div className="relative flex-1 w-full sm:max-w-xs">
           <svg
@@ -144,12 +144,12 @@ export default function CategoriesPage() {
             placeholder="Search categories..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-blue-400 bg-[#F9F9F9]"
+            className="w-full pl-9 pr-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:outline-none focus:border-blue-400 bg-[#F9F9F9] dark:bg-gray-700 text-foreground dark:placeholder:text-gray-500"
           />
           {search && (
             <button
               onClick={() => setSearch("")}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
             >
               ×
             </button>
@@ -157,7 +157,7 @@ export default function CategoriesPage() {
         </div>
 
         {/* Type tabs */}
-        <div className="flex gap-1 bg-[#F4F4F4] p-1 rounded-xl">
+        <div className="flex gap-1 bg-[#F4F4F4] dark:bg-gray-700 p-1 rounded-xl">
           {(
             [
               { key: "all", label: `All (${(categories?.length ?? 0)})` },
@@ -170,8 +170,8 @@ export default function CategoriesPage() {
               onClick={() => setTypeFilter(key)}
               className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                 typeFilter === key
-                  ? "bg-white text-blue-600 shadow-sm"
-                  : "text-gray-600 hover:text-gray-900"
+                  ? "bg-white dark:bg-gray-800 text-blue-600 shadow-sm"
+                  : "text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
               }`}
             >
               {label}
@@ -195,7 +195,7 @@ export default function CategoriesPage() {
 
       {/* Results count */}
       {!isLoading && (
-        <p className="text-sm text-gray-400 mb-4">
+        <p className="text-sm text-gray-400 dark:text-gray-500 mb-4">
           {filtered.length} categor{filtered.length === 1 ? "y" : "ies"} found
         </p>
       )}

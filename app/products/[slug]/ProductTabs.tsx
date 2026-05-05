@@ -19,9 +19,9 @@ export default function ProductTabs({ product }: Props) {
   ];
 
   return (
-    <div className="bg-white rounded-2xl border border-[#E6E8EB] overflow-hidden">
+    <div className="bg-white dark:bg-gray-800 rounded-2xl border border-[#E6E8EB] dark:border-gray-700 overflow-hidden">
       {/* Tab bar */}
-      <div className="flex border-b border-[#E6E8EB]">
+      <div className="flex border-b border-[#E6E8EB] dark:border-gray-700">
         {tabs.map((tab) => (
           <button
             key={tab.key}
@@ -29,7 +29,7 @@ export default function ProductTabs({ product }: Props) {
             className={`px-6 py-4 text-sm font-semibold transition-colors border-b-2 -mb-px ${
               active === tab.key
                 ? "border-blue-600 text-blue-600"
-                : "border-transparent text-gray-500 hover:text-gray-800"
+                : "border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200"
             }`}
           >
             {tab.label}
@@ -40,19 +40,19 @@ export default function ProductTabs({ product }: Props) {
       {/* Tab content */}
       <div className="p-6">
         {active === "description" && (
-          <div className="prose prose-sm max-w-none text-gray-700 leading-relaxed">
+          <div className="prose prose-sm max-w-none text-gray-700 dark:text-gray-300 leading-relaxed">
             {product.description ? (
               <div dangerouslySetInnerHTML={{ __html: product.description }} />
             ) : product.short_description ? (
               <p>{product.short_description}</p>
             ) : (
-              <p className="text-gray-400">No description available.</p>
+              <p className="text-gray-400 dark:text-gray-500">No description available.</p>
             )}
           </div>
         )}
 
         {active === "specifications" && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-gray-100 rounded-xl overflow-hidden text-sm">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-gray-100 dark:bg-gray-700 rounded-xl overflow-hidden text-sm">
             {[
               { label: "Model Number", value: product.model_number },
               { label: "SKU", value: product.sku },
@@ -72,11 +72,11 @@ export default function ProductTabs({ product }: Props) {
             ]
               .filter((row) => !!row.value)
               .map(({ label, value }) => (
-                <div key={label} className="flex bg-white">
-                  <div className="w-40 shrink-0 bg-[#F4F4F4] px-4 py-3 text-gray-500 font-medium">
+                <div key={label} className="flex bg-white dark:bg-gray-800">
+                  <div className="w-40 shrink-0 bg-[#F4F4F4] dark:bg-gray-700 px-4 py-3 text-gray-500 dark:text-gray-400 font-medium">
                     {label}
                   </div>
-                  <div className="px-4 py-3 text-gray-800 flex-1">{value}</div>
+                  <div className="px-4 py-3 text-gray-800 dark:text-gray-100 flex-1">{value}</div>
                 </div>
               ))}
           </div>
@@ -86,16 +86,16 @@ export default function ProductTabs({ product }: Props) {
           <div className="flex flex-col gap-4">
             {/* Rating summary */}
             {typeof product.average_rating === "number" && (
-              <div className="flex items-center gap-6 p-5 bg-[#F4F4F4] rounded-2xl mb-2">
+              <div className="flex items-center gap-6 p-5 bg-[#F4F4F4] dark:bg-gray-700 rounded-2xl mb-2">
                 <div className="text-center">
-                  <p className="text-5xl font-extrabold text-gray-900">
+                  <p className="text-5xl font-extrabold text-gray-900 dark:text-gray-100">
                     {product.average_rating.toFixed(1)}
                   </p>
                   <div className="flex gap-0.5 justify-center mt-1">
                     {[1, 2, 3, 4, 5].map((s) => (
                       <svg
                         key={s}
-                        className={`w-4 h-4 ${s <= Math.round(product.average_rating!) ? "text-yellow-400" : "text-gray-300"}`}
+                        className={`w-4 h-4 ${s <= Math.round(product.average_rating!) ? "text-yellow-400" : "text-gray-300 dark:text-gray-600"}`}
                         fill="currentColor"
                         viewBox="0 0 20 20"
                       >
@@ -103,13 +103,13 @@ export default function ProductTabs({ product }: Props) {
                       </svg>
                     ))}
                   </div>
-                  <p className="text-xs text-gray-400 mt-1">
+                  <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
                     {product.reviews_count ?? 0} reviews
                   </p>
                 </div>
               </div>
             )}
-            <p className="text-sm text-gray-400 text-center py-8">
+            <p className="text-sm text-gray-400 dark:text-gray-500 text-center py-8">
               Customer reviews will appear here.
             </p>
           </div>

@@ -70,17 +70,17 @@ export default function RegisterPage() {
   }
 
   const inputClass = (field: string) =>
-    `w-full rounded-lg border px-4 py-2.5 text-sm outline-none transition focus:ring-2 focus:ring-river-blue/30 ${
+    `w-full rounded-lg border px-4 py-2.5 text-sm outline-none transition focus:ring-2 focus:ring-river-blue/30 bg-white dark:bg-gray-700 text-foreground ${
       errors[field]
         ? "border-red-400 focus:border-red-400"
-        : "border-gray-300 focus:border-river-blue"
+        : "border-gray-300 dark:border-gray-600 focus:border-river-blue"
     }`;
 
   return (
     <div className="min-h-[calc(100vh-280px)] flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-md">
         {/* Card */}
-        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-8">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-8">
           {/* Logo */}
           <div className="flex justify-center mb-6">
             <Link href="/">
@@ -97,10 +97,10 @@ export default function RegisterPage() {
             </Link>
           </div>
 
-          <h1 className="text-xl md:text-2xl font-bold text-gray-900 text-center mb-1">
+          <h1 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-gray-100 text-center mb-1">
             Create an account
           </h1>
-          <p className="text-sm text-gray-500 text-center mb-6">
+          <p className="text-sm text-gray-500 dark:text-gray-400 text-center mb-6">
             Join River Electronics today
           </p>
 
@@ -164,7 +164,7 @@ export default function RegisterPage() {
                 className="block text-sm font-medium text-gray-700 mb-1"
               >
                 Phone{" "}
-                <span className="text-gray-400 font-normal">(optional)</span>
+                <span className="text-gray-400 dark:text-gray-500 font-normal">(optional)</span>
               </label>
               <input
                 id="phone"
@@ -239,7 +239,7 @@ export default function RegisterPage() {
             </button>
           </form>
 
-          <p className="mt-6 text-center text-sm text-gray-500">
+          <p className="mt-6 text-center text-sm text-gray-500 dark:text-gray-400">
             Already have an account?{" "}
             <Link
               href="/login"

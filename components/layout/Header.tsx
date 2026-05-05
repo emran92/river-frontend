@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import { useCart } from "@/context/CartContext";
+import { useTheme } from "@/context/ThemeContext";
 import { logout } from "@/lib/auth";
 import { searchProducts, fetchCategories } from "@/lib/api";
 import { useFetch } from "@/hooks/useFetch";
@@ -15,6 +16,7 @@ import { mediaUrl, formatBDT } from "@/lib/utils";
 export default function Header() {
   const { user, isAuthenticated, mutate } = useAuth();
   const { count: cartCount } = useCart();
+  const { theme, toggleTheme } = useTheme();
   const router = useRouter();
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<Product[]>([]);
@@ -79,7 +81,7 @@ export default function Header() {
       <div className="max-w-[1280px] mx-auto px-4">
 
         {/* Top bar */}
-        <div className="flex items-center justify-between text-xs text-gray-500 mb-2 px-1 pb-2 border-b border-gray-100">
+        <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 mb-2 px-1 pb-2 border-b border-gray-100 dark:border-gray-700">
           <div className="flex items-center gap-1.5">
             <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -93,7 +95,7 @@ export default function Header() {
           </div>
         </div>
 
-        <div className="bg-[#F4F4F4] rounded-lg shadow-sm px-4 md:px-6 py-3.5 flex items-center gap-3 md:gap-6">
+        <div className="bg-[#F4F4F4] dark:bg-[#1a1a2e] rounded-lg shadow-sm px-4 md:px-6 py-3.5 flex items-center gap-3 md:gap-6">
 
           {/* Logo */}
           <Link href="/" className="flex-shrink-0">
@@ -102,21 +104,30 @@ export default function Header() {
                 src="/logo-white.svg"
                 alt="River Electronics"
                 fill
-                className="object-contain object-left"
+                className="object-contain object-left dark:hidden"
                 priority
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              />
+              <Image
+                src="/logo-blue.svg"
+                alt="River Electronics"
+                fill
+                className="object-contain object-left dark:block hidden"
+                priority
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
             </div>
           </Link>
 
           {/* Search bar — desktop/tablet only */}
           <div ref={searchRef} className="hidden md:flex flex-1 items-center gap-2 relative">
-            <div className="flex-1 flex h-12 items-center border border-gray-200 rounded-xl bg-white overflow-visible focus-within:border-blue-400 focus-within:ring-1 focus-within:ring-blue-300 transition-all">
+            <div className="flex-1 flex h-12 items-center border border-gray-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-800 overflow-visible focus-within:border-blue-400 focus-within:ring-1 focus-within:ring-blue-300 transition-all">
               <input
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search products..."
-                className="flex-1 px-5 py-2.5 text-sm outline-none bg-transparent min-w-0"
+                  className="flex-1 px-5 py-2.5 text-sm outline-none bg-transparent min-w-0 text-foreground placeholder:text-gray-400 dark:placeholder:text-gray-500"
                 onKeyDown={(e) => {
                   if (e.key === "Enter" && query.trim()) {
                     const params = new URLSearchParams({ q: query.trim() });
@@ -133,7 +144,7 @@ export default function Header() {
                 <button
                   type="button"
                   onClick={() => setCatDropOpen(!catDropOpen)}
-                  className="hidden lg:flex items-center gap-1.5 px-3 py-2.5 text-sm text-gray-600 hover:text-blue-600 whitespace-nowrap transition-colors"
+                  className="hidden lg:flex items-center gap-1.5 px-3 py-2.5 text-sm text-gray-600 dark:text-gray-300 hover:text-blue-500 whitespace-nowrap transition-colors"
                 >
                   <span className="max-w-[120px] truncate">
                     {selectedCategory ? selectedCategory.name : "All Categories"}
@@ -143,9 +154,9 @@ export default function Header() {
                   </svg>
                 </button>
                 {catDropOpen && (
-                  <div className="absolute top-full right-0 mt-1 w-52 bg-white border border-gray-200 rounded-xl shadow-xl z-[60] max-h-72 overflow-y-auto py-1">
+                  <div className="absolute top-full right-0 mt-1 w-52 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl z-[60] max-h-72 overflow-y-auto py-1">
                     <button
-                      className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-river-blue/10 hover:text-blue-700"
+                      className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-river-blue/10 hover:text-blue-600 dark:hover:text-blue-400"
                       onClick={() => { setSelectedCategory(null); setCatDropOpen(false); }}
                     >
                       All Categories
@@ -153,7 +164,7 @@ export default function Header() {
                     {activeCategories.map((cat) => (
                       <button
                         key={cat.id}
-                        className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-river-blue/10 hover:text-blue-700"
+                        className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-river-blue/10 hover:text-blue-600 dark:hover:text-blue-400"
                         onClick={() => { setSelectedCategory(cat); setCatDropOpen(false); }}
                       >
                         {cat.name}
@@ -185,15 +196,15 @@ export default function Header() {
 
             {/* Search dropdown */}
             {searchOpen && results.length > 0 && (
-              <div className="absolute top-full left-0 right-12 mt-1 bg-white border border-gray-200 rounded-xl shadow-xl z-50 max-h-80 overflow-y-auto">
+              <div className="absolute top-full left-0 right-12 mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl z-50 max-h-80 overflow-y-auto">
                 {results.map((product) => (
                   <Link
                     key={product.id}
                     href={`/products/${product.slug}`}
-                    className="flex items-center gap-3 px-4 py-2.5 hover:bg-gray-50 transition-colors"
+                    className="flex items-center gap-3 px-4 py-2.5 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
                     onClick={() => setSearchOpen(false)}
                   >
-                    <div className="relative w-10 h-10 flex-shrink-0 bg-gray-100 rounded">
+                    <div className="relative w-10 h-10 flex-shrink-0 bg-gray-100 dark:bg-gray-700 rounded">
                       <Image
                         src={product.thumbnail_url ? mediaUrl(product.thumbnail_url) : "/placeholder/product.jpg"}
                         alt={product.name}
@@ -203,8 +214,8 @@ export default function Header() {
                       />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm text-gray-800 line-clamp-1">{product.name}</p>
-                      <p className="text-xs text-blue-600 font-semibold">
+                      <p className="text-sm text-gray-800 dark:text-gray-100 line-clamp-1">{product.name}</p>
+                      <p className="text-xs text-blue-500 font-semibold">
                         {formatBDT(product.sale_price ?? product.price)}
                       </p>
                     </div>
@@ -215,12 +226,29 @@ export default function Header() {
           </div>
 
           {/* Right actions */}
-          <div className="flex items-center gap-2 md:gap-4 flex-shrink-0 ml-auto md:ml-0">
+          <div className="flex items-center gap-2 md:gap-4 flex-shrink-0 ml-auto md:ml-0 text-gray-800 dark:text-gray-100">
+
+            {/* Dark mode toggle */}
+            <button
+              aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+              onClick={toggleTheme}
+              className="text-gray-600 dark:text-gray-300 transition-transform hover:scale-105 duration-200 p-1 hover:text-blue-500 dark:hover:text-blue-400"
+            >
+              {theme === "dark" ? (
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+              ) : (
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                </svg>
+              )}
+            </button>
 
             {/* Mobile search toggle */}
             <button
               aria-label="Search"
-              className="md:hidden text-gray-600 transition-transform hover:scale-105 duration-200 p-1"
+              className="md:hidden text-gray-600 dark:text-gray-300 transition-transform hover:scale-105 duration-200 p-1"
               onClick={() => setMobileSearchOpen(!mobileSearchOpen)}
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -229,11 +257,11 @@ export default function Header() {
             </button>
 
             {/* Cart */}
-            <Link href="/cart" className="relative text-gray-600 transition-transform hover:scale-105 p-1">
+            <Link href="/cart" className="relative text-gray-800 dark:text-gray-100 transition-transform hover:scale-105 p-1">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M24 3H4.242L4.2 2.649C4.11405 1.91942 3.76338 1.24673 3.21449 0.758478C2.6656 0.270223 1.95663 0.000341793 1.222 0L0 0V2H1.222C1.46693 2.00003 1.70334 2.08996 1.88637 2.25272C2.06941 2.41547 2.18634 2.63975 2.215 2.883L3.8 16.351C3.88595 17.0806 4.23662 17.7533 4.78551 18.2415C5.3344 18.7298 6.04337 18.9997 6.778 19H20V17H6.778C6.53291 16.9999 6.29638 16.9099 6.11333 16.7469C5.93027 16.5839 5.81343 16.3594 5.785 16.116L5.654 15H21.836L24 3ZM20.164 13H5.419L4.478 5H21.607L20.164 13Z" fill="#050505"/>
-                <path d="M7.00024 24.0006C8.10481 24.0006 9.00024 23.1052 9.00024 22.0006C9.00024 20.8961 8.10481 20.0006 7.00024 20.0006C5.89567 20.0006 5.00024 20.8961 5.00024 22.0006C5.00024 23.1052 5.89567 24.0006 7.00024 24.0006Z" fill="#050505"/>
-                <path d="M17 24.0006C18.1046 24.0006 19 23.1052 19 22.0006C19 20.8961 18.1046 20.0006 17 20.0006C15.8954 20.0006 15 20.8961 15 22.0006C15 23.1052 15.8954 24.0006 17 24.0006Z" fill="#050505"/>
+                <path d="M24 3H4.242L4.2 2.649C4.11405 1.91942 3.76338 1.24673 3.21449 0.758478C2.6656 0.270223 1.95663 0.000341793 1.222 0L0 0V2H1.222C1.46693 2.00003 1.70334 2.08996 1.88637 2.25272C2.06941 2.41547 2.18634 2.63975 2.215 2.883L3.8 16.351C3.88595 17.0806 4.23662 17.7533 4.78551 18.2415C5.3344 18.7298 6.04337 18.9997 6.778 19H20V17H6.778C6.53291 16.9999 6.29638 16.9099 6.11333 16.7469C5.93027 16.5839 5.81343 16.3594 5.785 16.116L5.654 15H21.836L24 3ZM20.164 13H5.419L4.478 5H21.607L20.164 13Z" fill="currentColor"/>
+                <path d="M7.00024 24.0006C8.10481 24.0006 9.00024 23.1052 9.00024 22.0006C9.00024 20.8961 8.10481 20.0006 7.00024 20.0006C5.89567 20.0006 5.00024 20.8961 5.00024 22.0006C5.00024 23.1052 5.89567 24.0006 7.00024 24.0006Z" fill="currentColor"/>
+                <path d="M17 24.0006C18.1046 24.0006 19 23.1052 19 22.0006C19 20.8961 18.1046 20.0006 17 20.0006C15.8954 20.0006 15 20.8961 15 22.0006C15 23.1052 15.8954 24.0006 17 24.0006Z" fill="currentColor"/>
             </svg>
               <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] bg-river-blue text-white text-[10px] font-bold rounded-full flex items-center justify-center px-0.5">
                 {cartCount > 0 ? cartCount : "0"}
@@ -244,10 +272,10 @@ export default function Header() {
             <div className="relative">
               {isAuthenticated ? (
                 <>
-                  <Link href="/account" className="text-gray-600 transition-transform hover:scale-105 p-1 inline-block" aria-label="Sign in">
+                  <Link href="/account" className="text-gray-800 dark:text-gray-100 transition-transform hover:scale-105 p-1 inline-block" aria-label="Sign in">
                     <svg width="18" height="24" viewBox="0 0 18 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M18 24.0006H16V18.9576C15.9992 18.1736 15.6874 17.4219 15.133 16.8676C14.5787 16.3132 13.827 16.0014 13.043 16.0006H4.957C4.173 16.0014 3.42134 16.3132 2.86696 16.8676C2.31259 17.4219 2.00079 18.1736 2 18.9576V24.0006H0V18.9576C0.00158783 17.6434 0.524351 16.3835 1.45363 15.4542C2.3829 14.525 3.64281 14.0022 4.957 14.0006H13.043C14.3572 14.0022 15.6171 14.525 16.5464 15.4542C17.4756 16.3835 17.9984 17.6434 18 18.9576V24.0006Z" fill="#050505"/>
-                      <path d="M9 11.9999C7.81332 11.9999 6.65328 11.648 5.66658 10.9888C4.67989 10.3295 3.91085 9.39239 3.45673 8.29603C3.0026 7.19968 2.88378 5.99328 3.11529 4.82939C3.3468 3.66551 3.91825 2.59641 4.75736 1.75729C5.59648 0.918178 6.66558 0.346734 7.82946 0.115222C8.99335 -0.116289 10.1997 0.00253105 11.2961 0.456657C12.3925 0.910783 13.3295 1.67982 13.9888 2.66651C14.6481 3.65321 15 4.81325 15 5.99993C14.9984 7.59075 14.3658 9.11595 13.2409 10.2408C12.116 11.3657 10.5908 11.9983 9 11.9999ZM9 1.99993C8.20888 1.99993 7.43552 2.23453 6.77772 2.67406C6.11993 3.11358 5.60724 3.7383 5.30448 4.4692C5.00173 5.20011 4.92252 6.00437 5.07686 6.7803C5.2312 7.55622 5.61217 8.26895 6.17158 8.82836C6.73099 9.38777 7.44372 9.76873 8.21964 9.92308C8.99557 10.0774 9.79983 9.9982 10.5307 9.69545C11.2616 9.3927 11.8864 8.88001 12.3259 8.22221C12.7654 7.56442 13 6.79106 13 5.99993C13 4.93907 12.5786 3.92165 11.8284 3.17151C11.0783 2.42136 10.0609 1.99993 9 1.99993Z" fill="#050505"/>
+                      <path d="M18 24.0006H16V18.9576C15.9992 18.1736 15.6874 17.4219 15.133 16.8676C14.5787 16.3132 13.827 16.0014 13.043 16.0006H4.957C4.173 16.0014 3.42134 16.3132 2.86696 16.8676C2.31259 17.4219 2.00079 18.1736 2 18.9576V24.0006H0V18.9576C0.00158783 17.6434 0.524351 16.3835 1.45363 15.4542C2.3829 14.525 3.64281 14.0022 4.957 14.0006H13.043C14.3572 14.0022 15.6171 14.525 16.5464 15.4542C17.4756 16.3835 17.9984 17.6434 18 18.9576V24.0006Z" fill="currentColor"/>
+                      <path d="M9 11.9999C7.81332 11.9999 6.65328 11.648 5.66658 10.9888C4.67989 10.3295 3.91085 9.39239 3.45673 8.29603C3.0026 7.19968 2.88378 5.99328 3.11529 4.82939C3.3468 3.66551 3.91825 2.59641 4.75736 1.75729C5.59648 0.918178 6.66558 0.346734 7.82946 0.115222C8.99335 -0.116289 10.1997 0.00253105 11.2961 0.456657C12.3925 0.910783 13.3295 1.67982 13.9888 2.66651C14.6481 3.65321 15 4.81325 15 5.99993C14.9984 7.59075 14.3658 9.11595 13.2409 10.2408C12.116 11.3657 10.5908 11.9983 9 11.9999ZM9 1.99993C8.20888 1.99993 7.43552 2.23453 6.77772 2.67406C6.11993 3.11358 5.60724 3.7383 5.30448 4.4692C5.00173 5.20011 4.92252 6.00437 5.07686 6.7803C5.2312 7.55622 5.61217 8.26895 6.17158 8.82836C6.73099 9.38777 7.44372 9.76873 8.21964 9.92308C8.99557 10.0774 9.79983 9.9982 10.5307 9.69545C11.2616 9.3927 11.8864 8.88001 12.3259 8.22221C12.7654 7.56442 13 6.79106 13 5.99993C13 4.93907 12.5786 3.92165 11.8284 3.17151C11.0783 2.42136 10.0609 1.99993 9 1.99993Z" fill="currentColor"/>
                     </svg>
                   </Link>
                   {/* <button
@@ -262,7 +290,7 @@ export default function Header() {
                   </button>
 
                   {userMenuOpen && (
-                    <div className="absolute right-0 top-full mt-1 w-44 bg-white border border-gray-200 rounded-xl shadow-xl z-50 py-1">
+                    <div className="absolute right-0 top-full mt-1 w-44 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl z-50 py-1">
                       <Link href="/account/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" onClick={() => setUserMenuOpen(false)}>My Account</Link>
                       <Link href="/account/orders" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" onClick={() => setUserMenuOpen(false)}>Orders</Link>
                       <Link href="/wishlist" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" onClick={() => setUserMenuOpen(false)}>Wishlist</Link>
@@ -274,10 +302,10 @@ export default function Header() {
                   )} */}
                 </>
               ) : (
-                <Link href="/login" className="text-gray-600 transition-transform hover:scale-105 p-1 inline-block" aria-label="Sign in">
+                <Link href="/login" className="text-gray-800 dark:text-gray-100 transition-transform hover:scale-105 p-1 inline-block" aria-label="Sign in">
                   <svg width="18" height="24" viewBox="0 0 18 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M18 24.0006H16V18.9576C15.9992 18.1736 15.6874 17.4219 15.133 16.8676C14.5787 16.3132 13.827 16.0014 13.043 16.0006H4.957C4.173 16.0014 3.42134 16.3132 2.86696 16.8676C2.31259 17.4219 2.00079 18.1736 2 18.9576V24.0006H0V18.9576C0.00158783 17.6434 0.524351 16.3835 1.45363 15.4542C2.3829 14.525 3.64281 14.0022 4.957 14.0006H13.043C14.3572 14.0022 15.6171 14.525 16.5464 15.4542C17.4756 16.3835 17.9984 17.6434 18 18.9576V24.0006Z" fill="#050505"/>
-                    <path d="M9 11.9999C7.81332 11.9999 6.65328 11.648 5.66658 10.9888C4.67989 10.3295 3.91085 9.39239 3.45673 8.29603C3.0026 7.19968 2.88378 5.99328 3.11529 4.82939C3.3468 3.66551 3.91825 2.59641 4.75736 1.75729C5.59648 0.918178 6.66558 0.346734 7.82946 0.115222C8.99335 -0.116289 10.1997 0.00253105 11.2961 0.456657C12.3925 0.910783 13.3295 1.67982 13.9888 2.66651C14.6481 3.65321 15 4.81325 15 5.99993C14.9984 7.59075 14.3658 9.11595 13.2409 10.2408C12.116 11.3657 10.5908 11.9983 9 11.9999ZM9 1.99993C8.20888 1.99993 7.43552 2.23453 6.77772 2.67406C6.11993 3.11358 5.60724 3.7383 5.30448 4.4692C5.00173 5.20011 4.92252 6.00437 5.07686 6.7803C5.2312 7.55622 5.61217 8.26895 6.17158 8.82836C6.73099 9.38777 7.44372 9.76873 8.21964 9.92308C8.99557 10.0774 9.79983 9.9982 10.5307 9.69545C11.2616 9.3927 11.8864 8.88001 12.3259 8.22221C12.7654 7.56442 13 6.79106 13 5.99993C13 4.93907 12.5786 3.92165 11.8284 3.17151C11.0783 2.42136 10.0609 1.99993 9 1.99993Z" fill="#050505"/>
+                    <path d="M18 24.0006H16V18.9576C15.9992 18.1736 15.6874 17.4219 15.133 16.8676C14.5787 16.3132 13.827 16.0014 13.043 16.0006H4.957C4.173 16.0014 3.42134 16.3132 2.86696 16.8676C2.31259 17.4219 2.00079 18.1736 2 18.9576V24.0006H0V18.9576C0.00158783 17.6434 0.524351 16.3835 1.45363 15.4542C2.3829 14.525 3.64281 14.0022 4.957 14.0006H13.043C14.3572 14.0022 15.6171 14.525 16.5464 15.4542C17.4756 16.3835 17.9984 17.6434 18 18.9576V24.0006Z" fill="currentColor"/>
+                    <path d="M9 11.9999C7.81332 11.9999 6.65328 11.648 5.66658 10.9888C4.67989 10.3295 3.91085 9.39239 3.45673 8.29603C3.0026 7.19968 2.88378 5.99328 3.11529 4.82939C3.3468 3.66551 3.91825 2.59641 4.75736 1.75729C5.59648 0.918178 6.66558 0.346734 7.82946 0.115222C8.99335 -0.116289 10.1997 0.00253105 11.2961 0.456657C12.3925 0.910783 13.3295 1.67982 13.9888 2.66651C14.6481 3.65321 15 4.81325 15 5.99993C14.9984 7.59075 14.3658 9.11595 13.2409 10.2408C12.116 11.3657 10.5908 11.9983 9 11.9999ZM9 1.99993C8.20888 1.99993 7.43552 2.23453 6.77772 2.67406C6.11993 3.11358 5.60724 3.7383 5.30448 4.4692C5.00173 5.20011 4.92252 6.00437 5.07686 6.7803C5.2312 7.55622 5.61217 8.26895 6.17158 8.82836C6.73099 9.38777 7.44372 9.76873 8.21964 9.92308C8.99557 10.0774 9.79983 9.9982 10.5307 9.69545C11.2616 9.3927 11.8864 8.88001 12.3259 8.22221C12.7654 7.56442 13 6.79106 13 5.99993C13 4.93907 12.5786 3.92165 11.8284 3.17151C11.0783 2.42136 10.0609 1.99993 9 1.99993Z" fill="currentColor"/>
                   </svg>
                 </Link>
               )}
@@ -289,14 +317,14 @@ export default function Header() {
         {mobileSearchOpen && (
           <div ref={mobileSearchRef} className="md:hidden mt-2 relative">
             <div className="flex items-center gap-2">
-              <div className="flex-1 flex items-center border border-gray-200 rounded-xl bg-white focus-within:border-blue-400 focus-within:ring-1 focus-within:ring-blue-300 transition-all">
+              <div className="flex-1 flex items-center border border-gray-200 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-800 focus-within:border-blue-400 focus-within:ring-1 focus-within:ring-blue-300 transition-all">
                 <input
                   type="text"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder="Search products..."
                   autoFocus
-                  className="flex-1 px-4 py-2.5 text-sm outline-none bg-transparent"
+                  className="flex-1 px-4 py-2.5 text-sm outline-none bg-transparent text-foreground placeholder:text-gray-400 dark:placeholder:text-gray-500"
                   onKeyDown={(e) => {
                     if (e.key === "Enter" && query.trim()) {
                       const params = new URLSearchParams({ q: query.trim() });
@@ -327,15 +355,15 @@ export default function Header() {
 
             {/* Mobile search dropdown */}
             {searchOpen && results.length > 0 && (
-              <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-xl shadow-xl z-50 max-h-72 overflow-y-auto">
+              <div className="absolute top-full left-0 right-0 mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl z-50 max-h-72 overflow-y-auto">
                 {results.map((product) => (
                   <Link
                     key={product.id}
                     href={`/products/${product.slug}`}
-                    className="flex items-center gap-3 px-4 py-2.5 hover:bg-gray-50 transition-colors"
+                    className="flex items-center gap-3 px-4 py-2.5 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
                     onClick={() => { setSearchOpen(false); setMobileSearchOpen(false); }}
                   >
-                    <div className="relative w-9 h-9 flex-shrink-0 bg-gray-100 rounded">
+                    <div className="relative w-9 h-9 flex-shrink-0 bg-gray-100 dark:bg-gray-700 rounded">
                       <Image
                         src={product.thumbnail_url ? mediaUrl(product.thumbnail_url) : "/placeholder/product.jpg"}
                         alt={product.name}
@@ -345,8 +373,8 @@ export default function Header() {
                       />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm text-gray-800 line-clamp-1">{product.name}</p>
-                      <p className="text-xs text-blue-600 font-semibold">
+                      <p className="text-sm text-gray-800 dark:text-gray-100 line-clamp-1">{product.name}</p>
+                      <p className="text-xs text-blue-500 font-semibold">
                         {formatBDT(product.sale_price ?? product.price)}
                       </p>
                     </div>

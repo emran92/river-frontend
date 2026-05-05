@@ -11,7 +11,7 @@ export default function BrandCard({ brand }: BrandCardProps) {
   return (
     <Link
       href={`/${brand.slug}`}
-      className="group flex items-center justify-center h-[88px] bg-white rounded-2xl border border-gray-100 duration-200 p-4"
+      className="group flex items-center justify-center h-[88px] bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 duration-200 p-4"
     >
       {brand.logo_url ? (
         <div className="relative w-full h-full">

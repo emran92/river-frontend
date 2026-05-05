@@ -37,10 +37,10 @@ export default function AddToCartSection({ product, inStock }: Props) {
     <div className="flex flex-col gap-4">
       {/* Quantity selector */}
       <div className="flex items-center gap-4">
-        <span className="text-sm text-gray-600 font-medium w-20">Quantity</span>
-        <div className="flex items-center border border-[#E6E8EB] rounded-xl overflow-hidden">
+        <span className="text-sm text-gray-600 dark:text-gray-300 font-medium w-20">Quantity</span>
+        <div className="flex items-center border border-[#E6E8EB] dark:border-gray-600 rounded-xl overflow-hidden">
           <button
-            className="w-10 h-10 flex items-center justify-center text-gray-600 hover:bg-gray-100 transition-colors disabled:opacity-30"
+            className="w-10 h-10 flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors disabled:opacity-30"
             onClick={() => setQty((q) => Math.max(1, q - 1))}
             disabled={qty <= 1}
             aria-label="Decrease quantity"
@@ -49,11 +49,11 @@ export default function AddToCartSection({ product, inStock }: Props) {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
             </svg>
           </button>
-          <span className="w-12 text-center text-sm font-semibold text-gray-900 select-none">
+          <span className="w-12 text-center text-sm font-semibold text-gray-900 dark:text-gray-100 select-none">
             {qty}
           </span>
           <button
-            className="w-10 h-10 flex items-center justify-center text-gray-600 hover:bg-gray-100 transition-colors disabled:opacity-30"
+            className="w-10 h-10 flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors disabled:opacity-30"
             onClick={() => setQty((q) => Math.min(max, q + 1))}
             disabled={qty >= max || !inStock}
             aria-label="Increase quantity"

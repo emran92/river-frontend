@@ -33,10 +33,10 @@ export default function Pagination({ currentPage, lastPage, buildHref }: Paginat
     <div className="flex items-center justify-center gap-1 flex-wrap mt-8">
       <Link
         href={buildHref(currentPage - 1)}
-        className={`px-3 py-2 rounded-lg text-sm border border-gray-200 transition-colors ${
+        className={`px-3 py-2 rounded-lg text-sm border border-gray-200 dark:border-gray-700 transition-colors ${
           currentPage === 1
-            ? "pointer-events-none opacity-40 bg-[#F4F4F4]"
-            : "bg-white hover:bg-river-blue/10 text-gray-700"
+            ? "pointer-events-none opacity-40 bg-[#F4F4F4] dark:bg-gray-800"
+            : "bg-white dark:bg-gray-800 hover:bg-river-blue/10 text-gray-700 dark:text-gray-200"
         }`}
         aria-disabled={currentPage === 1}
       >
@@ -45,7 +45,7 @@ export default function Pagination({ currentPage, lastPage, buildHref }: Paginat
 
       {pages.map((p, i) =>
         p === "ellipsis" ? (
-          <span key={`e${i}`} className="px-2 py-2 text-gray-400 text-sm select-none">
+          <span key={`e${i}`} className="px-2 py-2 text-gray-400 dark:text-gray-500 text-sm select-none">
             …
           </span>
         ) : (
@@ -55,7 +55,7 @@ export default function Pagination({ currentPage, lastPage, buildHref }: Paginat
             className={`w-9 h-9 flex items-center justify-center rounded-lg text-sm border transition-colors ${
               p === currentPage
                 ? "bg-river-blue text-white border-blue-600 font-semibold"
-                : "bg-white border-gray-200 text-gray-700 hover:bg-river-blue/10"
+                : "bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 hover:bg-river-blue/10"
             }`}
           >
             {p}
@@ -65,10 +65,10 @@ export default function Pagination({ currentPage, lastPage, buildHref }: Paginat
 
       <Link
         href={buildHref(currentPage + 1)}
-        className={`px-3 py-2 rounded-lg text-sm border border-gray-200 transition-colors ${
+        className={`px-3 py-2 rounded-lg text-sm border border-gray-200 dark:border-gray-700 transition-colors ${
           currentPage === lastPage
-            ? "pointer-events-none opacity-40 bg-[#F4F4F4]"
-            : "bg-white hover:bg-river-blue/10 text-gray-700"
+            ? "pointer-events-none opacity-40 bg-[#F4F4F4] dark:bg-gray-800"
+            : "bg-white dark:bg-gray-800 hover:bg-river-blue/10 text-gray-700 dark:text-gray-200"
         }`}
         aria-disabled={currentPage === lastPage}
       >

@@ -43,13 +43,13 @@ export default function Dropdown({
       className={`flex items-center gap-2${className ? ` ${className}` : ""}`}
     >
       {label && (
-        <span className="text-sm text-gray-500 whitespace-nowrap">{label}</span>
+          <span className="text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">{label}</span>
       )}
       <div className="relative">
         <button
           type="button"
           onClick={() => setOpen((o) => !o)}
-          className="flex items-center gap-1.5 px-3 py-2 text-sm text-gray-700 bg-white border border-gray-200 rounded-lg hover:border-blue-400 transition-colors whitespace-nowrap"
+          className="flex items-center gap-1.5 px-3 py-2 text-sm text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-blue-400 transition-colors whitespace-nowrap"
         >
           <span>{selected?.label ?? "Select"}</span>
           <svg
@@ -63,7 +63,7 @@ export default function Dropdown({
         </button>
 
         {open && (
-          <div className="absolute top-full right-0 mt-1 min-w-full w-max max-w-[200px] bg-white border border-gray-200 rounded-xl shadow-xl z-50 py-1 max-h-64 overflow-y-auto">
+          <div className="absolute top-full right-0 mt-1 min-w-full w-max max-w-[200px] bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl z-50 py-1 max-h-64 overflow-y-auto">
             {options.map((opt) => (
               <button
                 key={opt.value}
@@ -74,8 +74,8 @@ export default function Dropdown({
                 }}
                 className={`w-full text-left px-3 py-1.5 text-sm transition-colors ${
                   opt.value === value
-                    ? "text-blue-700 bg-river-blue/10 font-medium"
-                    : "text-gray-700 hover:bg-river-blue/10 hover:text-blue-700"
+                    ? "text-blue-700 dark:text-blue-400 bg-river-blue/10 font-medium"
+                    : "text-gray-700 dark:text-gray-200 hover:bg-river-blue/10 hover:text-blue-700 dark:hover:text-blue-400"
                 }`}
               >
                 {opt.label}

@@ -15,8 +15,8 @@ export default function SplitBanners() {
     return (
       <section className="max-w-[1280px] mx-auto px-4 py-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="aspect-[16/9] bg-gray-200 animate-pulse rounded-xl" />
-          <div className="aspect-[16/9] bg-gray-200 animate-pulse rounded-xl" />
+          <div className="aspect-[16/9] bg-gray-200 dark:bg-gray-700 animate-pulse rounded-xl" />
+          <div className="aspect-[16/9] bg-gray-200 dark:bg-gray-700 animate-pulse rounded-xl" />
         </div>
       </section>
     );

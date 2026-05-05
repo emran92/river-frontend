@@ -31,18 +31,18 @@ export default function WorldCupSeries() {
       {isLoading ? (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
           {Array.from({ length: 10 }).map((_, i) => (
-            <div key={i} className="bg-white border border-gray-200 rounded-lg overflow-hidden">
-              <div className="aspect-square bg-gray-200 animate-pulse" />
+            <div key={i} className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+              <div className="aspect-square bg-gray-200 dark:bg-gray-700 animate-pulse" />
               <div className="p-3 space-y-2">
-                <div className="h-3 bg-gray-200 rounded animate-pulse" />
-                <div className="h-3 bg-gray-200 rounded animate-pulse w-3/4" />
-                <div className="h-4 bg-gray-200 rounded animate-pulse w-1/2" />
+                <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded animate-pulse" />
+                <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded animate-pulse w-3/4" />
+                <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded animate-pulse w-1/2" />
               </div>
             </div>
           ))}
         </div>
       ) : products.length === 0 ? (
-        <div className="text-center py-12 text-gray-400 text-sm">No products found.</div>
+        <div className="text-center py-12 text-gray-400 dark:text-gray-500 text-sm">No products found.</div>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
           {products.map((product) => (

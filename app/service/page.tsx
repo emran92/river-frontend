@@ -65,7 +65,7 @@ export default function ServiceRequestPage() {
   }
 
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="bg-gray-50 dark:bg-gray-900 min-h-screen">
       {/* Hero */}
       <section className="bg-[#010103] text-white py-14">
         <div className="max-w-[1280px] mx-auto px-4">
@@ -83,15 +83,15 @@ export default function ServiceRequestPage() {
       <div className="max-w-[1280px] mx-auto px-4 py-16 space-y-12">
         {/* Process */}
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">What to Expect</h2>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">What to Expect</h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {WHAT_TO_EXPECT.map((s) => (
-              <div key={s.step} className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
+              <div key={s.step} className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 p-5 shadow-sm">
                 <div className="w-9 h-9 bg-[#127FFF] text-white rounded-full flex items-center justify-center text-sm font-bold mb-4">
                   {s.step}
                 </div>
-                <h3 className="text-sm font-semibold text-gray-900 mb-2">{s.title}</h3>
-                <p className="text-xs text-gray-500 leading-relaxed">{s.description}</p>
+                <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-2">{s.title}</h3>
+                <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{s.description}</p>
               </div>
             ))}
           </div>
@@ -101,9 +101,9 @@ export default function ServiceRequestPage() {
         <div className="grid lg:grid-cols-3 gap-10">
           {/* Side */}
           <div className="space-y-5">
-            <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
-              <h3 className="text-base font-semibold text-gray-900 mb-4">Need Urgent Help?</h3>
-              <p className="text-sm text-gray-500 mb-4">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 p-6 shadow-sm">
+              <h3 className="text-base font-semibold text-gray-900 dark:text-gray-100 mb-4">Need Urgent Help?</h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
                 For urgent issues, call our support line directly. Available 9 AM – 9 PM every day.
               </p>
               <a
@@ -117,8 +117,8 @@ export default function ServiceRequestPage() {
               </a>
             </div>
 
-            <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
-              <h3 className="text-sm font-semibold text-gray-900 mb-3">Service Coverage</h3>
+            <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 p-6 shadow-sm">
+              <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-3">Service Coverage</h3>
               <ul className="space-y-2">
                 {[
                   "All products purchased from River Electronics",
@@ -127,7 +127,7 @@ export default function ServiceRequestPage() {
                   "Home visit available in Dhaka metro",
                   "Drop-off available at Gulshan showroom",
                 ].map((item) => (
-                  <li key={item} className="flex items-start gap-2 text-xs text-gray-600">
+                  <li key={item} className="flex items-start gap-2 text-xs text-gray-600 dark:text-gray-300">
                     <svg className="w-3.5 h-3.5 text-blue-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
@@ -147,7 +147,7 @@ export default function ServiceRequestPage() {
 
           {/* Form */}
           <div className="lg:col-span-2">
-            <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-8">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-8">
               {submitted ? (
                 <div className="text-center py-12">
                   <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -155,24 +155,24 @@ export default function ServiceRequestPage() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">Request Submitted!</h3>
-                  <p className="text-sm text-gray-500 max-w-sm mx-auto">
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">Request Submitted!</h3>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 max-w-sm mx-auto">
                     Your service request has been received. You will get an SMS confirmation shortly.
                     Our team will contact you within 1 business day.
                   </p>
                 </div>
               ) : (
                 <>
-                  <h2 className="text-xl font-bold text-gray-900 mb-6">Submit a Service Request</h2>
+                  <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-6">Submit a Service Request</h2>
                   <form onSubmit={handleSubmit} className="space-y-5">
                     {/* Customer Info */}
-                    <div className="border-b border-gray-100 pb-5">
-                      <p className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-4">
+                    <div className="border-b border-gray-100 dark:border-gray-700 pb-5">
+                      <p className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-4">
                         Your Information
                       </p>
                       <div className="grid sm:grid-cols-2 gap-5">
                         <div>
-                          <label htmlFor="name" className="block text-xs font-semibold text-gray-600 mb-1.5">
+                          <label htmlFor="name" className="block text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1.5">
                             Full Name <span className="text-red-500">*</span>
                           </label>
                           <input
@@ -182,12 +182,12 @@ export default function ServiceRequestPage() {
                             required
                             value={form.name}
                             onChange={handleChange}
-                            className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                            className="w-full border border-gray-200 dark:border-gray-600 rounded-lg px-4 py-2.5 text-sm text-gray-800 dark:text-gray-100 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                             placeholder="John Doe"
                           />
                         </div>
                         <div>
-                          <label htmlFor="phone" className="block text-xs font-semibold text-gray-600 mb-1.5">
+                          <label htmlFor="phone" className="block text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1.5">
                             Phone Number <span className="text-red-500">*</span>
                           </label>
                           <input
@@ -197,14 +197,14 @@ export default function ServiceRequestPage() {
                             required
                             value={form.phone}
                             onChange={handleChange}
-                            className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                            className="w-full border border-gray-200 dark:border-gray-600 rounded-lg px-4 py-2.5 text-sm text-gray-800 dark:text-gray-100 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                             placeholder="01XXXXXXXXX"
                           />
                         </div>
                       </div>
                       <div className="grid sm:grid-cols-2 gap-5 mt-5">
                         <div>
-                          <label htmlFor="email" className="block text-xs font-semibold text-gray-600 mb-1.5">
+                          <label htmlFor="email" className="block text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1.5">
                             Email Address
                           </label>
                           <input
@@ -213,12 +213,12 @@ export default function ServiceRequestPage() {
                             type="email"
                             value={form.email}
                             onChange={handleChange}
-                            className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                            className="w-full border border-gray-200 dark:border-gray-600 rounded-lg px-4 py-2.5 text-sm text-gray-800 dark:text-gray-100 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                             placeholder="you@example.com"
                           />
                         </div>
                         <div>
-                          <label htmlFor="address" className="block text-xs font-semibold text-gray-600 mb-1.5">
+                          <label htmlFor="address" className="block text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1.5">
                             Service Address <span className="text-red-500">*</span>
                           </label>
                           <input
@@ -228,7 +228,7 @@ export default function ServiceRequestPage() {
                             required
                             value={form.address}
                             onChange={handleChange}
-                            className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                            className="w-full border border-gray-200 dark:border-gray-600 rounded-lg px-4 py-2.5 text-sm text-gray-800 dark:text-gray-100 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                             placeholder="Full address"
                           />
                         </div>
@@ -236,13 +236,13 @@ export default function ServiceRequestPage() {
                     </div>
 
                     {/* Product Info */}
-                    <div className="border-b border-gray-100 pb-5">
-                      <p className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-4">
+                    <div className="border-b border-gray-100 dark:border-gray-700 pb-5">
+                      <p className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-4">
                         Product Details
                       </p>
                       <div className="grid sm:grid-cols-2 gap-5">
                         <div>
-                          <label htmlFor="orderNumber" className="block text-xs font-semibold text-gray-600 mb-1.5">
+                          <label htmlFor="orderNumber" className="block text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1.5">
                             Order Number
                           </label>
                           <input
@@ -251,12 +251,12 @@ export default function ServiceRequestPage() {
                             type="text"
                             value={form.orderNumber}
                             onChange={handleChange}
-                            className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                            className="w-full border border-gray-200 dark:border-gray-600 rounded-lg px-4 py-2.5 text-sm text-gray-800 dark:text-gray-100 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                             placeholder="ORD-XXXXXXXX"
                           />
                         </div>
                         <div>
-                          <label htmlFor="purchaseDate" className="block text-xs font-semibold text-gray-600 mb-1.5">
+                          <label htmlFor="purchaseDate" className="block text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1.5">
                             Purchase Date
                           </label>
                           <input
@@ -265,12 +265,12 @@ export default function ServiceRequestPage() {
                             type="date"
                             value={form.purchaseDate}
                             onChange={handleChange}
-                            className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                            className="w-full border border-gray-200 dark:border-gray-600 rounded-lg px-4 py-2.5 text-sm text-gray-800 dark:text-gray-100 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                           />
                         </div>
                       </div>
                       <div className="mt-5">
-                        <label htmlFor="productName" className="block text-xs font-semibold text-gray-600 mb-1.5">
+                        <label htmlFor="productName" className="block text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1.5">
                           Product Name / Model <span className="text-red-500">*</span>
                         </label>
                         <input
@@ -280,7 +280,7 @@ export default function ServiceRequestPage() {
                           required
                           value={form.productName}
                           onChange={handleChange}
-                          className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                          className="w-full border border-gray-200 dark:border-gray-600 rounded-lg px-4 py-2.5 text-sm text-gray-800 dark:text-gray-100 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                           placeholder="e.g. Samsung 55 Smart TV, Model: UA55AU7700"
                         />
                       </div>
@@ -288,11 +288,11 @@ export default function ServiceRequestPage() {
 
                     {/* Service Info */}
                     <div>
-                      <p className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-4">
+                      <p className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-4">
                         Service Details
                       </p>
                       <div>
-                        <label htmlFor="serviceType" className="block text-xs font-semibold text-gray-600 mb-1.5">
+                        <label htmlFor="serviceType" className="block text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1.5">
                           Service Type <span className="text-red-500">*</span>
                         </label>
                         <select
@@ -301,7 +301,7 @@ export default function ServiceRequestPage() {
                           required
                           value={form.serviceType}
                           onChange={handleChange}
-                          className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition bg-white"
+                          className="w-full border border-gray-200 dark:border-gray-600 rounded-lg px-4 py-2.5 text-sm text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition bg-white dark:bg-gray-700"
                         >
                           <option value="">Select service type</option>
                           {SERVICE_TYPES.map((t) => (
@@ -312,7 +312,7 @@ export default function ServiceRequestPage() {
                         </select>
                       </div>
                       <div className="mt-5">
-                        <label htmlFor="description" className="block text-xs font-semibold text-gray-600 mb-1.5">
+                        <label htmlFor="description" className="block text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1.5">
                           Problem Description <span className="text-red-500">*</span>
                         </label>
                         <textarea
@@ -322,7 +322,7 @@ export default function ServiceRequestPage() {
                           required
                           value={form.description}
                           onChange={handleChange}
-                          className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition resize-none"
+                          className="w-full border border-gray-200 dark:border-gray-600 rounded-lg px-4 py-2.5 text-sm text-gray-800 dark:text-gray-100 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition resize-none"
                           placeholder="Describe the issue in detail — when it started, symptoms, error messages, etc."
                         />
                       </div>

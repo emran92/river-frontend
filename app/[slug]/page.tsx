@@ -159,35 +159,35 @@ export default async function CatalogPage({ params, searchParams }: Props) {
   return (
     <main className="max-w-[1280px] mx-auto px-4 py-8">
       {/* Breadcrumb */}
-      <nav className="flex gap-2 text-sm text-gray-400 mb-6 flex-wrap">
-        <Link href="/" className="hover:text-blue-600 transition-colors">
+      <nav className="flex gap-2 text-sm text-gray-400 dark:text-gray-500 mb-6 flex-wrap">
+        <Link href="/" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
           Home
         </Link>
         <span>/</span>
         {isBrand ? (
           <>
-            <Link href="/brands" className="hover:text-blue-600 transition-colors">
+            <Link href="/brands" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
               Brands
             </Link>
             <span>/</span>
-            <span className="text-gray-900 font-medium">{brand?.name}</span>
+            <span className="text-gray-900 dark:text-gray-100 font-medium">{brand?.name}</span>
           </>
         ) : (
           <>
-            <Link href="/categories" className="hover:text-blue-600 transition-colors">
+            <Link href="/categories" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
               Categories
             </Link>
             <span>/</span>
-            <span className="text-gray-900 font-medium">{category?.name}</span>
+            <span className="text-gray-900 dark:text-gray-100 font-medium">{category?.name}</span>
           </>
         )}
       </nav>
 
       {/* Page header — brand */}
       {isBrand && brand && (
-        <div className="flex items-center gap-6 mb-8 bg-white border border-gray-100 rounded-2xl p-6">
+        <div className="flex items-center gap-6 mb-8 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl p-6">
           {brand.logo_url && (
-            <div className="relative w-24 h-24 rounded-xl bg-[#F7F7F7] flex-shrink-0 overflow-hidden border border-gray-100">
+            <div className="relative w-24 h-24 rounded-xl bg-[#F7F7F7] dark:bg-gray-700 flex-shrink-0 overflow-hidden border border-gray-100 dark:border-gray-600">
               <Image
                 src={mediaUrl(brand.logo_url)}
                 alt={brand.name}
@@ -198,28 +198,28 @@ export default async function CatalogPage({ params, searchParams }: Props) {
           )}
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-3 flex-wrap">
-              <h1 className="text-2xl font-bold text-gray-900">{brand.name}</h1>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">{brand.name}</h1>
               {brand.country_of_origin && (
-                <span className="text-xs text-gray-500 bg-gray-100 px-2.5 py-1 rounded-full">
+                <span className="text-xs text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-2.5 py-1 rounded-full">
                   {brand.country_of_origin}
                 </span>
               )}
             </div>
             {brand.description && (
-              <p className="text-gray-500 text-sm mt-1 leading-relaxed line-clamp-2">
+              <p className="text-gray-500 dark:text-gray-400 text-sm mt-1 leading-relaxed line-clamp-2">
                 {brand.description}
               </p>
             )}
-            <p className="text-xs text-gray-400 mt-2">{total} products available</p>
+            <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">{total} products available</p>
           </div>
         </div>
       )}
 
       {/* Page header — category */}
       {!isBrand && category && (
-        <div className="flex items-start gap-5 mb-4 bg-white border border-gray-100 rounded-2xl p-5">
+        <div className="flex items-start gap-5 mb-4 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl p-5">
           {category.image_url && (
-            <div className="relative w-20 h-20 rounded-xl bg-[#F7F7F7] flex-shrink-0 overflow-hidden">
+            <div className="relative w-20 h-20 rounded-xl bg-[#F7F7F7] dark:bg-gray-700 flex-shrink-0 overflow-hidden">
               <Image
                 src={mediaUrl(category.image_url)}
                 alt={category.name}
@@ -229,13 +229,13 @@ export default async function CatalogPage({ params, searchParams }: Props) {
             </div>
           )}
           <div className="flex-1 min-w-0">
-            <h1 className="text-2xl font-bold text-gray-900">{category.name}</h1>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">{category.name}</h1>
             {category.description && (
-              <p className="text-gray-500 text-sm mt-1 leading-relaxed">
+              <p className="text-gray-500 dark:text-gray-400 text-sm mt-1 leading-relaxed">
                 {category.description}
               </p>
             )}
-            <p className="text-xs text-gray-400 mt-2">{total} products</p>
+            <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">{total} products</p>
           </div>
         </div>
       )}
@@ -247,11 +247,11 @@ export default async function CatalogPage({ params, searchParams }: Props) {
             <Link
               key={sub.id}
               href={`/${sub.slug}`}
-              className="flex items-center gap-1.5 px-3.5 py-2 bg-white border border-gray-200 rounded-xl text-sm text-gray-700 hover:border-river-blue hover:text-blue-600 hover:bg-river-blue/5 transition-colors"
+              className="flex items-center gap-1.5 px-3.5 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-700 dark:text-gray-200 hover:border-river-blue hover:text-blue-600 hover:bg-river-blue/5 transition-colors"
             >
               {sub.name}
               {sub.count > 0 && (
-                <span className="text-xs text-gray-400">({sub.count})</span>
+                <span className="text-xs text-gray-400 dark:text-gray-500">({sub.count})</span>
               )}
             </Link>
           ))}
@@ -348,7 +348,7 @@ export default async function CatalogPage({ params, searchParams }: Props) {
 
           {/* Results header with sort on the right */}
           <div className="flex items-center justify-between mb-4 gap-2 flex-wrap">
-            <p className="text-sm text-gray-400">
+            <p className="text-sm text-gray-400 dark:text-gray-500">
               {total > 0
                 ? `Showing ${products.length} of ${total} products`
                 : "No products found"}
@@ -361,8 +361,8 @@ export default async function CatalogPage({ params, searchParams }: Props) {
           {products.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-24 text-center">
               <div className="text-5xl mb-4">📦</div>
-              <h3 className="text-lg font-semibold text-gray-700 mb-2">No products found</h3>
-              <p className="text-gray-400 text-sm mb-4">
+              <h3 className="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-2">No products found</h3>
+              <p className="text-gray-400 dark:text-gray-500 text-sm mb-4">
                 Try changing or removing some filters
               </p>
               <Link

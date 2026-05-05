@@ -58,7 +58,7 @@ function AddressForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-gray-50 border border-gray-200 rounded-2xl p-5 space-y-4"
+      className="bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-2xl p-5 space-y-4"
     >
       {error && (
         <div className="flex items-center gap-2 rounded-xl bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">
@@ -72,7 +72,7 @@ function AddressForm({
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {FIELDS.map(([label, field, type, placeholder, colSpan]) => (
           <div key={field} className={colSpan ?? ""}>
-            <label className="block text-xs font-medium text-gray-600 mb-1.5">{label}</label>
+            <label className="block text-xs font-medium text-gray-600 dark:text-gray-300 mb-1.5">{label}</label>
             <input
               type={type}
               placeholder={placeholder}
@@ -80,7 +80,7 @@ function AddressForm({
               onChange={(e) =>
                 setForm((p) => ({ ...p, [field]: e.target.value || (field === "address_line_2" || field === "district" || field === "postal_code" ? null : e.target.value) }))
               }
-              className="w-full rounded-xl border border-gray-200 px-4 py-2.5 text-sm text-gray-900 bg-white outline-none transition focus:border-river-blue focus:ring-2 focus:ring-river-blue/20"
+              className="w-full rounded-xl border border-gray-200 dark:border-gray-600 px-4 py-2.5 text-sm text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-700 outline-none transition focus:border-river-blue focus:ring-2 focus:ring-river-blue/20"
             />
           </div>
         ))}
@@ -93,7 +93,7 @@ function AddressForm({
               onChange={(e) => setForm((p) => ({ ...p, is_default: e.target.checked }))}
               className="w-4 h-4 rounded border-gray-300 accent-river-blue"
             />
-            <span className="text-sm text-gray-700 group-hover:text-gray-900 transition-colors">
+            <span className="text-sm text-gray-700 dark:text-gray-200 group-hover:text-gray-900 dark:group-hover:text-white transition-colors">
               Set as default address
             </span>
           </label>
@@ -121,7 +121,7 @@ function AddressForm({
         <button
           type="button"
           onClick={onCancel}
-          className="text-sm text-gray-500 px-4 py-2.5 rounded-xl border border-gray-200 bg-white hover:bg-gray-50 transition-colors"
+          className="text-sm text-gray-500 dark:text-gray-400 px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
         >
           Cancel
         </button>
@@ -179,8 +179,8 @@ export default function AddressesPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Addresses</h1>
-          <p className="text-sm text-gray-500 mt-1">Manage your delivery addresses</p>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Addresses</h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Manage your delivery addresses</p>
         </div>
         {mode === "idle" && (
           <button
@@ -208,14 +208,14 @@ export default function AddressesPage() {
           <div className="w-7 h-7 border-4 border-river-blue border-t-transparent rounded-full animate-spin" />
         </div>
       ) : addresses.length === 0 && mode === "idle" ? (
-        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-12 text-center">
-          <div className="w-14 h-14 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <svg className="w-7 h-7 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-12 text-center">
+          <div className="w-14 h-14 bg-gray-100 dark:bg-gray-700 rounded-2xl flex items-center justify-center mx-auto mb-4">
+            <svg className="w-7 h-7 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 16.657L13.414 20.9a2 2 0 01-2.828 0L6.343 16.657a8 8 0 1111.314 0zM15 11a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg>
           </div>
-          <p className="font-semibold text-gray-900 mb-1">No addresses yet</p>
-          <p className="text-sm text-gray-400">Add a delivery address to speed up checkout.</p>
+          <p className="font-semibold text-gray-900 dark:text-gray-100 mb-1">No addresses yet</p>
+          <p className="text-sm text-gray-400 dark:text-gray-500">Add a delivery address to speed up checkout.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -241,8 +241,8 @@ export default function AddressesPage() {
             ) : (
               <div
                 key={addr.id}
-                className={`bg-white rounded-2xl border shadow-sm p-5 relative transition-all ${
-                  addr.is_default ? "border-river-blue/40 ring-1 ring-river-blue/20" : "border-gray-100"
+                className={`bg-white dark:bg-gray-800 rounded-2xl border shadow-sm p-5 relative transition-all ${
+                  addr.is_default ? "border-river-blue/40 ring-1 ring-river-blue/20" : "border-gray-100 dark:border-gray-700"
                 }`}
               >
                 {addr.is_default && (
@@ -256,24 +256,24 @@ export default function AddressesPage() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a2 2 0 01-2.828 0L6.343 16.657a8 8 0 1111.314 0zM15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
                   </div>
-                  <p className="font-semibold text-gray-900 text-sm">{addr.label}</p>
+                  <p className="font-semibold text-gray-900 dark:text-gray-100 text-sm">{addr.label}</p>
                 </div>
 
-                <div className="space-y-1 text-sm text-gray-600">
-                  <p className="font-medium text-gray-800">{addr.recipient_name}</p>
+                <div className="space-y-1 text-sm text-gray-600 dark:text-gray-300">
+                  <p className="font-medium text-gray-800 dark:text-gray-100">{addr.recipient_name}</p>
                   <p>{addr.phone}</p>
-                  <p className="text-gray-500">
+                  <p className="text-gray-500 dark:text-gray-400">
                     {addr.address_line_1}
                     {addr.address_line_2 ? `, ${addr.address_line_2}` : ""}
                   </p>
-                  <p className="text-gray-500">
+                  <p className="text-gray-500 dark:text-gray-400">
                     {addr.city}
                     {addr.district ? `, ${addr.district}` : ""}
                     {addr.postal_code ? ` — ${addr.postal_code}` : ""}
                   </p>
                 </div>
 
-                <div className="flex items-center gap-3 mt-4 pt-4 border-t border-gray-100">
+                <div className="flex items-center gap-3 mt-4 pt-4 border-t border-gray-100 dark:border-gray-700">
                   <button
                     onClick={() => setMode({ edit: addr })}
                     className="text-xs font-medium text-river-blue hover:underline transition-colors"

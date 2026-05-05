@@ -89,7 +89,7 @@ export default function OrderDetailPage() {
   if (error || !order) {
     return (
       <div className="max-w-[900px] mx-auto px-4 py-8 text-center">
-        <p className="text-gray-500 text-sm mb-4">{error || "Order not found."}</p>
+        <p className="text-gray-500 dark:text-gray-400 text-sm mb-4">{error || "Order not found."}</p>
         <Link href="/account/orders" className="text-sm text-river-blue hover:underline">← Back to Orders</Link>
       </div>
     );
@@ -100,16 +100,16 @@ export default function OrderDetailPage() {
   return (
     <div className="max-w-[900px] mx-auto px-4 py-8 space-y-6">
       <div className="flex items-center gap-3">
-        <Link href="/account/orders" className="text-sm text-gray-400 hover:text-gray-600 transition-colors">← Orders</Link>
-        <span className="text-gray-300">/</span>
-        <span className="text-sm text-gray-600">#{order.order_number}</span>
+        <Link href="/account/orders" className="text-sm text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">← Orders</Link>
+        <span className="text-gray-300 dark:text-gray-600">/</span>
+        <span className="text-sm text-gray-600 dark:text-gray-300">#{order.order_number}</span>
       </div>
 
       {/* Header */}
-      <div className="bg-white rounded-2xl border border-gray-100 p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-xl font-bold text-gray-900">Order #{order.order_number}</h1>
-          <p className="text-sm text-gray-400 mt-1">Placed on {formatDate(order.created_at)}</p>
+          <h1 className="text-xl font-bold text-gray-900 dark:text-gray-100">Order #{order.order_number}</h1>
+          <p className="text-sm text-gray-400 dark:text-gray-500 mt-1">Placed on {formatDate(order.created_at)}</p>
         </div>
         <div className="flex items-center gap-3">
           <span className={`text-sm font-semibold px-3 py-1.5 rounded-full capitalize ${STATUS_STYLES[order.status]}`}>
@@ -132,9 +132,9 @@ export default function OrderDetailPage() {
       )}
 
       {/* Items */}
-      <div className="bg-white rounded-2xl border border-gray-100 p-6">
-        <h2 className="font-semibold text-gray-900 mb-4">Items</h2>
-        <div className="divide-y divide-gray-100">
+      <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 p-6">
+        <h2 className="font-semibold text-gray-900 dark:text-gray-100 mb-4">Items</h2>
+        <div className="divide-y divide-gray-100 dark:divide-gray-700">
           {order.items.map((item) => (
               <div key={item.id} className="py-4 flex items-center justify-between gap-4 text-sm">{item.product ? (
                   <Link href={`/products/${item.product.slug}`} className="flex-shrink-0">
@@ -145,26 +145,26 @@ export default function OrderDetailPage() {
                                       alt={item.product.name}
                                       width={72}
                                       height={72}
-                                      className="w-16 h-16 object-contain rounded-xl bg-gray-50"
+                                      className="w-16 h-16 object-contain rounded-xl bg-gray-50 dark:bg-gray-700"
                                   />
                               
                           <div className="flex flex-col min-w-0">
-                              <p className="font-medium text-gray-900 truncate">{item.product_name}</p>
-                              {item.sku && <p className="text-xs text-gray-400 mt-0.5">SKU: {item.sku}</p>}
+                              <p className="font-medium text-gray-900 dark:text-gray-100 truncate">{item.product_name}</p>
+                              {item.sku && <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">SKU: {item.sku}</p>}
                           </div>
                       </div>
                       </Link>): (
                   <div className="flex items-center gap-4 flex-1 min-w-0">
-                      <div className="w-16 h-16 rounded-xl bg-gray-50 flex-shrink-0" />
+                      <div className="w-16 h-16 rounded-xl bg-gray-50 dark:bg-gray-700 flex-shrink-0" />
                       <div className="flex flex-col min-w-0">
-                          <p className="font-medium text-gray-900 truncate">{item.product_name}</p>
-                          {item.sku && <p className="text-xs text-gray-400 mt-0.5">SKU: {item.sku}</p>}
+                          <p className="font-medium text-gray-900 dark:text-gray-100 truncate">{item.product_name}</p>
+                          {item.sku && <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">SKU: {item.sku}</p>}
                       </div>
                   </div>
               )}
               <div className="text-right flex-shrink-0">
-                  <p className="text-gray-500">{item.quantity} × {formatBDT(Number(item.unit_price))}</p>
-                  <p className="font-semibold text-gray-900">{formatBDT(Number(item.total_price))}</p>
+                  <p className="text-gray-500 dark:text-gray-400">{item.quantity} × {formatBDT(Number(item.unit_price))}</p>
+                  <p className="font-semibold text-gray-900 dark:text-gray-100">{formatBDT(Number(item.total_price))}</p>
               </div>
             </div>
           ))}
@@ -173,19 +173,19 @@ export default function OrderDetailPage() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         {/* Shipping */}
-        <div className="bg-white rounded-2xl border border-gray-100 p-6">
-          <h2 className="font-semibold text-gray-900 mb-3">Shipping To</h2>
-          <p className="text-sm text-gray-700 font-medium">{order.shipping_name}</p>
-          <p className="text-sm text-gray-500">{order.shipping_phone}</p>
-          <p className="text-sm text-gray-500 mt-1">{order.shipping_address}</p>
-          <p className="text-sm text-gray-500">{order.shipping_city}, {order.shipping_district}</p>
+        <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 p-6">
+          <h2 className="font-semibold text-gray-900 dark:text-gray-100 mb-3">Shipping To</h2>
+          <p className="text-sm text-gray-700 dark:text-gray-200 font-medium">{order.shipping_name}</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">{order.shipping_phone}</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{order.shipping_address}</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">{order.shipping_city}, {order.shipping_district}</p>
         </div>
 
         {/* Summary */}
-        <div className="bg-white rounded-2xl border border-gray-100 p-6">
-          <h2 className="font-semibold text-gray-900 mb-3">Payment Summary</h2>
+        <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 p-6">
+          <h2 className="font-semibold text-gray-900 dark:text-gray-100 mb-3">Payment Summary</h2>
           <div className="space-y-2 text-sm">
-            <div className="flex justify-between text-gray-600">
+            <div className="flex justify-between text-gray-600 dark:text-gray-300">
               <span>Subtotal</span><span>{formatBDT(Number(order.subtotal))}</span>
             </div>
             {Number(order.discount) > 0 && (
@@ -194,23 +194,23 @@ export default function OrderDetailPage() {
               </div>
             )}
             {Number(order.shipping_fee) > 0 && (
-              <div className="flex justify-between text-gray-600">
+              <div className="flex justify-between text-gray-600 dark:text-gray-300">
                 <span>Shipping</span><span>{formatBDT(Number(order.shipping_fee))}</span>
               </div>
             )}
             {Number(order.tax) > 0 && (
-              <div className="flex justify-between text-gray-600">
+              <div className="flex justify-between text-gray-600 dark:text-gray-300">
                 <span>Tax</span><span>{formatBDT(Number(order.tax))}</span>
               </div>
             )}
-            <div className="flex justify-between font-bold text-gray-900 border-t border-gray-100 pt-2">
+            <div className="flex justify-between font-bold text-gray-900 dark:text-gray-100 border-t border-gray-100 dark:border-gray-700 pt-2">
               <span>Total</span><span>{formatBDT(Number(order.total))}</span>
             </div>
-            <div className="flex justify-between text-gray-500 pt-1">
+            <div className="flex justify-between text-gray-500 dark:text-gray-400 pt-1">
               <span>Payment</span>
               <span className="capitalize">{order.payment_method.replace(/_/g, " ")}</span>
             </div>
-            <div className="flex justify-between text-gray-500">
+            <div className="flex justify-between text-gray-500 dark:text-gray-400">
               <span>Payment Status</span>
               <span className="capitalize">{order.payment_status}</span>
             </div>

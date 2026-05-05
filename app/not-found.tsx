@@ -28,10 +28,10 @@ export default function NotFound() {
         </div>
       </div>
 
-      <h1 className="text-3xl font-bold text-gray-900 mb-3">
+      <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-3">
         Page Not Found
       </h1>
-      <p className="text-gray-500 text-sm max-w-sm mb-8">
+      <p className="text-gray-500 dark:text-gray-400 text-sm max-w-sm mb-8">
         Oops! The page you&apos;re looking for doesn&apos;t exist or has been moved.
         Let&apos;s get you back on track.
       </p>
@@ -45,7 +45,7 @@ export default function NotFound() {
         </Link>
         <Link
           href="/categories"
-          className="bg-[#F4F4F4] hover:bg-gray-200 text-gray-800 text-sm font-medium px-6 py-2.5 rounded-lg border border-gray-200 transition-colors"
+          className="bg-[#F4F4F4] dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 text-sm font-medium px-6 py-2.5 rounded-lg border border-gray-200 dark:border-gray-600 transition-colors"
         >
           Browse Categories
         </Link>

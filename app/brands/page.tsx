@@ -15,7 +15,7 @@ function BrandGridCard({ brand }: { brand: Brand }) {
   return (
     <Link
       href={`/${brand.slug}`}
-      className="group flex flex-col items-center bg-white rounded-2xl border border-gray-100 p-5"
+      className="group flex flex-col items-center bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 p-5"
     >
       <div className="relative w-full aspect-square rounded-xl overflow-hidden flex items-center justify-center mb-3">
         {brand.logo_url ? (
@@ -32,7 +32,7 @@ function BrandGridCard({ brand }: { brand: Brand }) {
           </span>
         )}
       </div>
-      <p className="text-sm font-semibold text-gray-900 text-center leading-tight mb-1">
+      <p className="text-sm font-semibold text-gray-900 dark:text-gray-100 text-center leading-tight mb-1">
         {brand.name}
       </p>
       {/* {brand.country_of_origin && (
@@ -49,10 +49,10 @@ function BrandGridCard({ brand }: { brand: Brand }) {
 
 function SkeletonCard() {
   return (
-    <div className="flex flex-col items-center bg-white rounded-2xl border border-gray-100 p-5 animate-pulse">
-      <div className="w-full aspect-square rounded-xl bg-gray-100 mb-3" />
-      <div className="h-4 bg-gray-100 rounded w-3/4 mb-1" />
-      <div className="h-3 bg-gray-100 rounded w-1/2" />
+    <div className="flex flex-col items-center bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 p-5 animate-pulse">
+      <div className="w-full aspect-square rounded-xl bg-gray-100 dark:bg-gray-700 mb-3" />
+      <div className="h-4 bg-gray-100 dark:bg-gray-700 rounded w-3/4 mb-1" />
+      <div className="h-3 bg-gray-100 dark:bg-gray-700 rounded w-1/2" />
     </div>
   );
 }
@@ -106,24 +106,24 @@ export default function BrandsPage() {
   return (
     <main className="max-w-[1280px] mx-auto px-4 py-8">
       {/* Breadcrumb */}
-      <nav className="flex gap-2 text-sm text-gray-400 mb-6">
-        <Link href="/" className="hover:text-blue-600 transition-colors">
+      <nav className="flex gap-2 text-sm text-gray-400 dark:text-gray-500 mb-6">
+        <Link href="/" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
           Home
         </Link>
         <span>/</span>
-        <span className="text-gray-900 font-medium">Brands</span>
+        <span className="text-gray-900 dark:text-gray-100 font-medium">Brands</span>
       </nav>
 
       {/* Page header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-1">All Brands</h1>
-        <p className="text-gray-500 text-sm">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-1">All Brands</h1>
+        <p className="text-gray-500 dark:text-gray-400 text-sm">
           Explore products from our trusted brand partners
         </p>
       </div>
 
       {/* Filter bar */}
-      <div className="bg-white border border-gray-200 rounded-2xl p-4 mb-8 flex flex-col sm:flex-row gap-4 items-start sm:items-center flex-wrap">
+      <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-4 mb-8 flex flex-col sm:flex-row gap-4 items-start sm:items-center flex-wrap">
         {/* Search */}
         <div className="relative flex-1 w-full sm:max-w-xs">
           <svg
@@ -144,7 +144,7 @@ export default function BrandsPage() {
             placeholder="Search brands..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-blue-400 bg-[#F9F9F9]"
+            className="w-full pl-9 pr-4 py-2.5 border border-gray-200 dark:border-gray-600 rounded-xl text-sm focus:outline-none focus:border-blue-400 bg-[#F9F9F9] dark:bg-gray-700 text-foreground dark:placeholder:text-gray-500"
           />
           {search && (
             <button

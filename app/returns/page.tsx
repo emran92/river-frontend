@@ -52,7 +52,7 @@ const STEPS = [
 
 export default function ReturnsPage() {
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="bg-gray-50 dark:bg-gray-900 min-h-screen">
       {/* Hero */}
       <section className="bg-[#010103] text-white py-14">
         <div className="max-w-[1280px] mx-auto px-4">
@@ -70,15 +70,15 @@ export default function ReturnsPage() {
       <div className="max-w-[1280px] mx-auto px-4 py-16 space-y-12">
         {/* Return Process */}
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">How to Return an Item</h2>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">How to Return an Item</h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {STEPS.map((s) => (
-              <div key={s.step} className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
+              <div key={s.step} className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 p-6 shadow-sm">
                 <div className="w-9 h-9 bg-[#127FFF] text-white rounded-full flex items-center justify-center text-sm font-bold mb-4">
                   {s.step}
                 </div>
-                <h3 className="text-sm font-semibold text-gray-900 mb-2">{s.title}</h3>
-                <p className="text-xs text-gray-500 leading-relaxed">{s.description}</p>
+                <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-2">{s.title}</h3>
+                <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">{s.description}</p>
               </div>
             ))}
           </div>
@@ -86,18 +86,18 @@ export default function ReturnsPage() {
 
         {/* Eligible / Not eligible */}
         <div className="grid md:grid-cols-2 gap-6">
-          <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 p-6 shadow-sm">
             <div className="flex items-center gap-2 mb-5">
               <span className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center">
                 <svg className="w-3.5 h-3.5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
               </span>
-              <h3 className="text-base font-semibold text-gray-900">Eligible for Return</h3>
+              <h3 className="text-base font-semibold text-gray-900 dark:text-gray-100">Eligible for Return</h3>
             </div>
             <ul className="space-y-3">
               {ELIGIBLE.map((item) => (
-                <li key={item} className="flex items-start gap-3 text-sm text-gray-600">
+                <li key={item} className="flex items-start gap-3 text-sm text-gray-600 dark:text-gray-300">
                   <svg className="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
@@ -107,18 +107,18 @@ export default function ReturnsPage() {
             </ul>
           </div>
 
-          <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 p-6 shadow-sm">
             <div className="flex items-center gap-2 mb-5">
               <span className="w-6 h-6 bg-red-100 rounded-full flex items-center justify-center">
                 <svg className="w-3.5 h-3.5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </span>
-              <h3 className="text-base font-semibold text-gray-900">Not Eligible for Return</h3>
+              <h3 className="text-base font-semibold text-gray-900 dark:text-gray-100">Not Eligible for Return</h3>
             </div>
             <ul className="space-y-3">
               {NOT_ELIGIBLE.map((item) => (
-                <li key={item} className="flex items-start gap-3 text-sm text-gray-600">
+                <li key={item} className="flex items-start gap-3 text-sm text-gray-600 dark:text-gray-300">
                   <svg className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
@@ -130,8 +130,8 @@ export default function ReturnsPage() {
         </div>
 
         {/* Refund Info */}
-        <div className="bg-white rounded-2xl border border-gray-100 p-8 shadow-sm">
-          <h2 className="text-xl font-bold text-gray-900 mb-5">Refund Information</h2>
+        <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 p-8 shadow-sm">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-5">Refund Information</h2>
           <div className="grid md:grid-cols-3 gap-6">
             {[
               {
@@ -151,8 +151,8 @@ export default function ReturnsPage() {
               },
             ].map((item) => (
               <div key={item.title}>
-                <h4 className="text-sm font-semibold text-gray-900 mb-2">{item.title}</h4>
-                <p className="text-sm text-gray-500 leading-relaxed">{item.description}</p>
+                <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-2">{item.title}</h4>
+                <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">{item.description}</p>
               </div>
             ))}
           </div>
