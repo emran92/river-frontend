@@ -71,7 +71,7 @@ export default function Footer() {
                 src="/logo-blue.svg"
                 alt="River Electronics"
                 fill
-                className="object-contain object-left"
+                className="object-contain object-left" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
             </div>
             <p className="text-sm text-gray-400 leading-relaxed mb-5">

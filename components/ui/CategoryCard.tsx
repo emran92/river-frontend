@@ -15,9 +15,9 @@ export default function CategoryCard({ category }: CategoryCardProps) {
     >
       {/* Image area */}
       <div className="relative w-full aspect-square bg-white dark:bg-gray-800 flex items-center justify-center p-4">
-        {category.image_url ? (
+        {category.logo_url ? (
           <Image
-            src={mediaUrl(category.image_url)}
+            src={mediaUrl(category.logo_url)}
             alt={category.name}
             fill
             className="object-contain group-hover:scale-105 transition-transform duration-200 bg-[#F7F7F7] dark:bg-transparent rounded-lg p-3"

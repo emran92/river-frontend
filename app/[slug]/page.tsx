@@ -217,45 +217,67 @@ export default async function CatalogPage({ params, searchParams }: Props) {
 
       {/* Page header — category */}
       {!isBrand && category && (
-        <div className="flex items-start gap-5 mb-4 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-2xl p-5">
-          {category.image_url && (
-            <div className="relative w-20 h-20 rounded-xl bg-[#F7F7F7] dark:bg-gray-700 flex-shrink-0 overflow-hidden">
+        <>
+          {/* Banner */}
+          {category.banner_url ? (
+            <div className="relative w-full h-56 sm:h-72 rounded-2xl overflow-hidden mb-8 bg-gray-900">
               <Image
-                src={mediaUrl(category.image_url)}
+                src={mediaUrl(category.banner_url)}
                 alt={category.name}
                 fill
-                className="object-contain p-2"
+                className="object-cover"
+                priority
               />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+              <div className="absolute bottom-0 left-0 p-6">
+                <h1 className="text-3xl sm:text-4xl font-bold text-white drop-shadow">{category.name}</h1>
+                {category.description && (
+                  <p className="text-gray-300 text-sm mt-1 max-w-lg line-clamp-2">{category.description}</p>
+                )}
+              </div>
+            </div>
+          ) : (
+            <div className="mb-6">
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">{category.name}</h1>
+              {category.description && (
+                <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">{category.description}</p>
+              )}
             </div>
           )}
-          <div className="flex-1 min-w-0">
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">{category.name}</h1>
-            {category.description && (
-              <p className="text-gray-500 dark:text-gray-400 text-sm mt-1 leading-relaxed">
-                {category.description}
-              </p>
-            )}
-            <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">{total} products</p>
-          </div>
-        </div>
-      )}
 
-      {/* Subcategories */}
-      {!isBrand && subcategories.length > 0 && (
-        <div className="flex flex-wrap gap-2 mb-8">
-          {subcategories.map((sub) => (
-            <Link
-              key={sub.id}
-              href={`/${sub.slug}`}
-              className="flex items-center gap-1.5 px-3.5 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm text-gray-700 dark:text-gray-200 hover:border-river-blue hover:text-blue-600 hover:bg-river-blue/5 transition-colors"
-            >
-              {sub.name}
-              {sub.count > 0 && (
-                <span className="text-xs text-gray-400 dark:text-gray-500">({sub.count})</span>
-              )}
-            </Link>
-          ))}
-        </div>
+          {/* Subcategory cards */}
+          {subcategories.length > 0 && (
+            <div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-10 gap-3 mb-8">
+              {subcategories.map((sub) => (
+                <Link
+                  key={sub.id}
+                  href={`/${sub.slug}`}
+                  className="group bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-xl overflow-hidden hover:border-blue-400 dark:hover:border-blue-500 hover:shadow-md transition-all"
+                >
+                  <div className="relative aspect-square bg-gray-50 dark:bg-gray-700 flex items-center justify-center">
+                    {sub.logo_url ? (
+                      <Image
+                        src={mediaUrl(sub.logo_url)}
+                        alt={sub.name}
+                        fill
+                        className="object-contain p-3 group-hover:scale-105 transition-transform duration-200"
+                        sizes="(max-width: 640px) 33vw, (max-width: 1024px) 25vw, 16vw"
+                      />
+                    ) : (
+                      <span className="text-4xl text-gray-200 dark:text-gray-600">📦</span>
+                    )}
+                  </div>
+                  <div className="px-2 py-2.5 text-center">
+                    <p className="text-xs font-medium text-gray-800 dark:text-gray-200 leading-tight">{sub.name}</p>
+                    {sub.count > 0 && (
+                      <p className="text-[10px] text-gray-400 dark:text-gray-500 mt-0.5">{sub.count} products</p>
+                    )}
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
+        </>
       )}
 
       {/* Products section */}

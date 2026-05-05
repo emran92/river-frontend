@@ -87,6 +87,9 @@ export interface Subcategory {
   slug: string;
   parent_id: number | null;
   count: number;
+  logo_url?: string | null;
+  icon_url?: string | null;
+  banner_url?: string | null;
 }
 
 export interface CatalogCategoryResponse {
@@ -106,7 +109,9 @@ export interface Category {
   parent_id: number | null;
   name: string;
   slug: string;
-  image_url: string | null;
+  logo_url: string | null;
+  banner_url: string | null;
+  icon_url: string | null;
   description: string | null;
   is_active: boolean;
   sort_order: number;
@@ -124,7 +129,9 @@ export interface Brand {
   id: number;
   name: string;
   slug: string;
-  logo_url?: string | null;
+  logo_url: string | null;
+  banner_url: string | null;
+  icon_url: string | null;
   country_of_origin: string | null;
   description: string | null;
   is_active: boolean;

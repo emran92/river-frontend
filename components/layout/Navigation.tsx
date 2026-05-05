@@ -1,9 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useFetch } from "@/hooks/useFetch";
 import { fetchCategories } from "@/lib/api";
+import { mediaUrl } from "@/lib/utils";
 import type { Category } from "@/types";
 
 const NAV_LINKS = [
@@ -18,29 +20,51 @@ const NAV_LINKS = [
 export default function Navigation() {
   const [categoryOpen, setCategoryOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [hoveredId, setHoveredId] = useState<number | null>(null);
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const { data: categories } = useFetch<Category[]>(
     "/v1/categories",
     fetchCategories
   );
 
-  const activeCategories = (categories ?? []).filter((c) => c.is_active);
+  const allCats = categories ?? [];
+  const topLevel = allCats.filter((c) => c.is_active);
+
+  const activeCat =
+    topLevel.find((c) => c.id === hoveredId) ?? topLevel[0] ?? null;
+
+  const subcategories = (activeCat?.children ?? []).filter((c) => c.is_active);
+
+  function openDropdown() {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    setHoveredId(null);
+    setCategoryOpen(true);
+  }
+
+  function closeDropdown() {
+    closeTimer.current = setTimeout(() => setCategoryOpen(false), 120);
+  }
 
   return (
     <nav className="bg-white dark:bg-gray-900 sticky top-0 z-1 py-4 my-4 border-b border-gray-200 dark:border-gray-700">
       <div className="max-w-[1280px] mx-auto px-4">
         <div className="flex items-center h-11">
-          {/* All Category dropdown */}
-          <div className="relative">
+          {/* All Categories mega dropdown */}
+          <div
+            className="relative"
+            onMouseEnter={openDropdown}
+            onMouseLeave={closeDropdown}
+          >
             <button
               className="flex items-center gap-2 h-11 px-4 bg-[#F4F4F4] dark:bg-gray-800 rounded-lg text-black dark:text-gray-100 text-sm font-medium hover:bg-river-blue hover:text-white transition-colors"
-              onClick={() => setCategoryOpen(!categoryOpen)}
+              onClick={() => setCategoryOpen((o) => !o)}
               aria-expanded={categoryOpen}
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
               </svg>
-              All Category
+              All Categories
               <svg className={`w-3 h-3 transition-transform ${categoryOpen ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
@@ -48,33 +72,128 @@ export default function Navigation() {
 
             {categoryOpen && (
               <>
+                {/* Mega menu panel */}
                 <div
-                  className="fixed inset-0 z-30"
-                  onClick={() => setCategoryOpen(false)}
-                />
-                <div className="absolute top-full left-0 w-60 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-xl z-40 rounded-b-lg py-1">
-                  {activeCategories.length === 0 ? (
-                    <div className="px-4 py-3 text-sm text-gray-400 dark:text-gray-500">Loading...</div>
-                  ) : (
-                    activeCategories.map((cat) => (
-                      <Link
-                        key={cat.id}
-                        href={`/${cat.slug}`}
-                        className="block px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-river-blue/10 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-                        onClick={() => setCategoryOpen(false)}
-                      >
-                        {cat.name}
-                      </Link>
-                    ))
+                  className="absolute top-full left-0 mt-1.5 z-40 flex bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-2xl overflow-hidden w-[840px]"
+                  onMouseEnter={() => {
+                    if (closeTimer.current) clearTimeout(closeTimer.current);
+                  }}
+                  onMouseLeave={closeDropdown}
+                >
+
+                  {/* ── Left: category list ── */}
+                  <div className="w-56 shrink-0 border-r border-gray-100 dark:border-gray-700 py-2 overflow-y-auto max-h-[520px]">
+                    {topLevel.length === 0 ? (
+                      <div className="px-4 py-3 text-sm text-gray-400 dark:text-gray-500">Loading…</div>
+                    ) : (
+                      topLevel.map((cat) => {
+                        const hasChildren = (cat.children ?? []).some((c) => c.is_active);
+                        const isActive = cat.id === (activeCat?.id ?? null);
+                        return (
+                          <Link
+                            key={cat.id}
+                            href={`/${cat.slug}`}
+                            onMouseEnter={() => setHoveredId(cat.id)}
+                            onClick={() => setCategoryOpen(false)}
+                            className={`w-full flex items-center gap-3 px-4 py-2.5 text-left transition-colors ${
+                              isActive
+                                ? "bg-blue-50 dark:bg-blue-900/30 text-[#127FFF]"
+                                : "text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700/40"
+                            }`}
+                          >
+                            {/* Category icon */}
+                            <div className="w-6 h-6 shrink-0 relative flex items-center justify-center">
+                              {cat.icon_url || cat.logo_url ? (
+                                <Image
+                                  src={mediaUrl(cat.icon_url ?? cat.logo_url ?? "")}
+                                  alt={cat.name}
+                                  fill
+                                  className="object-contain"
+                                  sizes="24px"
+                                />
+                              ) : (
+                                <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6h16M4 12h16M4 18h16" />
+                                </svg>
+                              )}
+                            </div>
+                            <span className="flex-1 text-sm font-medium leading-snug truncate">{cat.name}</span>
+                            {hasChildren && (
+                              <svg
+                                className={`w-3.5 h-3.5 shrink-0 ${isActive ? "text-[#127FFF]" : "text-gray-400"}`}
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                              >
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                              </svg>
+                            )}
+                          </Link>
+                        );
+                      })
+                    )}
+                  </div>
+
+                  {/* ── Right: subcategories + image ── */}
+                  {activeCat && (
+                    <div className="flex-1 p-6 flex flex-col gap-5">
+                      {/* Header */}
+                      <div className="flex items-center justify-between">
+                        <h3 className="text-base font-bold text-gray-900 dark:text-gray-100">
+                          {activeCat.name}
+                        </h3>
+                        <Link
+                          href={`/${activeCat.slug}`}
+                          className="text-sm text-[#127FFF] hover:underline font-medium whitespace-nowrap"
+                          onClick={() => setCategoryOpen(false)}
+                        >
+                          Shop All {activeCat.name}&nbsp;→
+                        </Link>
+                      </div>
+
+                      {/* Subcategories grid */}
+                      {subcategories.length > 0 && (
+                        <div className="grid grid-cols-3 gap-x-8 gap-y-3">
+                          {subcategories.map((sub) => (
+                            <Link
+                              key={sub.id}
+                              href={`/${sub.slug}`}
+                              className="flex items-center gap-2 text-sm font-semibold text-gray-800 dark:text-gray-200 hover:text-[#127FFF] dark:hover:text-blue-400 transition-colors"
+                              onClick={() => setCategoryOpen(false)}
+                            >
+                              {sub.icon_url || sub.logo_url ? (
+                                <div className="w-5 h-5 relative shrink-0">
+                                  <Image
+                                    src={mediaUrl(sub.icon_url ?? sub.logo_url ?? "")}
+                                    alt={sub.name}
+                                    fill
+                                    className="object-contain"
+                                    sizes="20px"
+                                  />
+                                </div>
+                              ) : (
+                                <svg className="w-4 h-4 shrink-0 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                </svg>
+                              )}
+                              {sub.name}
+                            </Link>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* Category banner image */}
+                      {activeCat.banner_url && (
+                        <div className="mt-auto relative rounded-xl overflow-hidden border border-gray-100 dark:border-gray-700 h-44">
+                          <Image
+                            src={mediaUrl(activeCat.banner_url)}
+                            alt={activeCat.name}
+                            fill
+                            className="object-cover"
+                            sizes="560px"
+                          />
+                        </div>
+                      )}
+                    </div>
                   )}
-                  <hr className="my-1" />
-                  <Link
-                    href="/categories"
-                    className="block px-4 py-2.5 text-sm text-blue-600 dark:text-blue-400 font-medium hover:bg-river-blue/10"
-                    onClick={() => setCategoryOpen(false)}
-                  >
-                    View All Categories →
-                  </Link>
                 </div>
               </>
             )}

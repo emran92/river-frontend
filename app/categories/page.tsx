@@ -20,9 +20,9 @@ function CategoryGridCard({ category }: { category: Category }) {
       className="group flex flex-col items-center bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 p-5 hover:shadow-md hover:border-blue-100 dark:hover:border-blue-900 transition-all duration-200"
     >
       <div className="relative w-full aspect-square rounded-xl overflow-hidden bg-[#F7F7F7] mb-3">
-        {category.image_url ? (
+        {category.logo_url ? (
           <Image
-            src={mediaUrl(category.image_url)}
+            src={mediaUrl(category.logo_url)}
             alt={category.name}
             fill
             className="object-contain p-4 group-hover:scale-105 transition-transform duration-200"
