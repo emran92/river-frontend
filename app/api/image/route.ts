@@ -2,6 +2,12 @@ import { NextRequest } from "next/server";
 
 const BACKEND_BASE = process.env.NEXT_PUBLIC_URL ?? "http://localhost:8000";
 
+// Allowlist of trusted remote origins the proxy may fetch from.
+const ALLOWED_ORIGINS = [
+  BACKEND_BASE,
+  "https://river-electronics.sgp1.cdn.digitaloceanspaces.com",
+];
+
 // Optional: a server-side token for authenticating with the backend.
 // Set MEDIA_API_TOKEN in .env.local if your backend requires it.
 const MEDIA_API_TOKEN = process.env.MEDIA_API_TOKEN;
@@ -19,8 +25,11 @@ export async function GET(request: NextRequest) {
     ? src
     : `${BACKEND_BASE}${src.startsWith("/") ? "" : "/"}${src}`;
 
-  // Security: only proxy to the configured backend host
-  if (!targetUrl.startsWith(BACKEND_BASE)) {
+  // Security: only proxy to trusted origins
+  const isAllowed = ALLOWED_ORIGINS.some((origin) =>
+    targetUrl.startsWith(origin)
+  );
+  if (!isAllowed) {
     return new Response("Forbidden", { status: 403 });
   }
 
@@ -28,7 +37,8 @@ export async function GET(request: NextRequest) {
     Accept: "image/*",
   };
 
-  if (MEDIA_API_TOKEN) {
+  // Only send auth token to the backend, not to third-party CDNs
+  if (MEDIA_API_TOKEN && targetUrl.startsWith(BACKEND_BASE)) {
     headers["Authorization"] = `Bearer ${MEDIA_API_TOKEN}`;
   }
 
