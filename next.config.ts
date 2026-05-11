@@ -18,13 +18,6 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "river-electronics.sgp1.cdn.digitaloceanspaces.com",
-        port: "",
-        pathname: "/**",
-      },
-      {
-        protocol: "https",
-        hostname: "river-electronics.sgp1.digitaloceanspaces.com",
-        port: "",
         pathname: "/**",
       },
     ],
