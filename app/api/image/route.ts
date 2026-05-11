@@ -27,7 +27,7 @@ export async function GET(request: NextRequest) {
 
   // Security: only proxy to trusted origins
   const isAllowed = ALLOWED_ORIGINS.some((origin) =>
-    targetUrl.startsWith(origin)
+    targetUrl.startsWith(origin),
   );
   if (!isAllowed) {
     return new Response("Forbidden", { status: 403 });
