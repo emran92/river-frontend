@@ -17,9 +17,9 @@ export default function ProductCard({ product }: ProductCardProps) {
     : 0;
 
   const displayPrice = product.sale_price ?? product.price;
-  const primarySrc = product.thumbnail_url
-    ? mediaUrl(product.thumbnail_url)
-    : "/placeholder/product.jpg";
+  const primarySrc = product.thumbnail_url || product.thumbnail_large
+    ? mediaUrl(product.thumbnail_url ?? product.thumbnail_large!)
+    : "/placeholder/placeholder.jpg";
 
   const galleryImages = product.gallery_urls?.map(
     (g) => mediaUrl(g.medium ?? g.original),

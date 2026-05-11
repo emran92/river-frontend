@@ -16,8 +16,19 @@ const nextConfig: NextConfig = {
     // Keep remote patterns for any direct backend URLs
     remotePatterns: [
       {
+        protocol: "http",
+        hostname: "localhost",
+        port: "8000",
+        pathname: "/**",
+      },
+      {
         protocol: "https",
         hostname: "river-electronics.sgp1.cdn.digitaloceanspaces.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "river-electronics.sgp1.digitaloceanspaces.com",
         pathname: "/**",
       },
     ],

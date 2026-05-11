@@ -179,6 +179,7 @@ export interface Product {
   updated_at: string | null;
   deleted_at: string | null;
   thumbnail_url?: string | null;
+  thumbnail_large?: string | null;
   gallery_urls?: Array<{
     original: string;
     thumb: string;

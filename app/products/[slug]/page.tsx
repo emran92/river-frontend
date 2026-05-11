@@ -41,11 +41,11 @@ export default async function ProductPage({ params }: Props) {
   const displayPrice = product.sale_price ?? product.price;
 
   // Build image list — thumbnail first, then the rest of the gallery
-  const thumbnailEntry = product.thumbnail_url
+  const thumbnailEntry = product.thumbnail_large
     ? {
-        original: mediaUrl(product.thumbnail_url),
-        thumb: mediaUrl(product.thumbnail_url),
-        large: mediaUrl(product.thumbnail_url),
+        original: mediaUrl(product.thumbnail_large),
+        thumb: mediaUrl(product.thumbnail_large),
+        large: mediaUrl(product.thumbnail_large),
       }
     : null;
 
