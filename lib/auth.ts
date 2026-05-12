@@ -6,7 +6,12 @@ import type {
   User,
 } from "@/types";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000/api";
+// Server-side: call the backend directly (no CORS).
+// Client-side: use the same-origin rewrite proxy to avoid CORS.
+const API_BASE =
+  typeof window === "undefined"
+    ? (process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000/api")
+    : "/api";
 
 export const TOKEN_COOKIE = "river_token";
 

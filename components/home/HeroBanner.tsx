@@ -74,7 +74,7 @@ export default function HeroBanner({ carousel, sidebar }: HeroBannerProps) {
               </div>
 
               {/* Dots */}
-              {slides.length > 1 && (
+              {/* {slides.length > 1 && (
                 <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
                   {slides.map((_, i) => (
                     <button
@@ -87,10 +87,10 @@ export default function HeroBanner({ carousel, sidebar }: HeroBannerProps) {
                     />
                   ))}
                 </div>
-              )}
+              )} */}
 
               {/* Arrows */}
-              {slides.length > 1 && (
+              {/* {slides.length > 1 && (
                 <>
                   <button
                     onClick={() =>
@@ -113,7 +113,7 @@ export default function HeroBanner({ carousel, sidebar }: HeroBannerProps) {
                     </svg>
                   </button>
                 </>
-              )}
+              )} */}
             </>
           )}
         </div>

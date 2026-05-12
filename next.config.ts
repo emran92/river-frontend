@@ -1,6 +1,18 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  async rewrites() {
+    // Proxy /api/v1/* through Next.js so browser requests stay same-origin
+    // and avoid CORS. The backend URL is read server-side only.
+    const backendApi =
+      process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000/api";
+    return [
+      {
+        source: "/api/v1/:path*",
+        destination: `${backendApi}/v1/:path*`,
+      },
+    ];
+  },
   images: {
     dangerouslyAllowSVG: true,
     dangerouslyAllowLocalIP: true,

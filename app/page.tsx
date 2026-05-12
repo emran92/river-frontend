@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import { useFetch } from "@/hooks/useFetch";
 import { fetchHomepage } from "@/lib/api";
 import type { HomepageSection } from "@/types";
@@ -9,6 +10,45 @@ import DynamicBannerSection from "@/components/home/DynamicBannerSection";
 import HomepageCategoryGrid from "@/components/home/HomepageCategoryGrid";
 import HomepageBrandGrid from "@/components/home/HomepageBrandGrid";
 import HomepageProductGrid from "@/components/home/HomepageProductGrid";
+
+// ─── Animated section wrapper ───────────────────────────────────────────────
+
+function AnimatedSection({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    // Wait one frame so the browser paints the initial hidden state first
+    const raf = requestAnimationFrame(() => {
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            setVisible(true);
+            observer.disconnect();
+          }
+        },
+        { threshold: 0.06 },
+      );
+      observer.observe(el);
+    });
+    return () => cancelAnimationFrame(raf);
+  }, []);
+
+  return (
+    <div
+      ref={ref}
+      style={{
+        opacity: visible ? 1 : 0,
+        transform: visible ? "translateY(0)" : "translateY(24px)",
+        transition: `opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1) ${delay}ms, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1) ${delay}ms`,
+      }}
+    >
+      {children}
+    </div>
+  );
+}
 
 // ─── Skeleton ────────────────────────────────────────────────────────────────
 
@@ -147,6 +187,14 @@ export default function Home() {
     return <HomepageSkeleton />;
   }
 
-  return <>{sections.map((section, i) => renderSection(section, i))}</>;
+  return (
+    <>
+      {sections.map((section, i) => (
+        <AnimatedSection key={i} delay={i === 0 ? 0 : 60}>
+          {renderSection(section, i)}
+        </AnimatedSection>
+      ))}
+    </>
+  );
 }
 
