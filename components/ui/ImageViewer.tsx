@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import Image from "next/image";
 
 interface ImageViewerProps {
@@ -14,6 +14,13 @@ export default function ImageViewer({ images, productName }: ImageViewerProps) {
   const [zoomPos, setZoomPos] = useState({ x: 50, y: 50 });
   const mainRef = useRef<HTMLDivElement>(null);
 
+  const current = images[active];
+  const [mainSrc, setMainSrc] = useState<string>(current?.large ?? current?.original ?? "");
+
+  useEffect(() => {
+    setMainSrc(current?.large ?? current?.original ?? "");
+  }, [active, current]);
+
   const handleMouseMove = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
       if (!mainRef.current) return;
@@ -24,8 +31,6 @@ export default function ImageViewer({ images, productName }: ImageViewerProps) {
     },
     []
   );
-
-  const current = images[active];
 
   return (
     <div className="flex flex-col gap-3">
@@ -38,7 +43,7 @@ export default function ImageViewer({ images, productName }: ImageViewerProps) {
         onMouseMove={handleMouseMove}
       >
         <Image
-          src={current?.large ?? current?.original}
+          src={mainSrc}
           alt={productName}
           fill
           className={`object-contain p-6 transition-transform duration-100 ${zoomed ? "scale-150" : "scale-100"}`}
@@ -49,6 +54,7 @@ export default function ImageViewer({ images, productName }: ImageViewerProps) {
           }
           sizes="(max-width: 1024px) 100vw, 50vw"
           priority
+          onError={() => setMainSrc(current?.thumb ?? "/placeholder/placeholder.jpg")}
         />
         {zoomed && (
           <div className="absolute bottom-3 right-3 bg-black/40 text-white text-[10px] px-2 py-1 rounded-full pointer-events-none">
